@@ -42,3 +42,94 @@ $font-sizes: (
     font-size: $value;
   }
 }
+
+:root {
+  --primary-color: #7DA9A7; /* 새로운 주조색 */
+  --secondary-color: #AFC8AD; /* 부드러운 녹색 계열 보조색 */
+  --hover-color: #5E8886; /* 주조색보다 어두운 톤, hover 시 색상 */
+  --active-color: #436A68; /* 클릭 시 색상, 더 깊은 청록 계열 */
+  --background-color: #F4F6F5; /* 밝고 깨끗한 느낌의 배경색 */
+  --accent-color: #F4EECF; /* 따뜻한 파스텔 베이지 강조색 */
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--primary-color);
+  font-family: Arial, sans-serif;
+}
+
+/* 버튼 스타일 */
+.btn-pilllaw {
+  color: #fff;
+  background-color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-pilllaw:hover {
+  background-color: var(--hover-color);
+  border-color: var(--hover-color);
+}
+
+.btn-pilllaw:active {
+  background-color: var(--active-color);
+  border-color: var(--active-color);
+}
+
+.btn-pilllaw:disabled {
+  color: #bbb;
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+/* 보조 버튼 스타일 */
+.btn-pilllaw-secondary {
+  color: #fff;
+  background-color: var(--secondary-color);
+  border: 1px solid var(--secondary-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-pilllaw-secondary:hover {
+  background-color: darken(var(--secondary-color), 10%);
+  border-color: darken(var(--secondary-color), 10%);
+}
+
+.btn-pilllaw-secondary:active {
+  background-color: darken(var(--secondary-color), 20%);
+  border-color: darken(var(--secondary-color), 20%);
+}
+
+.btn-pilllaw-secondary:disabled {
+  color: #888;
+  background-color: lighten(var(--secondary-color), 20%);
+  border-color: lighten(var(--secondary-color), 20%);
+}
+
+/* 텍스트 스타일 */
+.text-pilllaw {
+  color: var(--primary-color) !important;
+  transition: color 0.3s ease;
+}
+
+.text-pilllaw-secondary {
+  color: var(--secondary-color) !important;
+  transition: color 0.3s ease;
+}
+
+/* 배경 스타일 */
+.bg-pilllaw {
+  background-color: var(--primary-color) !important;
+  transition: background-color 0.3s ease;
+}
+
+.bg-pilllaw-secondary {
+  background-color: var(--secondary-color) !important;
+  transition: background-color 0.3s ease;
+}
+
+/* 페이지네이션 */
+.active>.page-link, .page-link.active {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
