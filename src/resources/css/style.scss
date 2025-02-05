@@ -1,0 +1,44 @@
+$header-color: #3C7B89;
+
+// 공통 클래스 정의
+%font-settings {
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+// 헤더 스타일
+.header {
+  &-icon {
+    width: 90px;
+  }
+
+  &-font {
+    color: $header-color !important;
+  }
+}
+
+// 폰트 설정
+.noto-sans-kr {
+  font-family: "Noto Sans KR", serif;
+  @extend %font-settings;
+  font-weight: 1;
+}
+
+// 기본 스타일
+body {
+  padding: 0;
+}
+
+// 폰트 크기 설정
+$font-sizes: (
+  16: 16px,
+  14: 14px,
+  12: 12px,
+  11: 11px
+);
+
+@each $size, $value in $font-sizes {
+  .fs-#{$size} {
+    font-size: $value;
+  }
+}

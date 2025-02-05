@@ -1,0 +1,35 @@
+@charset "utf-8";
+
+.header-icon { width: 90px; }
+
+.header-font { color: #3C7B89 !important; }
+
+.noto-sans-kr {
+  font-family: "Noto Sans KR", serif;
+  font-optical-sizing: auto;
+  font-weight: 1;
+  font-style: normal;
+}
+
+body { padding: 0;}
+
+.fs-16 {
+  font-size: 16px;
+}
+
+.fs-14 {
+  font-size : 14px;
+}
+
+.fs-12 {
+  font-size : 12px;
+}
+
+.fs-11 {
+  font-size : 11px;
+}
+
+
+
+
+
