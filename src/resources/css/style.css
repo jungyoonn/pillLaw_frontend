@@ -5,23 +5,24 @@
   --secondary-color: #AFC8AD; /* 부드러운 녹색 계열 보조색 */
   --hover-color: #5E8886; /* 주조색보다 어두운 톤, hover 시 색상 */
   --active-color: #436A68; /* 클릭 시 색상, 더 깊은 청록 계열 */
-  --background-color: #F4F6F5; /* 밝고 깨끗한 느낌의 배경색 */
+  --background-color: #F8F9FA; /* 밝고 깨끗한 느낌의 배경색 */
   --accent-color: #F4EECF; /* 따뜻한 파스텔 베이지 강조색 */
+  --header-color: #3C7B89; /* 헤더 색상 */
 }
 
 body {
   background-color: var(--background-color);
-  color: var(--primary-color);
+  /* color: var(--primary-color); */
   font-family: "Noto Sans KR", serif;
   font-optical-sizing: auto;
-  font-weight: 1;
+  font-weight: 100;
   font-style: normal;
   padding: 0;
 }
 
 .header-icon { width: 90px; }
 
-.header-font { color: #3C7B89 !important; }
+.header-font { color: var(--header-color) !important; }
 
 .fs-16 { font-size: 16px; }
 .fs-14 { font-size: 14px; }
@@ -40,6 +41,10 @@ body {
   background-color: var(--hover-color);
   border-color: var(--hover-color);
 }
+
+/* .pillaw-profile {
+  background-color: var(--background-color);
+} */
 
 .btn-pilllaw:active {
   background-color: var(--active-color);
@@ -61,13 +66,13 @@ body {
 }
 
 .btn-pilllaw-secondary:hover {
-  background-color: #5E8886;
-  border-color: #5E8886;
+  background-color: var(--hover-color);
+  border-color: var(--hover-color);
 }
 
 .btn-pilllaw-secondary:active {
-  background-color: #436A68;
-  border-color: #436A68;
+  background-color: var(--active-color);
+  border-color: var(--active-color);
 }
 
 .btn-pilllaw-secondary:disabled {
