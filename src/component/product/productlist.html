@@ -20,7 +20,7 @@
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
-<body>
+<body class="noto-sans-kr">
   <div class="wrap">
     <!-- HEADER -->
     <header class="container-fluid mb-0" style="position: fixed; background-color: #F8F9FA;">
@@ -62,25 +62,25 @@
       <div class="query-selector text-center container-fluid p-3 m-3">
         <h1 class="fw-bold">상품 리스트</h1>
 
-        <div class="keyword-selector d-flex p-3 m-2 text-pilllaw">
+        <div class="keyword-selector d-flex p-3 m-2">
           <ul class="nav mx-auto">
             <li class="nav-item">
-              <a class="nav-link active" href="#">전체보기</a>
+              <a class="nav-link text-decoration-none text-black" href="#">전체보기</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">조회순</a>
+              <a class="nav-link text-decoration-none text-black" href="#">조회순</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">구매 많은 순</a>
+              <a class="nav-link text-decoration-none text-black" href="#">구매 많은 순</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">구독자 전용</a>
+              <a class="nav-link text-decoration-none text-black" href="#">구독자 전용</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">필로 패키지</a>
+              <a class="nav-link text-decoration-none text-black" href="#">필로 패키지</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">얼리버드</a>
+              <a class="nav-link text-decoration-none text-black" href="#">얼리버드</a>
             </li>
           </ul>
         </div>
@@ -90,8 +90,8 @@
           <label for="comment"><i class="fa-solid fa-magnifying-glass"></i>검색어를 입력하세요.</label>
         </div>
 
-        <div class="category-selector border border-1">
-          <div id="accordion" class="fs-12"></div> <!-- ✅ `div` 닫는 위치 수정 -->
+        <div class="category-selector">
+          <div id="accordion" class="fs-12"></div> 
         </div>
 
         <script>
@@ -126,7 +126,7 @@
             card.classList.add('card');
 
             const header = `
-              <div class="card-header bg-pilllaw">
+              <div class="card-header bg-pilllaw opacity-75 pilllaw-secondary-tag">
                 <a class="btn ${categoryIndex === 0 ? '' : 'collapsed'}" data-bs-toggle="collapse" href="#collapse${categoryIndex}">
                   ${category.title}
                 </a>
