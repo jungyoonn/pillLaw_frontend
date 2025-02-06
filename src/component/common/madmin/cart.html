@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>PILL LAW</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js" integrity="sha512-b+nQTCdtTBIRIbraqNEwsjB6UvL3UEMkXnhzd8awtCYh0Kcsjl9uEgwVFVbhoj3uu1DO1ZMacNvLoyJJiNfcvg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link rel="icon" href="../../../resources/image/pilllaw_favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Noto+Sans+KR&display=swap" rel="stylesheet">
+  <link rel='stylesheet' href='../../../resources/css/style.css'>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body class="noto-sans-kr">
+  <div class="wrap">
+    <header class="container-fluid mb-0" style="position: fixed; background-color: #F8F9FA;">
+      <div class="container clearfix">
+        <div class="row">
+          <div class="col-3 p-0">
+            <a href="#" class="float-start m-2"><img class="img-fluid header-icon" src="../../../resources/image/pilllaw_icon_crop.png" alt="아이콘"></a>
+            <h2 class="float-start mt-4 ms-3 pt-3 fw-bold"><a class="text-decoration-none header-font " href="#">PILL LAW</a></h2>
+          </div>
+          <div class="col">
+            <div class="float-start py-4 ps-5">
+              <h6 class="float-start m-4 text-center fw-bold"><a class="text-decoration-none header-font pt-4" href="#">전체 상품</a></h6>
+              <h6 class="float-start m-4 text-center fw-bold"><a class="text-decoration-none header-font pt-4" href="#">구독하기</a></h6>
+              <h6 class="float-start m-4 text-center fw-bold"><a class="text-decoration-none header-font pt-4" href="#">필로</a></h6>
+              <h6 class="float-start m-4 text-center fw-bold"><a class="text-decoration-none header-font pt-4" href="#">마이페이지</a></h6>
+            </div>
+            <div class="float-end py-4">
+              <i class="fa-solid fa-user fa-lg header-font float-end mx-2 pt-4 text-center"></i>
+              <i class="fa-solid fa-cart-shopping fa-lg header-font float-end mx-2 pt-4 text-center"></i>
+              <i class="fa-solid fa-bell fa-lg header-font float-end mx-2 pt-4 text-center"></i>
+              <i class="fa-solid fa-magnifying-glass fa-lg header-font float-end mx-2 pt-4 text-center"></i>
+              <i class="fa-solid fa-comment-dots fa-lg header-font float-end mx-2 pt-4 text-center"></i>
+              <p class="float-end mx-2 pt-4 text-center fw-bold fs-12"><a class="header-font pt-3" href="#">회원가입</a></p>
+              <p class="float-end pt-4 text-center fw-bold fs-12"><a class="header-font pt-3" href="#">로그인</a></p>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    
+    <main class="container px-0" style="padding-top: 115.19px;">
+        <h2 class="text-center fw-bold mb-4 header-font">장바구니</h2>
+        <table class="table text-center align-middle">
+          <thead class="table-light">
+            <tr>
+              <th><input type="checkbox" id="selectAllCheckbox"></th>
+              <th class="header-font">장바구니 상품</th>
+              <th width="50%">상품명</th>
+              <th>구독기간</th>
+              <th>가격</th>
+              <th width="10%">수량</th>
+              <th>합계</th>
+            </tr>
+          </thead>
+          <tbody id="cartTableBody">
+            <!-- 상품이 동적으로 추가될 부분 -->
+          </tbody>
+        </table>
+        <div class="d-flex justify-content-between mb-3">
+          <button class="btn-pilllaw" id="deleteSelected">선택 삭제</button>
+        </div>
+      
+  <div class="d-flex flex-column align-items-end mt-4">
+    <p class="text-end mb-2 fw-bold">전체 주문금액 <span id="totalPrice">0</span>원</p>
+    <p class="text-end mb-2 fw-bold"><span class="header-font">(구독 회원은 배송비 무료!) </span>배송비 <span id="shippingFee">3,000</span>원</p>
+    <p class="text-end mb-4 fw-bold">총 결제 금액 <span id="finalPrice">0</span>원</p>
+  </div>
+
+  <div class="d-flex justify-content-end mb-3">
+    <button class="btn btn-pilllaw" id="orderButton">주문하기</button>
+  </div>
+
+      </main>
+      
+      <!-- 옵션 변경 모달 -->
+      <div class="modal fade" id="optionModal" tabindex="-1" aria-labelledby="optionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="optionModalLabel">옵션 변경</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <label for="newOption" class="form-label">옵션 선택</label>
+              <select id="newOption" class="form-select">
+                <option value="30일">30일</option>
+                <option value="60일">60일</option>
+                <option value="90일">90일</option>
+              </select>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+              <button type="button" class="btn btn-primary" id="saveOption">저장</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <footer class="container-fluid">
+      <hr class="text-pilllaw">
+      <div class="container clearfix mb-4">
+        <div class="row">
+          <div class="col-3">
+            <a href="#"><img src="../../../resources/image/pilllaw_icon.png" class="img-fluid" alt="footer logo" width="200"></a>
+          </div>
+          <div class="col mt-3">
+            <p class="fs-14 header-font fw-bold mb-0">상호명: PILL LAW</p>
+            <p class="fs-14 header-font fw-bold mb-0">주소: 서울특별시 구로구 디지털로 306 대륭포스트타워 2차</p>
+            <p class="fs-14 header-font fw-bold mb-0">고객센터: 010-5306-3569</p>
+            <p class="fs-14 header-font fw-bold mb-0">계좌번호: 국민 040002-04-207375</p>
+          </div>
+          <div class="col mt-3 text-center">
+            <a href="#" class="header-font text-decoration-none fw-bold"><i class="fa-brands fa-github fa-2xl header-font"></i></a>
+            <a href="#" class="header-font text-decoration-none fw-bold fs-14"><br>GitHub 방문하기</a>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col"></div>
+          <div class="col">
+            <p class="fs-14 header-font text-center fw-bold mb-2">개인정보 처리방침</p>
+          </div>
+          <div class="col">
+            <p class="fs-14 header-font text-center fw-bold mb-2">이용약관</p>
+          </div>
+          <div class="col">
+            <p class="fs-14 header-font text-center fw-bold mb-2">이용안내</p>
+          </div>
+          <div class="col"></div>
+        </div>
+        <p class="fs-14 header-font text-center fw-bold mb-2">All rights resereved PILLLAW &copy; copyright.</p>
+      </div>
+    </footer>
+  </div>
+  <script>
+    // 장바구니 데이터 (예제 데이터)
+    let cartItems = [
+      { id: 1, img: "https://placehold.co/60", name: "상품 A", price: 20000, option: "30일", quantity: 1 },
+      { id: 2, img: "https://placehold.co/60", name: "상품 B", price: 15000, option: "60일", quantity: 1 }
+    ];
+  
+    // 장바구니 테이블 업데이트 함수
+    function updateCart() {
+    const tableBody = document.getElementById("cartTableBody");
+    tableBody.innerHTML = "";
+    let totalPrice = 0;
+  
+    cartItems.forEach(item => {
+      let optionMultiplier = 1; // 기본 배수는 1
+      if (item.option === "60일") {
+        optionMultiplier = 2; // 60일 옵션일 경우 배수 2
+      } else if (item.option === "90일") {
+        optionMultiplier = 3; // 90일 옵션일 경우 배수 3
+      }
+  
+      let itemTotal = item.price * optionMultiplier * item.quantity; // 배수 적용한 가격 계산
+      totalPrice += itemTotal;
+  
+      tableBody.innerHTML += `
+        <tr>
+          <td><input type="checkbox" class="item-checkbox" data-id="${item.id}"></td>
+          <td><img src="${item.img}" class="img-fluid"></td>
+          <td>${item.name}</td>
+          <td><button class="btn btn-sm btn-outline-secondary change-option" data-id="${item.id}" data-bs-toggle="modal" data-bs-target="#optionModal">${item.option}</button></td>
+          <td>${(item.price * optionMultiplier).toLocaleString()}원</td> <!-- 변경된 가격 -->
+          <td>
+            <input type="number" class="form-control text-center quantity" data-id="${item.id}" value="${item.quantity}" min="1">
+          </td>
+          <td>${itemTotal.toLocaleString()}원</td>
+        </tr>
+      `;
+    });
+  
+      // 총 가격, 배송비, 최종 결제 금액 갱신
+      document.getElementById("totalPrice").innerText = totalPrice.toLocaleString();
+    document.getElementById("finalPrice").innerText = (totalPrice + 3000).toLocaleString(); // 배송비 포함
+    }
+  
+    // 초기 장바구니 로드
+    updateCart();
+  
+    // 전체 선택 기능
+    document.getElementById("selectAllCheckbox").addEventListener("change", function () {
+      document.querySelectorAll(".item-checkbox").forEach(cb => cb.checked = this.checked);
+    });
+  
+    // 선택 삭제 기능
+    document.getElementById("deleteSelected").addEventListener("click", function () {
+      const selectedIds = Array.from(document.querySelectorAll(".item-checkbox:checked")).map(cb => Number(cb.dataset.id));
+      cartItems = cartItems.filter(item => !selectedIds.includes(item.id));
+      updateCart();
+    });
+  
+    // 수량 변경 기능
+    document.getElementById("cartTableBody").addEventListener("input", function (event) {
+      if (event.target.classList.contains("quantity")) {
+        const id = Number(event.target.dataset.id);
+        const newQuantity = Math.max(1, Number(event.target.value));
+        const item = cartItems.find(i => i.id === id);
+        item.quantity = newQuantity;
+        updateCart();
+      }
+    });
+  
+    // 옵션 변경 기능
+    let currentItemId = null;
+    document.getElementById("cartTableBody").addEventListener("click", function (event) {
+      if (event.target.classList.contains("change-option")) {
+        currentItemId = Number(event.target.dataset.id);
+      }
+    });
+  
+    document.getElementById("saveOption").addEventListener("click", function () {
+      const newOption = document.getElementById("newOption").value;
+      if (currentItemId !== null) {
+        cartItems.find(i => i.id === currentItemId).option = newOption;
+        updateCart();
+        currentItemId = null;
+        bootstrap.Modal.getInstance(document.getElementById("optionModal")).hide();
+      }
+    });
+  
+    // 주문시
+    document.getElementById("orderButton").addEventListener("click", function () {
+    alert("주문이 완료되었습니다!");
+    });
+  
+  </script>
+</body>
+
+</html>
