@@ -81,6 +81,62 @@ body {
   border-color: #D6E2D6;
 }
 
+.btn-kakao {
+  background-color: #fee500;
+  border-color: #fee500;
+}
+
+.text-kakao {
+  color: #181600;
+}
+
+.btn-naver {
+  background-color: #03C75A;
+  border-color: #03C75A;
+}
+
+.button-social-login {
+  margin-bottom: 12px;
+  margin-right: 12px;
+  color: white;
+  height: 50px;
+  line-height: 46px;
+  position: relative;
+  text-align: left;
+}
+.button-social-login .icon {
+  margin-right: 12px;
+  font-size: 24px;
+  line-height: 24px;
+  width: 42px;
+  height: 24px;
+  text-align: center;
+  display: inline-block;
+  position: relative;
+  top: 4px;
+}
+.button-social-login .icon:before {
+  display: inline-block;
+  width: 40px;
+}
+.button-social-login .icon:after {
+  content: "";
+}
+
+.btn-github {
+  background-color: #333;
+  border: 1px solid #1a1a1a;
+}
+.btn-github .icon {
+  border-right: 1px solid #1a1a1a;
+}
+.btn-github .icon:after {
+  border-right: 1px solid #4d4d4d;
+}
+.btn-github:hover {
+  background-color: #262626;
+}
+
 /* 텍스트 스타일 */
 .text-pilllaw {
   color: var(--primary-color) !important;
