@@ -137,6 +137,16 @@ body {
   background-color: #262626;
 }
 
+.btn-insta {
+  background-color: rgb(99, 94, 99);
+}
+
+.btn-google {
+  color: #1a1a1a;
+  background-color: #fff;
+  border: 1px solid #888;
+}
+
 /* 텍스트 스타일 */
 .text-pilllaw {
   color: var(--primary-color) !important;
