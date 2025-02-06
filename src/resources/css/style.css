@@ -169,3 +169,13 @@ body {
   color: var(--primary-color) !important;
   font-size: 43px;
 }
+
+.pilllaw-secondary-tag:hover {
+  color: var(--background-color) !important;
+}
+
+
+/* 상품 이미지 확대 */
+.pilllaw-product-image:hover {
+  
+}
