@@ -108,3 +108,8 @@ body {
   background-color: var(--primary-color);
   border-color: var(--primary-color);
 }
+
+.pilllaw-tag:hover {
+  color: var(--primary-color) !important;
+  font-size: 43px;
+}
