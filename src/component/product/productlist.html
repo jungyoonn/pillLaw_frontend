@@ -61,7 +61,35 @@
       <hr>
       <div class="query-selector text-center container-fluid p-3 m-3">
         <h1 class="fw-bold">상품 리스트</h1>
+
+        <div class="keyword-selector d-flex p-3 m-2 text-pilllaw">
+          <ul class="nav mx-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="#">전체보기</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">조회순</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">구매 많은 순</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">구독자 전용</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">필로 패키지</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">얼리버드</a>
+            </li>
+          </ul>
+        </div>
         
+        <div class="form-floating my-2 fs-12">
+          <textarea class="form-control" id="comment" name="text" placeholder="Comment goes here"></textarea>
+          <label for="comment"><i class="fa-solid fa-magnifying-glass"></i>검색어를 입력하세요.</label>
+        </div>
+
         <div class="category-selector border border-1">
           <div id="accordion" class="fs-12"></div> <!-- ✅ `div` 닫는 위치 수정 -->
         </div>
@@ -133,13 +161,115 @@
             accordion.appendChild(card);
           });
         </script>
+        <div class="row text-center">
+          <div class="col-6 col-sm-4 col-lg-3 col-xl-2 mt-2 mb-4 best-item">
+            <a href="#" class="text-decoration-none text-black">
+              <!-- <img class="img-fluid mx-2" src="https://placehold.co/130x160"> -->
+              <img class="img-fluid mx-2" src="../../resources/image/product1.jpg">
+              <p class="m-0 mt-1 fs-14 fw-bold">프레쉬 유산균</p>
+            </a>
+            <p class="m-0 fs-14 mt-2"><a href="#" class="text-decoration-none text-black"><span class="header-font fw-bold">30,500</span>원</a></p>
+            <p class="m-0 fs-12 fw-bold"><a href="#" class="text-decoration-none text-black"><i class="fa-solid fa-star" style="color: #FFD43B;"></i> 4.1 <span class="fs-11" style="color: #AAA;">리뷰(19)</span></a></p>
+          </div>
+          <div class="col-6 col-sm-4 col-lg-3 col-xl-2 mt-2 mb-4 best-item">
+            <a href="#" class="text-decoration-none text-black">
+              <!-- <img class="img-fluid mx-2" src="https://placehold.co/130x160"> -->
+              <img class="img-fluid mx-2" src="../../resources/image/product2.jpg">
+              <p class="m-0 mt-1 fs-14 fw-bold">프레쉬 유산균</p>
+            </a>
+            <p class="m-0 fs-14 mt-2"><a href="#" class="text-decoration-none text-black"><span class="header-font fw-bold">30,500</span>원</a></p>
+            <p class="m-0 fs-12 fw-bold"><a href="#" class="text-decoration-none text-black"><i class="fa-solid fa-star" style="color: #FFD43B;"></i> 4.1 <span class="fs-11" style="color: #AAA;">리뷰(19)</span></a></p>
+          </div>
+          <div class="col-6 col-sm-4 col-lg-3 col-xl-2 mt-2 mb-4 best-item">
+            <a href="#" class="text-decoration-none text-black">
+              <!-- <img class="img-fluid mx-2" src="https://placehold.co/130x160"> -->
+              <img class="img-fluid mx-2" src="../../resources/image/product1.jpg">
+              <p class="m-0 mt-1 fs-14 fw-bold">프레쉬 유산균</p>
+            </a>
+            <p class="m-0 fs-14 mt-2"><a href="#" class="text-decoration-none text-black"><span class="header-font fw-bold">30,500</span>원</a></p>
+            <p class="m-0 fs-12 fw-bold"><a href="#" class="text-decoration-none text-black"><i class="fa-solid fa-star" style="color: #FFD43B;"></i> 4.1 <span class="fs-11" style="color: #AAA;">리뷰(19)</span></a></p>
+          </div>
+          <div class="col-6 col-sm-4 col-lg-3 col-xl-2 mt-2 mb-4 best-item">
+            <a href="#" class="text-decoration-none text-black">
+              <!-- <img class="img-fluid mx-2" src="https://placehold.co/130x160"> -->
+              <img class="img-fluid mx-2" src="../../resources/image/product2.jpg">
+              <p class="m-0 mt-1 fs-14 fw-bold">프레쉬 유산균</p>
+            </a>
+            <p class="m-0 fs-14 mt-2"><a href="#" class="text-decoration-none text-black"><span class="header-font fw-bold">30,500</span>원</a></p>
+            <p class="m-0 fs-12 fw-bold"><a href="#" class="text-decoration-none text-black"><i class="fa-solid fa-star" style="color: #FFD43B;"></i> 4.1 <span class="fs-11" style="color: #AAA;">리뷰(19)</span></a></p>
+          </div>
+          <div class="col-6 col-sm-4 col-lg-3 col-xl-2 mt-2 mb-4 best-item">
+            <a href="#" class="text-decoration-none text-black">
+              <!-- <img class="img-fluid mx-2" src="https://placehold.co/130x160"> -->
+              <img class="img-fluid mx-2" src="../../resources/image/product1.jpg">
+              <p class="m-0 mt-1 fs-14 fw-bold">프레쉬 유산균</p>
+            </a>
+            <p class="m-0 fs-14 mt-2"><a href="#" class="text-decoration-none text-black"><span class="header-font fw-bold">30,500</span>원</a></p>
+            <p class="m-0 fs-12 fw-bold"><a href="#" class="text-decoration-none text-black"><i class="fa-solid fa-star" style="color: #FFD43B;"></i> 4.1 <span class="fs-11" style="color: #AAA;">리뷰(19)</span></a></p>
+          </div>
+          <div class="col-6 col-sm-4 col-lg-3 col-xl-2 mt-2 mb-4 best-item">
+            <a href="#" class="text-decoration-none text-black">
+              <!-- <img class="img-fluid mx-2" src="https://placehold.co/130x160"> -->
+              <img class="img-fluid mx-2" src="../../resources/image/product2.jpg">
+              <p class="m-0 mt-1 fs-14 fw-bold">프레쉬 유산균</p>
+            </a>
+            <p class="m-0 fs-14 mt-2"><a href="#" class="text-decoration-none text-black"><span class="header-font fw-bold">30,500</span>원</a></p>
+            <p class="m-0 fs-12 fw-bold"><a href="#" class="text-decoration-none text-black"><i class="fa-solid fa-star" style="color: #FFD43B;"></i> 4.1 <span class="fs-11" style="color: #AAA;">리뷰(19)</span></a></p>
+          </div>
+        </div>
       </div>
-
-      
 
     </main>
 
+    <!-- FOOTER -->
+    <footer class="container-fluid">
+      <hr class="text-pilllaw">
+      <div class="container clearfix mb-4">
+        <div class="row">
+          <div class="col-3">
+            <a href="#"><img src="../../resources/image/pilllaw_icon.png" class="img-fluid" alt="footer logo" width="200"></a>
+          </div>
+          <div class="col mt-3">
+            <p class="fs-14 header-font fw-bold mb-0">상호명: PILL LAW</p>
+            <p class="fs-14 header-font fw-bold mb-0">주소: 서울특별시 구로구 디지털로 306 대륭포스트타워 2차</p>
+            <p class="fs-14 header-font fw-bold mb-0">고객센터: 010-5306-3569</p>
+            <p class="fs-14 header-font fw-bold mb-0">계좌번호: 국민 040002-04-207375</p>
+          </div>
+          <div class="col-2"></div>
+          <div class="col mt-3 text-center">
+            <div class=" clearfix">
+              <div class=" float-start">
+                <a href="#" class="header-font text-decoration-none fw-bold"><i class="fa-brands fa-github fa-2xl header-font"></i></a>
+                <a href="#" class="header-font text-decoration-none fw-bold fs-14"><br>GitHub 방문하기</a>
+              </div class=" float-start">
+              <div class="mt-3">
+                <a href="#" class="header-font text-decoration-none fw-bold"><i class="fa-solid fa-database fa-2xl header-font"></i></a>
+                <a href="#" class="header-font text-decoration-none fw-bold fs-14"><br>ERD diagram</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col"></div>
+          <div class="col">
+            <p class="fs-14 header-font text-center mb-2">개인정보 처리방침</p>
+          </div>
+          <div class="col">
+            <p class="fs-14 header-font text-center mb-2">이용약관</p>
+          </div>
+          <div class="col">
+            <p class="fs-14 header-font text-center mb-2">이용안내</p>
+          </div>
+          <div class="col"></div>
+        </div>
+        <p class="fs-14 header-font text-center fw-bold mb-2">All rights resereved PILLLAW &copy; copyright.</p>
+      </div>
+    </footer>
   </div> <!-- ✅ `wrap` 닫는 위치 수정 -->
+
+
+
+
 
 </body>
 </html>
