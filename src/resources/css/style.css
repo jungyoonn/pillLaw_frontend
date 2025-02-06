@@ -31,7 +31,7 @@ body {
 }
 
 /* 🚀 hover 시 배경색만 투명하게 조정 (텍스트 투명해지지 않음) */
-.btn-pilllaw:hover, .btn-pilllaw:focus {
+.btn-pilllaw:hover {
   background-color: var(--hover-color);
   border-color: var(--hover-color);
 }
@@ -72,9 +72,14 @@ body {
   border-color: #fee500;
   color: #181600;
 }
-.btn-kakao:hover, .btn-kakao:first-child:active {
+.btn-kakao:hover {
   background-color: #fee500ad;
   border-color: #fee500c9;
+}
+
+.btn-kakao:first-child:active {
+  background-color: #a39302;
+  border-color: #a39302;
 }
 
 .btn-naver {
@@ -83,15 +88,30 @@ body {
   color: white;
 }
 
+.btn-naver:hover {
+  background-color: #03c75bb6;
+  border-color: #03c75bb6;
+}
+
+.btn-naver:first-child:active {
+  background-color: #017c39;
+  border-color: #017c39;
+}
+
 .btn-github {
   background-color: #333;
-  border: 1px solid #1a1a1a;
+  border-color: #1a1a1a;
   color: white;
 }
 
-.btn-github:hover, .btn-github:focus {
-  background-color: #262626;
-  border-color: #1a1a1a;
+.btn-github:hover {
+  background-color: #535353;
+  border-color: #535353;
+}
+
+.btn-github:first-child:active {
+  background-color: #1a1a1a9d;
+  border-color: #1a1a1a9d
 }
 
 .btn-insta {
@@ -99,10 +119,27 @@ body {
   color: white;
 }
 
+.btn-insta:hover {
+  background-color: rgb(126, 120, 126);
+}
+
+.btn-insta:first-child:active {
+  background-color: rgba(99, 94, 99, 0.651);
+}
+
 .btn-google {
   color: #1a1a1a;
   background-color: #fff;
   border: 1px solid #888;
+}
+
+.btn-google:hover {
+  background-color: #dfdbdb;
+}
+
+.btn-google:first-child:active {
+  background-color: #bdb9b9;
+  border-color: #bdb9b9;
 }
 
 /* ===== 텍스트 스타일 ===== */
