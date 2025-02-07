@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>관리자 페이지</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js" integrity="sha512-b+nQTCdtTBIRIbraqNEwsjB6UvL3UEMkXnhzd8awtCYh0Kcsjl9uEgwVFVbhoj3uu1DO1ZMacNvLoyJJiNfcvg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link rel="icon" href="../../resources/image/pilllaw_favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Noto+Sans+KR&display=swap" rel="stylesheet">
+  <link rel='stylesheet' href='../../resources/css/style.css'>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+    }
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      background-color: #7DA9A7;
+      color:  black;
+      padding: 20px;
+      position: fixed;
+    }
+    .sidebar a {
+      color: black;
+      text-decoration: none;
+      padding: 10px;
+      display: block;
+    }
+    .sidebar a:hover {
+      background-color: #436A68;
+      border-radius: 5px;
+    }
+    .sidebar h5 {
+    margin-top: 15px; /* 위쪽 간격 줄이기 */
+    margin-bottom: 5px; /* 아래쪽 간격 줄이기 */
+    font-size: 16px; /* 글씨 크기 조정 */
+  }
+
+  .sidebar a {
+    padding: 3px 10px; /* 상하 간격 줄이기 */
+    display: block;
+    font-size: 14px; /* 글씨 크기 조정 */
+  }
+
+  .sidebar hr {
+    margin: 10px 0; /* 구분선 간격 줄이기 */
+  }
+
+  .main-content {
+    margin-left: 250px;
+    padding: 20px;
+    flex-grow: 1;
+  }
+  </style>
+</head>
+<body>
+
+  <!--사이드바 -->
+  <div class="sidebar">
+    <h4 class="text-center">관리자</h4>
+    <p class="text-center">admin01</p>
+    <hr>
+    <div class="d-flex justify-content-center">
+        <a href="#">홈페이지</a>
+        <a href="#">로그아웃</a>
+    </div>
+    <hr>
+    <h5>회원</h5>
+    <a href="#">회원 조회</a>
+    <a href="#">탈퇴 회원</a>
+    <a href="#">권한 관리</a>
+    <a href="#">구독 이력 조회</a>
+    <hr>
+    <h5>매출</h5>
+    <a href="#">매출 조회</a>
+    <a href="#">매출 비교 조회</a>
+    <hr>
+    <h5>주문</h5>
+    <a href="#">주문 관리</a>
+    <a href="#">환불 관리</a>
+    <hr>
+    <h5>상품</h5>
+    <a href="#">상품 관리</a>
+    <a href="#">구독자 전용 상품 관리</a>
+    <hr>
+    <h5>게시물</h5>
+    <a href="#">작성한 글 관리</a>
+    <a href="#">리뷰 관리</a>
+  </div>
+  <div class="main-content">
+    <h2>관리자 메인 페이지</h2>
+  </div>
+
+</body>
+</html>
