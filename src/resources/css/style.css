@@ -202,3 +202,9 @@ body {
   border: 1px solid;
   border-color: var(--primary-color);
 }
+
+/* 차트 반응형 설정 */
+#reviewChart {
+  width: 100% !important; /* 부모 요소에 맞게 자동 조정 */
+  height: auto !important;
+}
