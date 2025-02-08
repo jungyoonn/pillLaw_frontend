@@ -196,3 +196,7 @@ body {
   overflow-y: scroll;
   resize: none;
 }
+
+.pilllaw-product-score-total {
+  border: 1px solid;
+}
