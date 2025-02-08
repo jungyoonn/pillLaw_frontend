@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+// import App from './App';
 import reportWebVitals from './reportWebVitals';
-import TestEditor from './component/common/hadmin/ApiTest/TestEditor';
+import TestEditor from './component/hadmin/test/TestEditor'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
