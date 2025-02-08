@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>PILL LAW</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js" integrity="sha512-b+nQTCdtTBIRIbraqNEwsjB6UvL3UEMkXnhzd8awtCYh0Kcsjl9uEgwVFVbhoj3uu1DO1ZMacNvLoyJJiNfcvg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link rel="icon" href="../../resources/image/pilllaw_favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Noto+Sans+KR&display=swap" rel="stylesheet">
+  <link rel='stylesheet' href='../../resources/css/style.css'>
+</head>
+<body>
+  <div class="wrap">
+    <main class="container px-0">
+      <div class="text-center m-2 mt-5">
+        <div class="row">
+          <div class="col-2"></div>
+          <div class="col-3 text-end">
+            <a href="#" class=""><img src="../../resources/image/pilllaw_icon_crop.png" class="img-fluid header-icon" alt="아이콘"></a>
+          </div>
+          <div class="col text-start mt-4 ms-3">
+            <h2 class="mt-4 ms-3 pt-3 fw-bold d-inline"><a class="text-decoration-none header-font " href="#">PILL LAW</a></h2>
+          </div>
+        </div>
+      </div>
+      <!-- 이메일 인증 -->
+      <div class="terms mx-5 px-5 pt-5">
+        <div class="mx-5 px-5">
+          <div class="mx-5 px-5">
+            <form class="mx-5 px-5" method="post">
+              <p class="fs-12 text-end fw-bold"><span class="text-danger">*</span>은 필수 입력입니다.</p>
+              <div class="mb-2 mt-3">
+                <label for="email" class="form-label fw-bold">이메일 <span class="text-danger fw-bold fs-14">*</span></label>
+                <input type="email" class="form-control" id="email" placeholder="이메일을 입력해 주세요" name="email">
+              </div>
+              <div class="mb-1 mt-3">
+                <label for="pw" class="form-label fw-bold">비밀번호 <span class="text-danger fw-bold fs-14">*</span></label>
+                <input type="text" class="form-control" id="pw" placeholder="영어 대소문자, 숫자 조합 8자 이상" name="pw">
+              </div>
+              <div class="mb-1 mt-1">
+                <label for="pw-verification" class="form-label fw-bold">비밀번호 확인 <span class="text-danger fw-bold fs-14">*</span></label>
+                <input type="text" class="form-control" id="pw-verification" placeholder="비밀번호 재입력" name="pw-verification">
+              </div>
+              <p class="fs-12 fw-bold text-danger not-equal" style="display: none;" id="not-equal">비밀번호가 일치하지 않습니다. 다시 입력해 주세요.</p>
+              <div class="mb-1 mt-3">
+                <label for="name" class="form-label fw-bold">이름 <span class="text-danger fw-bold fs-14">*</span></label>
+                <input type="text" class="form-control" id="name" placeholder="이름을 입력해 주세요" name="name">
+              </div>
+              <div class="mb-1 mt-3">
+                <label for="phone" class="form-label fw-bold">휴대전화 번호 <span class="text-danger fw-bold fs-14">*</span></label>
+                <input type="text" class="form-control" id="phone" placeholder="이름을 입력해 주세요" name="phone">
+              </div>
+              <div class="mb-1 mt-3">
+                <label for="nick" class="form-label fw-bold">닉네임 <span class="text-danger fw-bold fs-14">*</span></label>
+                <input type="text" class="form-control" id="nick" placeholder="닉네임을 입력해 주세요" name="nick">
+              </div>
+              <div class="text-center d-grid mt-5">
+                <button type="button" class="btn btn-pilllaw btn-submit" id="btn-submit" onclick="goNext()">가입하기</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script type="text/javascript">
+    function goNext() {
+      console.log();
+      
+      if(document.getElementById("pw").value != document.getElementById("pw-verification").value) {
+        document.getElementById("not-equal").style.display = "block";
+      } else {
+        document.getElementById("not-equal").style.display = "none";
+        alert("가입을 환영합니다!")
+      }
+
+    }
+  </script>
+</body>
+</html>
