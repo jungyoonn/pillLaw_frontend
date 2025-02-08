@@ -190,3 +190,9 @@ body {
   transform: scale(1.05);
   transition: transform 0.3s ease-in-out;
 }
+
+.scroll {
+  scrollbar-color: var(--primary-color);
+  overflow-y: scroll;
+  resize: none;
+}
