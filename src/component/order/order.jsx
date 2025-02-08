@@ -1,9 +1,74 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Form, Table, Button, InputGroup } from "react-bootstrap";
+import { Container, Row, Col, Form, Table, Button, InputGroup, Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../resources/css/style.css";
+import { useNavigate } from "react-router-dom";
 
 const Order = () => {
+  const [address, setAddress] = useState({
+    postcode: "",
+    roadAddress: "",
+    detailAddress: "",
+  });
+  const [showModal, setShowModal] = useState(false);
+  const [recipient, setRecipient] = useState("");
+  const [phone, setPhone] = useState("");
+  const navigate = useNavigate();
+
+
+  const goToCart = () => {
+    navigate("/cart"); // Navigating to the cart page
+  };
+
+  const handlePhoneChange = (e) => {
+    const value = e.target.value.replace(/[^0-9]/g, ""); // 숫자만 입력 가능
+    let formatted = "";
+
+    if (value.length <= 3) {
+      formatted = value;
+    } else if (value.length <= 7) {
+      formatted = `${value.slice(0, 3)}-${value.slice(3)}`;
+    } else {
+      formatted = `${value.slice(0, 3)}-${value.slice(3, 7)}-${value.slice(7, 11)}`;
+    }
+
+    setPhone(formatted);
+  };
+
+  // 1. Kakao 주소 API 스크립트 로드
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+
+  // 2. 팝업 방식으로 주소 검색
+  const openPostcodePopup = () => {
+    if (!window.daum || !window.daum.Postcode) {
+      alert("주소 검색 서비스를 불러오는 중입니다. 잠시 후 다시 시도해주세요.");
+      return;
+    }
+
+    new window.daum.Postcode({
+      oncomplete: (data) => {
+        let fullAddress = data.roadAddress;
+        let extraAddress = "";
+
+        if (data.bname) extraAddress += data.bname;
+        if (data.buildingName) extraAddress += extraAddress ? `, ${data.buildingName}` : data.buildingName;
+        if (extraAddress) fullAddress += ` (${extraAddress})`;
+
+        setAddress({
+          postcode: data.zonecode,
+          roadAddress: fullAddress,
+          detailAddress: "",
+        });
+      },
+    }).open();
+  };
+
+
   const [cartItems, setCartItems] = useState([
     { id: 1, img: "https://placehold.co/60", name: "콜린 미오 이노시톨", price: 20000, option: "30일", quantity: 1 },
     { id: 2, img: "https://placehold.co/60", name: "철분 24mg", price: 15000, option: "60일", quantity: 1 },
@@ -17,10 +82,14 @@ const Order = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [expectedPoints, setExpectedPoints] = useState(0);
   const [deliveryMessage, setDeliveryMessage] = useState("");
-    
-    const handleDeliveryMessageChange = (event) => {
-        setDeliveryMessage(event.target.value);
-    };
+
+  const [points, setPoints] = useState(5000);
+  const [totalPayment, setTotalPayment] = useState(totalPrice);
+
+
+  const handleDeliveryMessageChange = (event) => {
+    setDeliveryMessage(event.target.value);
+  };
 
   useEffect(() => {
     let total = 0;
@@ -34,6 +103,78 @@ const Order = () => {
     setExpectedPoints(Math.floor(total * pointsRate));
   }, [cartItems, userMembershipStatus]);
 
+
+
+  const savedAddresses = [
+    {
+      id: 1,
+      recipient: "홍길동",
+      postcode: "12345",
+      roadAddress: "서울특별시 강남구 테헤란로 123",
+      detailAddress: "101호",
+      phone: "010-1234-5678",
+    },
+    {
+      id: 2,
+      recipient: "김철수",
+      postcode: "67890",
+      roadAddress: "부산광역시 해운대구 해변로 456",
+      detailAddress: "202호",
+      phone: "010-5678-1234",
+    },
+    {
+      id: 3,
+      recipient: "이영희",
+      postcode: "54321",
+      roadAddress: "대전광역시 서구 둔산로 789",
+      detailAddress: "303호",
+      phone: "010-8765-4321",
+    },
+  ];
+
+
+  // 포인트 input
+  const handlePointsChange = (event) => {
+    let enteredPoints = event.target.value;
+  
+    // 입력값이 0으로 시작하고, 그 뒤에 숫자가 있으면 0을 제거
+    if (enteredPoints.startsWith('0') && enteredPoints.length > 1) {
+      enteredPoints = enteredPoints.replace(/^0+/, '');
+    }
+  
+    // 숫자만 입력될 수 있도록 처리 (빈 문자열이 들어오는 경우 방지)
+    if (enteredPoints === '') {
+      enteredPoints = '0';
+    }
+  
+    // 값을 숫자로 변환
+    enteredPoints = parseInt(enteredPoints, 10);
+  
+    // 숫자 범위 제한
+    if (enteredPoints > 5000) enteredPoints = 5000;
+    if (enteredPoints < 0) enteredPoints = 0;
+  
+    setPoints(enteredPoints);
+  };
+
+  // 포인트 적용
+  const applyPoints = () => {
+    const finalPoints = Math.min(points, 5000);
+    setTotalPayment(totalPrice - finalPoints);
+  };
+
+  // 배송지 선택 시 폼에 자동 입력
+  const handleSelectAddress = (selected) => {
+    setRecipient(selected.recipient);
+    setAddress({
+      postcode: selected.postcode,
+      roadAddress: selected.roadAddress,
+      detailAddress: selected.detailAddress,
+    });
+    setPhone(selected.phone);
+    setShowModal(false); // 모달 닫기
+  };
+
   return (
     <Container className="mt-5" style={{ color: 'black' }}>
       <h4 className="text-center fw-bold mb-4">
@@ -42,52 +183,63 @@ const Order = () => {
         <span className="text-secondary">3. 결제 완료</span>
       </h4>
 
-      <h5><strong>배송지</strong></h5>
+      <div className="d-flex align-items-center justify-content-between">
+        <h5><strong>배송지</strong></h5>
+        <Button className="btn-pilllaw" onClick={() => setShowModal(true)}>
+          배송지 불러오기
+        </Button>
+      </div>
       <hr />
       <Row>
         <Col md={6}>
           <Form>
             <Form.Group className="mb-3">
               <Form.Label>받는사람</Form.Label>
-              <Form.Control type="text" required />
+              <Form.Control type="text" value={recipient} onChange={(e) => setRecipient(e.target.value)} required />
             </Form.Group>
+
             <Form.Group className="mb-3">
               <Form.Label>주소</Form.Label>
               <InputGroup>
-                <Form.Control type="text" placeholder="우편번호" readOnly />
-                <Button className="btn-pilllaw">주소 검색</Button>
+                <Form.Control type="text" placeholder="우편번호" value={address.postcode} readOnly />
+                <Button className="btn-pilllaw" onClick={openPostcodePopup}>주소 검색</Button>
               </InputGroup>
-              <Form.Control type="text" placeholder="기본주소" className="mt-2" readOnly />
-              <Form.Control type="text" placeholder="상세주소" className="mt-2" required />
+              <Form.Control type="text" placeholder="기본주소" className="mt-2" value={address.roadAddress} readOnly />
+              <Form.Control type="text" placeholder="상세주소" className="mt-2" value={address.detailAddress} onChange={(e) => setAddress({ ...address, detailAddress: e.target.value })} required />
             </Form.Group>
+
             <Form.Group className="mb-3">
               <Form.Label>휴대전화</Form.Label>
-              <Form.Control type="text" placeholder="010-1234-5678" required />
+              <Form.Control type="text" placeholder="010-1234-5678" value={phone} onChange={(e) => {
+                setPhone(e.target.value);
+                handlePhoneChange(e);
+              }} required />
+
             </Form.Group>
             <Form.Group className="mb-3">
-                <Form.Label htmlFor="deliveryMessage">배송 메세지</Form.Label>
-                <Form.Select 
-                    id="deliveryMessage" 
-                    value={deliveryMessage} 
-                    onChange={handleDeliveryMessageChange}
-                >
-                    <option value="경비실">경비실</option>
-                    <option value="집앞">집앞</option>
-                    <option value="택배함">택배함</option>
-                    <option value="직접배송">직접배송</option>
-                    <option value="배송전 연락">배송전 연락</option>
-                    <option value="직접입력">직접 입력</option>
-                </Form.Select>
-                
-                {/* Conditionally show the textarea for custom message if "직접입력" is selected */}
-                {deliveryMessage === "직접입력" && (
-                    <Form.Control 
-                    as="textarea" 
-                    id="customMessage" 
-                    className="mt-2" 
-                    placeholder="직접 입력해 주세요" 
-                    />
-                )}
+              <Form.Label htmlFor="deliveryMessage">배송 메세지</Form.Label>
+              <Form.Select
+                id="deliveryMessage"
+                value={deliveryMessage}
+                onChange={handleDeliveryMessageChange}
+              >
+                <option value="경비실">경비실에 맡겨주세요</option>
+                <option value="집앞">집 앞에 놔 두세요</option>
+                <option value="택배함">택배함에 맡겨주세요</option>
+                <option value="직접배송">직접 수령할게요</option>
+                <option value="배송전 연락">배송 전 연락해주세요</option>
+                <option value="직접입력">직접 입력</option>
+              </Form.Select>
+
+              {/* Conditionally show the textarea for custom message if "직접입력" is selected */}
+              {deliveryMessage === "직접입력" && (
+                <Form.Control
+                  as="textarea"
+                  id="customMessage"
+                  className="mt-2"
+                  placeholder="직접 입력해 주세요"
+                />
+              )}
             </Form.Group>
           </Form>
         </Col>
@@ -124,17 +276,45 @@ const Order = () => {
         <p className="fw-bold">총 금액(배송비 포함): {totalPrice.toLocaleString()}원</p>
         <p>{expectedPoints.toLocaleString()}P가 적립될 예정입니다(배송 완료 후 1주일 이내)</p>
       </div>
-
+      <div>
       <Form.Group className="mb-3">
-        <Form.Label className="fw-bold">사용 포인트</Form.Label> <small>(보유 포인트: 5000P)</small>
-        <Form.Control type="number" placeholder="포인트 입력" className="w-25" />
+        <Form.Label className="fw-bold">사용 포인트</Form.Label>{" "}
+        <small>(보유 포인트: 5000P)</small>
+        <div className="d-flex align-items-center" style={{ gap: "1rem" }}>
+          <Form.Control type="number" value={points} onChange={handlePointsChange} placeholder="포인트 입력" style={{ width: "12.5%" }} step="100" min="0"/>
+          <Button onClick={applyPoints} className="btn-pilllaw">적용</Button>
+        </div>
       </Form.Group>
-      
-      <p className="fw-bold">총 결제금액: {totalPrice.toLocaleString()}원</p>
-      
+      <p className="fw-bold">
+        총 결제금액: {totalPayment.toLocaleString()}원
+      </p>
+    </div>
+
+
+
+
       <div className="d-flex justify-content-center">
-        <Button className="btn-pilllaw">결제하기</Button>
+      <div className="d-flex align-items-center">
+        <Button variant="secondary" onClick={goToCart} className="me-3">장바구니로 돌아가기</Button>
+        <Button className="btn-pilllaw" disabled={totalPayment === 0}>결제하기</Button>
       </div>
+    </div>
+
+      <Modal show={showModal} onHide={() => setShowModal(false)} style={{ color: "black" }}>
+        <Modal.Header closeButton>
+          <Modal.Title><strong>배송지 선택</strong></Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {savedAddresses.map((addr) => (
+            <div key={addr.id} className="border p-3 mb-2">
+              <p><strong>받는사람:</strong> {addr.recipient}</p>
+              <p><strong>주소:</strong> [{addr.postcode}] {addr.roadAddress}, {addr.detailAddress}</p>
+              <p><strong>휴대전화:</strong> {addr.phone}</p>
+              <Button className="btn-pilllaw" onClick={() => handleSelectAddress(addr)}>선택</Button>
+            </div>
+          ))}
+        </Modal.Body>
+      </Modal>
     </Container>
   );
 };
