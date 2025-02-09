@@ -11,10 +11,25 @@ const Order = () => {
     detailAddress: "",
   });
   const [showModal, setShowModal] = useState(false);
+  const [showTermsModal, setShowTermsModal] = useState(false);
   const [recipient, setRecipient] = useState("");
   const [phone, setPhone] = useState("");
   const navigate = useNavigate();
-
+  const [userMembershipStatus, setUserMembershipStatus] = useState("ACTIVE");
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [expectedPoints, setExpectedPoints] = useState(0);
+  const [deliveryMessage, setDeliveryMessage] = useState("");
+  const [points, setPoints] = useState(5000);
+  const [totalPayment, setTotalPayment] = useState(totalPrice);
+  const [isTermsChecked, setIsTermsChecked] = useState(false);
+  const [cartItems, setCartItems] = useState([
+    { id: 1, img: "https://placehold.co/60", name: "콜린 미오 이노시톨", price: 20000, option: "30일", quantity: 1 },
+    { id: 2, img: "https://placehold.co/60", name: "철분 24mg", price: 15000, option: "60일", quantity: 1 },
+    { id: 3, img: "https://placehold.co/60", name: "종합비타민", price: 16000, option: "30일", quantity: 1 },
+    { id: 4, img: "https://placehold.co/60", name: "코큐텐", price: 19000, option: "90일", quantity: 2 },
+    { id: 5, img: "https://placehold.co/60", name: "루테인 오메가", price: 35000, option: "30일", quantity: 3 },
+    { id: 6, img: "https://placehold.co/60", name: "가르시니아", price: 25000, option: "30일", quantity: 1 }
+  ]);
 
   const goToCart = () => {
     navigate("/cart"); // Navigating to the cart page
@@ -50,7 +65,17 @@ const Order = () => {
       return;
     }
 
+    // 팝업의 크기와 위치 설정
+    const popupWidth = 600;
+    const popupHeight = 500;
+    const popupLeft = (window.innerWidth - popupWidth) / 2; // 화면 중앙으로 가게 좌측 위치 계산
+    const popupTop = (window.innerHeight - popupHeight) / 2; // 화면 중앙으로 가게 상단 위치 계산
+
     new window.daum.Postcode({
+      width: popupWidth,
+      height: popupHeight,
+      left: popupLeft, // 중앙 위치 설정
+      top: popupTop,   // 중앙 위치 설정
       oncomplete: (data) => {
         let fullAddress = data.roadAddress;
         let extraAddress = "";
@@ -67,24 +92,6 @@ const Order = () => {
       },
     }).open();
   };
-
-
-  const [cartItems, setCartItems] = useState([
-    { id: 1, img: "https://placehold.co/60", name: "콜린 미오 이노시톨", price: 20000, option: "30일", quantity: 1 },
-    { id: 2, img: "https://placehold.co/60", name: "철분 24mg", price: 15000, option: "60일", quantity: 1 },
-    { id: 3, img: "https://placehold.co/60", name: "종합비타민", price: 16000, option: "30일", quantity: 1 },
-    { id: 4, img: "https://placehold.co/60", name: "코큐텐", price: 19000, option: "90일", quantity: 2 },
-    { id: 5, img: "https://placehold.co/60", name: "루테인 오메가", price: 35000, option: "30일", quantity: 3 },
-    { id: 6, img: "https://placehold.co/60", name: "가르시니아", price: 25000, option: "30일", quantity: 1 }
-  ]);
-
-  const [userMembershipStatus, setUserMembershipStatus] = useState("ACTIVE");
-  const [totalPrice, setTotalPrice] = useState(0);
-  const [expectedPoints, setExpectedPoints] = useState(0);
-  const [deliveryMessage, setDeliveryMessage] = useState("");
-
-  const [points, setPoints] = useState(5000);
-  const [totalPayment, setTotalPayment] = useState(totalPrice);
 
 
   const handleDeliveryMessageChange = (event) => {
@@ -136,24 +143,24 @@ const Order = () => {
   // 포인트 input
   const handlePointsChange = (event) => {
     let enteredPoints = event.target.value;
-  
+
     // 입력값이 0으로 시작하고, 그 뒤에 숫자가 있으면 0을 제거
     if (enteredPoints.startsWith('0') && enteredPoints.length > 1) {
       enteredPoints = enteredPoints.replace(/^0+/, '');
     }
-  
+
     // 숫자만 입력될 수 있도록 처리 (빈 문자열이 들어오는 경우 방지)
     if (enteredPoints === '') {
       enteredPoints = '0';
     }
-  
+
     // 값을 숫자로 변환
     enteredPoints = parseInt(enteredPoints, 10);
-  
+
     // 숫자 범위 제한
     if (enteredPoints > 5000) enteredPoints = 5000;
     if (enteredPoints < 0) enteredPoints = 0;
-  
+
     setPoints(enteredPoints);
   };
 
@@ -175,6 +182,18 @@ const Order = () => {
     setShowModal(false); // 모달 닫기
   };
 
+  const handleTermsAgree = () => {
+    setIsTermsChecked(true);
+    setShowTermsModal(false);
+  };
+
+
+  // 배송지 입력 체크
+  const isAddressValid = recipient && address.postcode && address.roadAddress && address.detailAddress && phone;
+
+  // 결제하기 버튼 활성화 조건
+  const isOrderValid = totalPayment > 0 && isAddressValid && isTermsChecked;
+
   return (
     <Container className="mt-5" style={{ color: 'black' }}>
       <h4 className="text-center fw-bold mb-4">
@@ -195,7 +214,7 @@ const Order = () => {
           <Form>
             <Form.Group className="mb-3">
               <Form.Label>받는사람</Form.Label>
-              <Form.Control type="text" value={recipient} onChange={(e) => setRecipient(e.target.value)} required />
+              <Form.Control type="text" placeholder="이름을 입력하세요" value={recipient} onChange={(e) => setRecipient(e.target.value)} required />
             </Form.Group>
 
             <Form.Group className="mb-3">
@@ -210,7 +229,7 @@ const Order = () => {
 
             <Form.Group className="mb-3">
               <Form.Label>휴대전화</Form.Label>
-              <Form.Control type="text" placeholder="010-1234-5678" value={phone} onChange={(e) => {
+              <Form.Control type="text" placeholder="하이픈(-) 없이 숫자만 입력하세요" value={phone} onChange={(e) => {
                 setPhone(e.target.value);
                 handlePhoneChange(e);
               }} required />
@@ -223,6 +242,7 @@ const Order = () => {
                 value={deliveryMessage}
                 onChange={handleDeliveryMessageChange}
               >
+                <option value="선택안함">선택 안함</option>
                 <option value="경비실">경비실에 맡겨주세요</option>
                 <option value="집앞">집 앞에 놔 두세요</option>
                 <option value="택배함">택배함에 맡겨주세요</option>
@@ -277,28 +297,37 @@ const Order = () => {
         <p>{expectedPoints.toLocaleString()}P가 적립될 예정입니다(배송 완료 후 1주일 이내)</p>
       </div>
       <div>
-      <Form.Group className="mb-3">
-        <Form.Label className="fw-bold">사용 포인트</Form.Label>{" "}
-        <small>(보유 포인트: 5000P)</small>
-        <div className="d-flex align-items-center" style={{ gap: "1rem" }}>
-          <Form.Control type="number" value={points} onChange={handlePointsChange} placeholder="포인트 입력" style={{ width: "12.5%" }} step="100" min="0"/>
-          <Button onClick={applyPoints} className="btn-pilllaw">적용</Button>
-        </div>
-      </Form.Group>
-      <p className="fw-bold">
-        총 결제금액: {totalPayment.toLocaleString()}원
-      </p>
-    </div>
+        <Form.Group className="mb-3">
+          <Form.Label className="fw-bold">사용 포인트</Form.Label>{" "}
+          <small>(보유 포인트: 5000P)</small>
+          <div className="d-flex align-items-center" style={{ gap: "1rem" }}>
+            <Form.Control type="number" value={points} onChange={handlePointsChange} placeholder="포인트 입력" style={{ width: "12.5%" }} step="100" min="0" />
+            <Button onClick={applyPoints} className="btn-pilllaw">적용</Button>
+            <small>적용 버튼을 눌러 총 결제 금액을 확인하세요</small>
+          </div>
+        </Form.Group>
+        <p className="fw-bold">
+          총 결제금액: {totalPayment.toLocaleString()}원
+        </p>
+        <Form.Group controlId="termsCheckbox" className="mb-3">
+                <Form.Check 
+                  type="checkbox" 
+                  label={<span onClick={() => setShowTermsModal(true)} style={{ cursor: 'pointer', textDecoration: 'underline' }}>결제 이용약관에 동의합니다</span>} 
+                  checked={isTermsChecked} 
+                  onChange={(e) => setIsTermsChecked(e.target.checked)}
+                />
+              </Form.Group>
+      </div>
 
 
 
 
       <div className="d-flex justify-content-center">
-      <div className="d-flex align-items-center">
-        <Button variant="secondary" onClick={goToCart} className="me-3">장바구니로 돌아가기</Button>
-        <Button className="btn-pilllaw" disabled={totalPayment === 0}>결제하기</Button>
+        <div className="d-flex align-items-center">
+          <Button variant="secondary" onClick={goToCart} className="me-3">장바구니로 돌아가기</Button>
+          <Button className="btn-pilllaw" disabled={!isOrderValid}>결제하기</Button>
+        </div>
       </div>
-    </div>
 
       <Modal show={showModal} onHide={() => setShowModal(false)} style={{ color: "black" }}>
         <Modal.Header closeButton>
@@ -314,6 +343,25 @@ const Order = () => {
             </div>
           ))}
         </Modal.Body>
+      </Modal>
+      
+      <Modal show={showTermsModal} onHide={() => setShowTermsModal(false)} style={{ color: "black" }}>
+        <Modal.Header closeButton>
+          <Modal.Title><strong>결제 이용약관</strong></Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>고객님께서는 결제 진행 시 다음 약관에 동의하게 됩니다.</p>
+          <ul>
+            <li>결제 완료 후 환불 및 취소는 당사 환불 정책에 따라 진행됩니다.</li>
+            <li>개인정보 및 결제 정보는 안전하게 저장 및 보호됩니다.</li>
+            <li>상품의 배송은 영업일 기준 3~5일 소요되며, 천재지변 및 기타 사유로 인해 지연될 수 있습니다.</li>
+            <li>결제 후 주문 변경은 불가능하며, 변경을 원할 경우 고객센터를 통해 문의해 주세요.</li>
+            <li>일부 상품의 경우 주문 후 제작이 시작되므로 단순 변심에 의한 취소가 어려울 수 있습니다.</li>
+          </ul>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button className="btn-pilllaw" onClick={handleTermsAgree}>동의</Button>
+        </Modal.Footer>
       </Modal>
     </Container>
   );
