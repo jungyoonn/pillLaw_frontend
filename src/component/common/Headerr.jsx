@@ -73,7 +73,7 @@ const Headerr = () => {
                 </Link>
               </p>
               <p className="float-end pt-4 text-center fw-bold fs-12">
-                <Link className="header-font pt-3" to="/">
+                <Link className="header-font pt-3" to="/signin">
                   로그인
                 </Link>
               </p>
