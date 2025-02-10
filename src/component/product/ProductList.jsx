@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom"; // 🔥 라우터 임포트
+import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import "font-awesome/css/font-awesome.min.css";
@@ -26,23 +26,22 @@ const ProductList = () => {
     <div className="wrap">
       <Container className="text-center" style={{ paddingTop: "115.19px" }}>
         <h1 className="fw-bold my-5">상품 리스트</h1>
-        <hr />
-
         {/* 검색창 */}
-        <div className="form-floating my-2 fs-12">
-          <input
+        <div className="form-floating my-2 fs-12 text-pilllaw">
+          <input 
             type="text"
-            className="form-control"
+            className="form-control bg-pilllaw"
             id="search"
             placeholder="검색어를 입력하세요."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            style={{opacity:0.3}}
           />
           <label htmlFor="search">
             <FontAwesomeIcon icon={faMagnifyingGlass} className="fs-14" /> 검색어를 입력하세요.
           </label>
         </div>
-
+        <hr className="text-pilllaw"/>
         {/* 카테고리 필터 */}
         <div className="category-selector">
           <ProductCategorySelector/>

@@ -22,7 +22,7 @@ import image3 from "../../resources/image/product3.jpg";
 import image4 from "../../resources/image/helfugarcinia.jpg";
 import Button from '../common/Button';
 
-// ✅ 상품 데이터 (API 연동 전 테스트 데이터)
+//  상품 데이터 (API 연동 전 테스트 데이터)
 const products = [
   {
     id: 1,
@@ -59,7 +59,7 @@ const products = [
   },
 ];
 
-// ✅ 샘플 리뷰 데이터
+//  샘플 리뷰 데이터
 const reviews = [
   { id: 1, title: "건강하면 울리는 사이렌", content: "우리 아이가 참 좋아해요.", rating: 4, date: "2025.02.10", likes: 17 },
   { id: 2, title: "건강맨", content: "매일 먹으니 효과가 좋은 것 같아요.", rating: 5, date: "2025.02.08", likes: 25 },
@@ -77,7 +77,7 @@ const ProductDetail = () => {
 
   const discountedPrice = product.price - product.price * product.discount;
 
-  // ✅ 차트 렌더링 함수
+  //  차트 렌더링 함수
   const renderChart = () => {
     if (!chartRef.current) return;
 
@@ -116,7 +116,7 @@ const ProductDetail = () => {
         <h1 className="fw-bold mb-4 text-pilllaw">상품 상세정보</h1>
         <hr className="text-pilllaw" />
 
-        {/* ✅ 상품 이미지 및 정보 */}
+        {/*  상품 이미지 및 정보 */}
         <Row className="mt-4">
           <Col xs={5}>
             <img className="img-fluid mx-2 pilllaw-product-image" src={mainImage} alt={product.name} />
@@ -145,7 +145,7 @@ const ProductDetail = () => {
           </Col>
         </Row>
 
-        {/* ✅ 제품 상세정보, 리뷰 보기 탭 */}
+        {/*  제품 상세정보, 리뷰 보기 탭 */}
         <Row className="mt-5">
           <ul className="nav nav-tabs nav-justified text-pilllaw">
             <li className="nav-item">
@@ -170,7 +170,7 @@ const ProductDetail = () => {
             </li>
           </ul>
 
-          {/* ✅ 제품 상세정보 탭 */}
+          {/*  제품 상세정보 탭 */}
           {activeTab === "real-product-details" && (
             <div className="tab-content mt-5 fade show active">
               {product.tags.map((tag, index) => (
@@ -182,17 +182,17 @@ const ProductDetail = () => {
             </div>
           )}
 
-          {/* ✅ 리뷰 탭 */}
+          {/*  리뷰 탭 */}
           {activeTab === "real-product-review" && (
             <div className="tab-content mt-5 fade show active">
-              {/* ✅ 리뷰 점수 요약 (차트 포함) */}
+              {/*  리뷰 점수 요약 (차트 포함) */}
               <div className="pilllaw-product-score-total text-center p-3">
                 <span className="fs-18 fw-bold">리뷰</span>
                 <br />
                 <span className="fs-16">당신의 소중한 후기를 남겨주세요.</span>
                 <br />
 
-                {/* ✅ 차트 컨테이너 */}
+                {/*  차트 컨테이너 */}
                 <Row className="mt-5">
                   <Col xs={8} className="col-8 mx-auto">
                     <canvas id="reviewChart" ref={chartRef}></canvas>
@@ -200,16 +200,16 @@ const ProductDetail = () => {
                 </Row>
               </div>
 
-              {/* ✅ 리뷰 리스트 */}
+              {/*  리뷰 리스트 */}
               <Row className="mt-5">
                 {reviews.map((review) => (
                   <div key={review.id} className="row border border-1 pt-4 pb-3 mx-3 fs-12 mt-2">
-                    {/* ✅ 리뷰 이미지 */}
+                    {/*  리뷰 이미지 */}
                     <Col xs={2} className="d-flex align-items-center">
                       <img className="img-fluid w-75 pilllaw-product-image" src={mainImage} alt="리뷰 이미지" />
                     </Col>
 
-                    {/* ✅ 리뷰 본문 */}
+                    {/*  리뷰 본문 */}
                     <Col xs={6}>
                       <Row className="text-start">
                         <span className="fw-bold">{review.title}</span>
@@ -219,12 +219,12 @@ const ProductDetail = () => {
                       </Row>
                     </Col>
 
-                    {/* ✅ 작성일 */}
+                    {/*  작성일 */}
                     <Col xs={2} className="text-center">
                       <span>작성일: {review.date}</span>
                     </Col>
 
-                    {/* ✅ 별점 */}
+                    {/*  별점 */}
                     <Col xs={2} className="text-center">
                       <span className="fw-bold">별점: </span>
                       {Array.from({ length: review.rating }).map((_, index) => (
@@ -233,7 +233,7 @@ const ProductDetail = () => {
                       ({review.rating}점)
                     </Col>
 
-                    {/* ✅ 좋아요 버튼 */}
+                    {/*  좋아요 버튼 */}
                     <Row className="row text-end mt-2">
                       <Col className="col">
                         도움이 돼요{" "}
