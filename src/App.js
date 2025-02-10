@@ -14,6 +14,7 @@ import Cart from './component/order/cart';
 import Order from './component/order/order';
 import OrderSuccess from './component/order/orderSuccess';
 import OrderFail from './component/order/orderFail';
+import ProductDetail from './component/product/ProductDetail';
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Route element={<MainLayout />}>
           <Route path="/" element={<Index />} />
           <Route path='/product/list' element={<ProductList />} />
+          <Route path='/product/list' element={<ProductDetail />} />
           {/* <Route path="/posts" element={<Posts />} />
           <Route path="/posts/:id" element={<PostDetail />} /> */}
           {/* <Route path='FollowListt' element={<FollowListt />} /> */}
