@@ -170,7 +170,7 @@ body {
 
 /* ===== 배경 스타일 ===== */
 .bg-pilllaw {
-  background-color: var(--primary-color);
+  background-color: var(--primary-color) !important;
   transition: background-color 0.3s ease-in-out;
 }
 
