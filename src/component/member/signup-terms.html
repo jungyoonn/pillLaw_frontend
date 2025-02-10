@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>PILL LAW</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js" integrity="sha512-b+nQTCdtTBIRIbraqNEwsjB6UvL3UEMkXnhzd8awtCYh0Kcsjl9uEgwVFVbhoj3uu1DO1ZMacNvLoyJJiNfcvg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link rel="icon" href="../../resources/image/pilllaw_favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Noto+Sans+KR&display=swap" rel="stylesheet">
+  <link rel='stylesheet' href='../../resources/css/style.css'>
+</head>
+<body>
+  <div class="wrap">
+    <main class="container px-0">
+      <div class="text-center m-2 mt-5">
+        <div class="row">
+          <div class="col-2"></div>
+          <div class="col-3 text-end">
+            <a href="#" class=""><img src="../../resources/image/pilllaw_icon_crop.png" class="img-fluid header-icon" alt="아이콘"></a>
+          </div>
+          <div class="col text-start mt-4 ms-3">
+            <h2 class="mt-4 ms-3 pt-3 fw-bold d-inline"><a class="text-decoration-none header-font " href="#">PILL LAW</a></h2>
+          </div>
+        </div>
+      </div>
+      <!-- 약관 동의 폼 -->
+      <div class="terms mx-5 px-5 mt-5 pt-5">
+        <form method="post">
+          <div class="form-check form-check-reverse text-start">
+              <label class="form-check-label" for="use">
+                  <span class="text-success fw-bold">[필수] </span>필로 이용 약관
+                  <input class="form-check-input" type="checkbox" id="use" name="terms" value="use" >
+              </label><br>
+              <textarea class="form-control mt-2 scroll" rows="5" id="comment" name="text" readonly></textarea>
+
+              <label class="form-check-label mt-3" for="info">
+                  <span class="text-success fw-bold">[필수] </span>개인정보 수집 및 이용
+                  <input class="form-check-input" type="checkbox" id="info" name="terms" value="info" >
+              </label><br>
+              <textarea class="form-control mt-2 scroll" rows="5" id="comment" name="text" readonly>
+              </textarea>
+            </div>
+            <label class="form-check-label mt-3" for="marketing">
+              <span class="fw-bold" style="color: blueviolet;">[선택] </span>마케팅 수신 전체 동의
+              <input class="form-check-input" type="checkbox" id="marketing" name="terms" value="marketing" >
+            </label><br>
+            <label class="form-check-label mt-1" for="sms">
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SMS 수신 동의
+              <input class="form-check-input" type="checkbox" id="sms" name="terms" value="sms" >
+            </label><br>
+            <label class="form-check-label mt-1" for="email">
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 이메일 수신 동의
+              <input class="form-check-input" type="checkbox" id="email" name="terms" value="email" >
+            </label><br>
+            <hr>
+            <div class="text-center">
+              <label class="form-check-label mt-2 fw-bold" for="all"> 전체 동의
+                <input class="form-check-input" type="checkbox" id="all" name="terms" value="all" >
+              </label>
+              <button type="submit" class="btn btn-pilllaw mx-5 px-5">다음</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

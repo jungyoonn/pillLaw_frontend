@@ -3,8 +3,8 @@
 :root {
   --primary-color: #7DA9A7; /* 새로운 주조색 */
   --secondary-color: #AFC8AD; /* 부드러운 녹색 계열 보조색 */
-  --hover-color: #5E8886; /* 주조색보다 어두운 톤, hover 시 색상 */
-  --active-color: #436A68; /* 클릭 시 색상, 더 깊은 청록 계열 */
+  --hover-color: rgba(125, 169, 167, 0.75); /* hover 시 투명도 조절 */
+  --active-color: #436A68; /* 클릭 시 색상 */
   --background-color: #F8F9FA; /* 밝고 깨끗한 느낌의 배경색 */
   --accent-color: #F4EECF; /* 따뜻한 파스텔 베이지 강조색 */
   --header-color: #3C7B89; /* 헤더 색상 */
@@ -12,41 +12,37 @@
 
 body {
   background-color: var(--background-color);
-  /* color: var(--primary-color); */
   font-family: "Noto Sans KR", serif;
-  font-optical-sizing: auto;
   font-weight: 100;
   font-style: normal;
   padding: 0;
 }
 
-.header-icon { width: 90px; }
-
-.header-font { color: var(--header-color) !important; }
-
+.fs-18 { font-size: 18px; }
 .fs-16 { font-size: 16px; }
 .fs-14 { font-size: 14px; }
 .fs-12 { font-size: 12px; }
 .fs-11 { font-size: 11px; }
 
-/* 버튼 스타일 */
+/* ===== 헤더 스타일 ===== */
+.header-icon { width: 90px; }
+.header-font { color: var(--header-color); }
+
+/* ===== 버튼 스타일 ===== */
 .btn-pilllaw {
-  color: #fff;
+  color: white;
   background-color: var(--primary-color);
   border: 1px solid var(--primary-color);
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
 }
 
+/* 🚀 hover 시 배경색만 투명하게 조정 (텍스트 투명해지지 않음) */
 .btn-pilllaw:hover {
   background-color: var(--hover-color);
   border-color: var(--hover-color);
 }
 
-/* .pillaw-profile {
-  background-color: var(--background-color);
-} */
-
-.btn-pilllaw:active {
+.btn-pilllaw:first-child:active {
   background-color: var(--active-color);
   border-color: var(--active-color);
 }
@@ -57,59 +53,158 @@ body {
   border-color: var(--accent-color);
 }
 
-/* 보조 버튼 스타일 */
+/* ===== 보조 버튼 스타일 ===== */
 .btn-pilllaw-secondary {
-  color: #fff;
+  color: white;
   background-color: var(--secondary-color);
   border: 1px solid var(--secondary-color);
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
 }
 
-.btn-pilllaw-secondary:hover {
-  background-color: var(--hover-color);
-  border-color: var(--hover-color);
+/* 🚀 hover 시 배경색만 투명하게 조정 */
+.btn-pilllaw-secondary:hover, .btn-pilllaw-secondary:focus {
+  background-color: rgba(175, 200, 173, 0.75);
+  border-color: rgba(175, 200, 173, 0.75);
 }
 
-.btn-pilllaw-secondary:active {
+.btn-pilllaw-secondary:first-child:active {
   background-color: var(--active-color);
   border-color: var(--active-color);
 }
 
-.btn-pilllaw-secondary:disabled {
-  color: #888;
-  background-color: #D6E2D6;
-  border-color: #D6E2D6;
+/* ===== 소셜 로그인 버튼 ===== */
+.btn-kakao {
+  background-color: #fee500;
+  border-color: #fee500;
+  color: #181600;
+}
+.btn-kakao:hover {
+  background-color: #fee500ad;
+  border-color: #fee500c9;
 }
 
-/* 텍스트 스타일 */
+.btn-kakao:first-child:active {
+  background-color: #a39302;
+  border-color: #a39302;
+}
+
+.btn-naver {
+  background-color: #03C75A;
+  border-color: #03C75A;
+  color: white;
+}
+
+.btn-naver:hover {
+  background-color: #03c75bb6;
+  border-color: #03c75bb6;
+}
+
+.btn-naver:first-child:active {
+  background-color: #017c39;
+  border-color: #017c39;
+}
+
+.btn-github {
+  background-color: #333;
+  border-color: #1a1a1a;
+  color: white;
+}
+
+.btn-github:hover {
+  background-color: #535353;
+  border-color: #535353;
+}
+
+.btn-github:first-child:active {
+  background-color: #1a1a1a9d;
+  border-color: #1a1a1a9d
+}
+
+.btn-insta {
+  background-color: rgb(99, 94, 99);
+  color: white;
+}
+
+.btn-insta:hover {
+  background-color: rgb(126, 120, 126);
+}
+
+.btn-insta:first-child:active {
+  background-color: rgba(99, 94, 99, 0.651);
+}
+
+.btn-google {
+  color: #1a1a1a;
+  background-color: #fff;
+  border: 1px solid #888;
+}
+
+.btn-google:hover {
+  background-color: #dfdbdb;
+}
+
+.btn-google:first-child:active {
+  background-color: #bdb9b9;
+  border-color: #bdb9b9;
+}
+
+/* ===== 텍스트 스타일 ===== */
 .text-pilllaw {
-  color: var(--primary-color) !important;
-  transition: color 0.3s ease;
+  color: var(--primary-color);
+  transition: color 0.3s ease-in-out;
 }
 
 .text-pilllaw-secondary {
-  color: var(--secondary-color) !important;
-  transition: color 0.3s ease;
+  color: var(--secondary-color);
+  transition: color 0.3s ease-in-out;
 }
 
-/* 배경 스타일 */
+/* ===== 배경 스타일 ===== */
 .bg-pilllaw {
-  background-color: var(--primary-color) !important;
-  transition: background-color 0.3s ease;
+  background-color: var(--primary-color);
+  transition: background-color 0.3s ease-in-out;
 }
 
 .bg-pilllaw-secondary {
-  background-color: var(--secondary-color) !important;
-  transition: background-color 0.3s ease;
+  background-color: var(--secondary-color);
+  transition: background-color 0.3s ease-in-out;
 }
 
-/* 페이지네이션 */
+/* ===== 페이지네이션 ===== */
 .active>.page-link, .page-link.active {
   background-color: var(--primary-color);
   border-color: var(--primary-color);
 }
 
+/* ===== 태그 호버 ===== */
 .pilllaw-tag:hover {
-  color: var(--primary-color) !important;
+  color: var(--primary-color);
   font-size: 43px;
+}
+
+.pilllaw-secondary-tag:hover {
+  color: var(--background-color);
+}
+
+/* ===== 상품 이미지 hover 효과 ===== */
+.pilllaw-product-image:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease-in-out;
+}
+
+.scroll {
+  scrollbar-color: var(--primary-color);
+  overflow-y: scroll;
+  resize: none;
+}
+
+.pilllaw-product-score-total {
+  border: 1px solid;
+  border-color: var(--primary-color);
+}
+
+/* 차트 반응형 설정 */
+#reviewChart {
+  width: 100% !important; /* 부모 요소에 맞게 자동 조정 */
+  height: auto !important;
 }
