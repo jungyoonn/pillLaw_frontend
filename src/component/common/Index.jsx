@@ -142,10 +142,10 @@ const Index = () => {
                   <Row>
                   <Col xs lg="2"></Col>
                     <Col className="text-center">
-                      <Button variant='dark' className="btn-pilllaw d-flex text-center"><img className="img-fluid me-2" src={favicon} width="25" alt="아이콘" />PILL LAW 로그인</Button>
+                      <Link to={"/signin"} className="btn btn-pilllaw d-flex text-center"><img className="img-fluid me-2" src={favicon} width="25" alt="아이콘" />PILL LAW 로그인</Link>
                       <Link to={"/"} className="fs-11 text-pilllaw fw-bold ms-1">아이디찾기</Link>
                       <Link to={"/"} className="fs-11 text-pilllaw fw-bold ms-1">비밀번호찾기</Link>
-                      <Link to={"/"} className="fs-11 text-pilllaw fw-bold ms-1">회원가입</Link>
+                      <Link to={"/signup"} className="fs-11 text-pilllaw fw-bold ms-1">회원가입</Link>
                       <p className="fs-14 text-pilllaw fw-bold mt-2">당신의 건강을 구독하세요!</p>
                     </Col>
                     <Col xs lg="2"></Col>
