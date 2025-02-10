@@ -5,6 +5,7 @@ import logo from '../../resources/image/pilllaw_icon.png'
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDatabase } from "@fortawesome/free-solid-svg-icons";
+import githubIcon from '../../resources/image/github.png';
 
 const Footer = () => {
   return (
@@ -26,11 +27,11 @@ const Footer = () => {
             <Col className="mt-3 text-center">
               <div className=" clearfix">
                 <div className=" float-start">
-                  <Link to={"/"} className="header-font text-decoration-none fw-bold"><FontAwesomeIcon icon="fa-brands fa-github" className="fa-2xl header-font" /></Link>
+                  <Link to={"/"} className="header-font text-decoration-none fw-bold"><img src={githubIcon} className="fa-2xl header-font" width="36" /></Link>
                   <Link to={"/"} className="header-font text-decoration-none fw-bold fs-14"><br />GitHub 방문하기</Link>
                 </div>
                 <div className="mt-3">
-                  <Link to={"/"} className="header-font text-decoration-none fw-bold"><FontAwesomeIcon icon={faDatabase} className="fa-2xl header-font" /></Link>
+                  <Link to={"/"} className="header-font text-decoration-none fw-bold"><FontAwesomeIcon icon={faDatabase} className="fa-2xl header-font mt-1" /></Link>
                   <Link to={"/"} className="header-font text-decoration-none fw-bold fs-14"><br />ERD diagram</Link>
                 </div>
               </div>
