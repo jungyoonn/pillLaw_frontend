@@ -68,7 +68,7 @@ const Headerr = () => {
                 )
               )}
               <p className="float-end mx-2 pt-4 text-center fw-bold fs-12">
-                <Link className="header-font pt-3" to="/">
+                <Link className="header-font pt-3" to="/signup">
                   회원가입
                 </Link>
               </p>
