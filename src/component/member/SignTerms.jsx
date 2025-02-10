@@ -135,7 +135,7 @@ const SignTerms = () => {
                   onChange={handleCheckboxChange}
                 />
               </Form.Label>
-              <Button variant="pilllaw" to={"/"} type="submit" className="btn btn-pilllaw mx-5 px-5">다음</Button>
+              <Button variant="pilllaw" to={"/signup/email"} type="submit" className="btn btn-pilllaw mx-5 px-5">다음</Button>
             </div>
           </Form>
         </div>
