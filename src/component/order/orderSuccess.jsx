@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Container, Row, Col } from 'react-bootstrap';
 
-const Success = () => {
+const OrderSuccess = () => {
   const [orderData, setOrderData] = useState({
     receiver: '권미은',
     phone: '010-4149-2769',
@@ -60,4 +60,4 @@ const Success = () => {
   );
 }
 
-export default Success;
+export default OrderSuccess;
