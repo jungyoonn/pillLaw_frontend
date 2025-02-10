@@ -29,13 +29,13 @@ const ProductCategorySelector = () => {
   return (
     <Accordion>
       {categories.map((category, index) => (
-        <Accordion.Item key={index} eventKey={index.toString()} className="bg-pilllaw fw-bold">
-          <Accordion.Header className="text-pilllaw">{category.title}</Accordion.Header>
-          <Accordion.Body>
+        <Accordion.Item key={index} eventKey={index.toString()} className="fw-bold">
+          <Accordion.Header className="border-pilllaw-secondary ">{category.title}</Accordion.Header>
+          <Accordion.Body className="border-pilllaw-secondary custum-accordian">
             <Row>
               {category.options.map((option, idx) => (
                 <Col key={idx} xs={6} sm={3} className="mb-2 fs-12">
-                  <Form.Check type="checkbox" label={option} />
+                  <Form.Check type="checkbox" label={option} style={{opacity:1}}/>
                 </Col>
               ))}
             </Row>
