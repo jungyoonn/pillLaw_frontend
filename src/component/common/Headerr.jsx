@@ -16,6 +16,13 @@ import {
   faCommentDots,
 } from "@fortawesome/free-solid-svg-icons";
 
+const navItems = [
+  { name: "전체 상품", path: "/product/list" },
+  { name: "구독하기", path: "/subscribe" },
+  { name: "필로", path: "/pillaw" },
+  { name: "마이페이지", path: "/mypage" },
+];
+
 const Headerr = () => {
   return (
     <header
@@ -40,15 +47,13 @@ const Headerr = () => {
           </Col>
           <Col>
             <div className="float-start py-4 ps-5">
-              {["전체 상품", "구독하기", "필로", "마이페이지"].map(
-                (menu, index) => (
-                  <h6 key={index} className="float-start m-4 text-center fw-bold">
-                    <Link className="text-decoration-none header-font pt-4" to="/">
-                      {menu}
-                    </Link>
-                  </h6>
-                )
-              )}
+              {navItems.map((item, index) => (
+                <h6 key={index} className="float-start m-4 text-center fw-bold">
+                  <Link className="text-decoration-none header-font pt-4" to={item.path}>
+                    {item.name}
+                  </Link>
+                </h6>
+              ))}
             </div>
             <div className="float-end py-4">
               {[faUser, faCartShopping, faBell, faMagnifyingGlass, faCommentDots].map(
