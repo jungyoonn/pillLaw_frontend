@@ -1,5 +1,6 @@
 import React,{useState} from 'react';
 import {Button, Modal, Container } from "react-bootstrap";
+import { Link } from 'react-router-dom';
 
 const SendLetter = () => {
    // 맞팔로우 된 사람
@@ -52,9 +53,9 @@ const SendLetter = () => {
 
   return (
     <div className="wrap">
-    <Button variant="primary" onClick={handleShow}>
+    {/* <Button variant="primary" onClick={handleShow}>
         쪽지보내기
-    </Button>
+    </Button> */}
     <Container style={{paddingTop: '115.19px'}} >
     <div className="container mt-5">
       {/*  받는 사람 */}
@@ -131,7 +132,7 @@ const SendLetter = () => {
             style={{ minWidth: "300px", textAlign: "center" }}
           >
             <p className="mb-3">쪽지가 발송되었습니다.</p>
-            <button type="button" className="btn btn-primary" onClick={handleToastConfirm}>
+            <button type="button" className="btn btn-pilllaw" onClick={handleToastConfirm}>
               확인
             </button>
           </div>

@@ -16,6 +16,17 @@ import SendLetter from "./SendLetter";
 // import { Col, Container } from "react-bootstrap";
 
 const FollowListt = () => {
+  const follows = [
+    { id: 1, href: "sendletter", label: "치킨" },
+    { id: 2, href: "#", label: "피자" },
+    { id: 3, href: "#", label: "딸기모찌" },
+    { id: 4, href: "#", label: "재즈맨" },
+    { id: 5, href: "#", label: "쿠키" },
+    { id: 6, href: "#", label: "초코쿠키" },
+    { id: 7, href: "#", label: "딸기쿠키" },
+    { id: 8, href: "#", label: "파인애플" },
+  ];
+
   return (
     <div className="container main-content">
     // <div className="wrap">
@@ -27,70 +38,29 @@ const FollowListt = () => {
       
 
       <div className="list-group m-4">
-        <a href="sendletter" className="list-group-item">
+        {/* <a href="sendletter" className="list-group-item">
           <img
             src="../../resources/followImage/사본 -freepik__adjust__7192.png"
             alt="프로필"
             style={{ marginRight: "8px" }}
           />
           치킨
-        </a>
-        <a href="#" className="list-group-item">
+        </a> */}
+        
+        {follows.map((follow) => (
+        <a
+          key={follow.id}
+          href={follow.href}
+          className="list-group-item"
+        >
           <img
             src="../../resources/followImage/사본 -freepik__adjust__7192.png"
             alt="프로필"
             style={{ marginRight: "8px" }}
           />
-          피자
+          {follow.label}
         </a>
-        <a href="#" className="list-group-item">
-          <img
-            src="../../resources/followImage/사본 -freepik__adjust__7192.png"
-            alt="프로필"
-            style={{ marginRight: "8px" }}
-          />
-          딸기모찌
-        </a>
-        <a href="#" className="list-group-item">
-          <img
-            src="../../resources/followImage/사본 -freepik__adjust__7192.png"
-            alt="프로필"
-            style={{ marginRight: "8px" }}
-          />
-          재즈맨
-        </a>
-        <a href="#" className="list-group-item">
-          <img
-            src="../../resources/followImage/사본 -freepik__adjust__7192.png"
-            alt="프로필"
-            style={{ marginRight: "8px" }}
-          />
-          쿠키
-        </a>
-        <a href="#" className="list-group-item">
-          <img
-            src="../../resources/followImage/사본 -freepik__adjust__7192.png"
-            alt="프로필"
-            style={{ marginRight: "8px" }}
-          />
-          초코쿠키
-        </a>
-        <a href="#" className="list-group-item">
-          <img
-            src="../../resources/followImage/사본 -freepik__adjust__7192.png"
-            alt="프로필"
-            style={{ marginRight: "8px" }}
-          />
-          딸기쿠키
-        </a>
-        <a href="#" className="list-group-item">
-          <img
-            src="../../resources/followImage/사본 -freepik__adjust__7192.png"
-            alt="프로필"
-            style={{ marginRight: "8px" }}
-          />
-          파인애플
-        </a>
+      ))}
       </div>
       </div>
     </div>
