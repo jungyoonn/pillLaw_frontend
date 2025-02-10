@@ -250,3 +250,43 @@ body {
 .custum-accordian {
   background-color: var(--accordian-color);
 }
+
+/* 관리자 페이지 사이드바 */
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background-color: #7DA9A7;
+  color: black;
+  padding: 20px;
+  position: fixed;
+}
+.sidebar a {
+  color: black;
+  text-decoration: none;
+  padding: 10px;
+  display: block;
+}
+.sidebar a:hover {
+  background-color: #436A68;
+  border-radius: 5px;
+}
+.sidebar h5 {
+  margin-top: 15px;
+  margin-bottom: 5px;
+  font-size: 16px;
+}
+.sidebar a {
+  padding: 3px 10px;
+  display: block;
+  font-size: 14px;
+}
+.sidebar hr {
+  margin: 10px 0;
+}
+
+.main-content {
+  margin-left: 250px;
+  flex-grow: 1;
+  min-height: 100vh; /* 화면 높이에 맞게 최소 높이 설정 */
+}
+

@@ -18,6 +18,8 @@ import SendLetter from './component/follow/SendLetter';
 // import OrderSuccess from './component/order/OrderSuccess';
 import SignTerms from './component/member/SignTerms';
 import SignEmail from './component/member/SignEmail';
+import AdminLayout from './component/layout/AdminLayout';
+import AIndex from './component/admin/AIndex';
 
 
 function App() {
@@ -46,6 +48,11 @@ function App() {
           <Route path="/signup/terms" element={<SignTerms />} />
           <Route path="/signup/email" element={<SignEmail />} />
         </Route>
+
+        {/* <Route element={<AdminLayout />}>
+          <Route path='/admin/' element={<AIndex />} />
+        </Route> */}
+
       </Routes>
     </BrowserRouter>
   );
