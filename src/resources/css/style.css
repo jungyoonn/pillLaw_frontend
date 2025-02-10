@@ -13,7 +13,15 @@
 
 body {
   background-color: var(--background-color);
-  font-family: "Noto Sans KR", serif;
+  font-family: "Noto Sans KR", serif !important;
+  font-weight: 100;
+  font-style: normal;
+  padding: 0;
+}
+
+.wrap .pilllaw-footer {
+  background-color: var(--background-color);
+  font-family: "Noto Sans KR", serif !important;
   font-weight: 100;
   font-style: normal;
   padding: 0;
@@ -31,27 +39,27 @@ body {
 
 /* ===== 버튼 스타일 ===== */
 .btn-pilllaw {
-  color: white;
-  background-color: var(--primary-color);
-  border: 1px solid var(--primary-color);
-  transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+  color: white !important;
+  background-color: var(--primary-color) !important;
+  border: 1px solid var(--primary-color) !important;
+  transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out !important;
 }
 
 /* 🚀 hover 시 배경색만 투명하게 조정 (텍스트 투명해지지 않음) */
 .btn-pilllaw:hover {
-  background-color: var(--hover-color);
-  border-color: var(--hover-color);
+  background-color: var(--hover-color) !important;
+  border-color: var(--hover-color) !important;
 }
 
 .btn-pilllaw:first-child:active {
-  background-color: var(--active-color);
-  border-color: var(--active-color);
+  background-color: var(--active-color) !important;
+  border-color: var(--active-color) !important;
 }
 
 .btn-pilllaw:disabled {
-  color: #bbb;
-  background-color: var(--accent-color);
-  border-color: var(--accent-color);
+  color: #bbb !important;
+  background-color: var(--accent-color) !important;
+  border-color: var(--accent-color) !important;
 }
 
 /* ===== 보조 버튼 스타일 ===== */
