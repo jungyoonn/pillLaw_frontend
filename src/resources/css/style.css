@@ -83,78 +83,78 @@ body {
 
 /* ===== 소셜 로그인 버튼 ===== */
 .btn-kakao {
-  background-color: #fee500;
-  border-color: #fee500;
+  background-color: #fee500 !important;
+  border-color: #fee500 !important;
   color: #181600;
 }
 .btn-kakao:hover {
-  background-color: #fee500ad;
-  border-color: #fee500c9;
+  background-color: #fee500ad !important;
+  border-color: #fee500c9 !important;
 }
 
 .btn-kakao:first-child:active {
-  background-color: #a39302;
-  border-color: #a39302;
+  background-color: #a39302 !important;
+  border-color: #a39302 !important;
 }
 
 .btn-naver {
-  background-color: #03C75A;
-  border-color: #03C75A;
-  color: white;
+  background-color: #03C75A !important;
+  border-color: #03C75A !important;
+  color: white !important;
 }
 
 .btn-naver:hover {
-  background-color: #03c75bb6;
-  border-color: #03c75bb6;
+  background-color: #03c75bb6 !important;
+  border-color: #03c75bb6 !important;
 }
 
 .btn-naver:first-child:active {
-  background-color: #017c39;
-  border-color: #017c39;
+  background-color: #017c39 !important;
+  border-color: #017c39 !important;
 }
 
 .btn-github {
-  background-color: #333;
-  border-color: #1a1a1a;
-  color: white;
+  background-color: #333 !important;
+  border-color: #1a1a1a !important;
+  color: white !important;
 }
 
 .btn-github:hover {
-  background-color: #535353;
-  border-color: #535353;
+  background-color: #535353 !important;
+  border-color: #535353 !important;
 }
 
 .btn-github:first-child:active {
-  background-color: #1a1a1a9d;
-  border-color: #1a1a1a9d
+  background-color: #1a1a1a9d !important;
+  border-color: #1a1a1a9d !important;
 }
 
 .btn-insta {
-  background-color: rgb(99, 94, 99);
-  color: white;
+  background-color: rgb(99, 94, 99) !important;
+  color: white !important;
 }
 
 .btn-insta:hover {
-  background-color: rgb(126, 120, 126);
+  background-color: rgb(126, 120, 126) !important;
 }
 
 .btn-insta:first-child:active {
-  background-color: rgba(99, 94, 99, 0.651);
+  background-color: rgba(99, 94, 99, 0.651) !important;
 }
 
 .btn-google {
-  color: #1a1a1a;
-  background-color: #fff;
-  border: 1px solid #888;
+  color: #1a1a1a !important;
+  background-color: #fff !important;
+  border: 1px solid #888 !important;
 }
 
 .btn-google:hover {
-  background-color: #dfdbdb;
+  background-color: #dfdbdb !important;
 }
 
 .btn-google:first-child:active {
-  background-color: #bdb9b9;
-  border-color: #bdb9b9;
+  background-color: #bdb9b9 !important;
+  border-color: #bdb9b9 !important;
 }
 
 /* ===== 텍스트 스타일 ===== */
