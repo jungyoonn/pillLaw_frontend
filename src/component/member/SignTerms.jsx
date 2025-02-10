@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import logo from '../../resources/image/pilllaw_icon_crop.png';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import Button from '../common/Button';
 
 const SignTerms = () => {
   const [terms, setTerms] = useState({
@@ -58,82 +59,85 @@ const SignTerms = () => {
         </div>
 
         {/* 약관 동의 폼 */}
-        <div className="terms mx-5 px-5 mt-5 pt-5">
-          <form method="post">
-            <div className="form-check form-check-reverse text-start">
-              <label className="form-check-label" htmlFor="use">
-                <span className="text-success fw-bold">[필수] </span>필로 이용 약관
-                <input
-                  className="form-check-input"
+        <div className="terms mx-5 px-5 pt-5">
+          <Form method="post">
+            <div className="form-check-reverse text-start">
+              <Form.Label htmlFor="use">
+                <Form.Check 
+                  className="ps-0"
+                  style={{display:'inline'}}
                   type="checkbox"
                   id="use"
                   checked={terms.use}
+                  label={<><span className="text-success fw-bold">[필수] </span> 필로 이용 약관</>}
                   onChange={handleCheckboxChange}
                 />
-              </label>
-              <textarea className="form-control mt-2 scroll" rows="5" readOnly></textarea>
+              </Form.Label>
+              <Form.Control as="textarea" rows={5} readOnly className="mt-2 scroll" />
 
-              <label className="form-check-label mt-3" htmlFor="info">
-                <span className="text-success fw-bold">[필수] </span>개인정보 수집 및 이용
-                <input
-                  className="form-check-input"
+              <Form.Label className="mt-3" htmlFor="info">
+                <Form.Check
+                  className="ps-0"
                   type="checkbox"
                   id="info"
+                  label={<><span className="text-success fw-bold">[필수] </span>개인정보 수집 및 이용</>}
                   checked={terms.info}
                   onChange={handleCheckboxChange}
                 />
-              </label>
-              <textarea className="form-control mt-2 scroll" rows="5" readOnly></textarea>
+              </Form.Label>
+              <Form.Control as="textarea" rows={5} readOnly className="mt-2 scroll" />
             </div>
 
-            <label className="form-check-label mt-3" htmlFor="marketing">
-              <span className="fw-bold" style={{ color: "blueviolet" }}>[선택] </span>마케팅 수신 전체 동의
-              <input
-                className="form-check-input"
-                type="checkbox"
-                id="marketing"
-                checked={terms.marketing}
-                onChange={handleCheckboxChange}
-              />
-            </label> <br />
+            <div className="form-check-reverse text-start">
+              <Form.Label className="mt-3" htmlFor="marketing">
+                <Form.Check 
+                  className="ps-0"
+                  type="checkbox"
+                  id="marketing"
+                  label={<><span className="fw-bold" style={{ color: "blueviolet" }}>[선택] </span>마케팅 수신 전체 동의</>}
+                  checked={terms.marketing}
+                  onChange={handleCheckboxChange}
+                />
+              </Form.Label> <br />
 
-            <label className="form-check-label mt-1" htmlFor="sms">
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SMS 수신 동의
-              <input
-                className="form-check-input"
-                type="checkbox"
-                id="sms"
-                checked={terms.sms}
-                onChange={handleCheckboxChange}
-              />
-            </label> <br />
+              <Form.Label className="mt-1" htmlFor="sms">
+                <Form.Check 
+                  className="ps-0"
+                  type="checkbox"
+                  id="sms"
+                  label={<>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SMS 수신 동의</>}
+                  checked={terms.sms}
+                  onChange={handleCheckboxChange}
+                />
+              </Form.Label> <br />
 
-            <label className="form-check-label mt-1" htmlFor="email">
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 이메일 수신 동의
-              <input
-                className="form-check-input"
-                type="checkbox"
-                id="email"
-                checked={terms.email}
-                onChange={handleCheckboxChange}
-              />
-            </label>
+              <Form.Label className="mt-1" htmlFor="email">
+                <Form.Check
+                  className="ps-0"
+                  type="checkbox"
+                  id="email"
+                  label={<>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 이메일 수신 동의</>}
+                  checked={terms.email}
+                  onChange={handleCheckboxChange}
+                />
+              </Form.Label>
+            </div>
 
             <hr />
             <div className="text-center">
-              <label className="form-check-label mt-2 fw-bold" htmlFor="all">
-                전체 동의
-                <input
-                  className="form-check-input"
+              <Form.Label className="mt-2 fw-bold" htmlFor="all">
+                <Form.Check 
+                  className="ps-0"
                   type="checkbox"
                   id="all"
+                  label={<>전체 동의</>}
                   checked={terms.all}
                   onChange={handleCheckboxChange}
                 />
-              </label>
-              <button type="submit" className="btn btn-pilllaw mx-5 px-5">다음</button>
+              </Form.Label>
+              <Button variant="pilllaw" to={"/"} type="submit" className="btn btn-pilllaw mx-5 px-5">다음</Button>
             </div>
-          </form>
+          </Form>
         </div>
       </Container>
     </div>
