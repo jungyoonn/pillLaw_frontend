@@ -1,32 +1,35 @@
 import React from 'react';
 import '../../resources/css/style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import '@fortawesome/fontawesome-free/css/all.min.css';
+import logo from '../../resources/image/pilllaw_icon_crop.png';
+import kakao from '../../resources/image/kakao-svgrepo-com.png';
+import naver from '../../resources/image/naver-svgrepo-com.png';
+import google from '../../resources/image/google-color-svgrepo-com.png';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGithub, faInstagram } from "@fortawesome/free-brands-svg-icons";
 
 const Signin = () => {
   return (
     <div className="wrap">
       <Container>
         <div className="text-center m-2 mt-5">
-          <div className="row">
-            <div className="col-2"></div>
-            <div className="col-3 text-end">
-              <a href="#">
-                <img src="/resources/image/pilllaw_icon_crop.png" className="img-fluid header-icon" alt="아이콘" />
-              </a>
-            </div>
-            <div className="col text-start mt-4 ms-3">
+          <Row>
+            <Col xs lg="2"></Col>
+            <Col xs lg="3" className="text-end">
+              <Link to={"/"}>
+                <img src={logo} className="img-fluid header-icon" alt="아이콘" />
+              </Link>
+            </Col>
+            <Col className="text-start mt-4 ms-3">
               <h2 className="mt-4 ms-3 pt-3 fw-bold d-inline">
-                <a className="text-decoration-none header-font" href="#">PILL LAW</a>
+                <Link className="text-decoration-none header-font" to={"/"}>PILL LAW</Link>
               </h2>
-            </div>
-          </div>
+            </Col>
+          </Row>
         </div>
 
         {/* 로그인 폼 */}
@@ -56,40 +59,40 @@ const Signin = () => {
 
                 {/* 카카오 로그인 */}
                 <div className="d-grid px-5 mx-5 mt-3">
-                  <button type="button" className="btn btn-kakao mx-5 btn-block fw-bold text-kakao">
-                    <img className="img-fluid me-2 mb-1" src="/resources/image/kakao-svgrepo-com.png" width="18" alt="카카오 로그인" />
+                  <Link to={"/"} className="btn btn-kakao mx-5 btn-block fw-bold text-kakao py-1">
+                    <img className="img-fluid me-2 mb-1" src={kakao} width="18" alt="카카오 로그인" />
                     카카오 로그인
-                  </button>
+                  </Link>
                 </div>
 
                 {/* 네이버 로그인 */}
                 <div className="d-grid px-5 mx-5 mt-2">
-                  <button type="button" className="btn btn-naver mx-5 btn-block fw-bold text-white">
-                    <img className="img-fluid me-2 mb-1" src="/resources/image/naver-svgrepo-com.png" width="18" alt="네이버 로그인" />
+                  <Link to={"/"} className="btn btn-naver mx-5 btn-block fw-bold text-white py-1">
+                    <img className="img-fluid me-2 mb-1" src={naver} width="18" alt="네이버 로그인" />
                     네이버 로그인
-                  </button>
+                  </Link>
                 </div>
 
                 {/* GitHub 로그인 */}
                 <div className="d-grid px-5 mx-5 mt-2">
-                  <button type="button" className="btn btn-github mx-5 fw-bold text-white mb-1">
-                    <i className="fa-brands fa-lg fa-github mx-2"></i> GitHub 로그인
-                  </button>
+                  <Link to={"/"} className="btn btn-github mx-5 fw-bold text-white mb-1">
+                    <FontAwesomeIcon icon={faGithub} className="mx-2 fa-lg" /> GitHub 로그인
+                  </Link>
                 </div>
 
                 {/* 인스타그램 로그인 */}
                 <div className="d-grid px-5 mx-5 mt-1">
-                  <button type="button" className="btn btn-insta mx-5 fw-bold text-white mb-1">
-                    <i className="fa-brands fa-instagram fa-lg mx-2 ms-4"></i> 인스타그램 로그인
-                  </button>
+                  <Link to={"/"} className="btn btn-insta mx-5 fw-bold text-white mb-1">
+                    <FontAwesomeIcon icon={faInstagram} className="mx-2 ms-4 fa-lg" /> 인스타그램 로그인
+                  </Link>
                 </div>
 
                 {/* Google 로그인 */}
                 <div className="d-grid px-5 mx-5 mt-1">
-                  <button type="button" className="btn btn-google mx-5 fw-bold mb-1">
-                    <img className="img-fluid me-2 mb-1" src="/resources/image/google-color-svgrepo-com.png" width="18" alt="구글 로그인" />
+                  <Link to={"/"} className="btn btn-google mx-5 fw-bold mb-1">
+                    <img className="img-fluid me-2 mb-1" src={google} width="18" alt="구글 로그인" />
                     Google 로그인
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
