@@ -29,8 +29,8 @@ body {
 
 .fs-18 { font-size: 18px; }
 .fs-16 { font-size: 16px; }
-.fs-14 { font-size: 14px; }
-.fs-12 { font-size: 12px; }
+.fs-14 { font-size: 14px !important; }
+.fs-12 { font-size: 12px !important; }
 .fs-11 { font-size: 11px; }
 
 /* ===== 헤더 스타일 ===== */
@@ -86,6 +86,7 @@ body {
   background-color: #fee500 !important;
   border-color: #fee500 !important;
   color: #181600;
+  height: 38px;
 }
 .btn-kakao:hover {
   background-color: #fee500ad !important;
@@ -101,6 +102,7 @@ body {
   background-color: #03C75A !important;
   border-color: #03C75A !important;
   color: white !important;
+  height: 38px;
 }
 
 .btn-naver:hover {
@@ -146,6 +148,7 @@ body {
   color: #1a1a1a !important;
   background-color: #fff !important;
   border: 1px solid #888 !important;
+  height: 38px;
 }
 
 .btn-google:hover {
