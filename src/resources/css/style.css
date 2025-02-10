@@ -12,7 +12,7 @@
 }
 
 body {
-  background-color: var(--background-color);
+  background-color: var(--background-color) !important;
   font-family: "Noto Sans KR", serif !important;
   font-weight: 100;
   font-style: normal;
@@ -20,7 +20,7 @@ body {
 }
 
 .wrap .pilllaw-footer {
-  background-color: var(--background-color);
+  background-color: var(--background-color) !important;
   font-family: "Noto Sans KR", serif !important;
   font-weight: 100;
   font-style: normal;
