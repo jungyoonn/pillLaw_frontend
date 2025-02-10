@@ -9,6 +9,7 @@
   --background-color: #F8F9FA; /* 밝고 깨끗한 느낌의 배경색 */
   --accent-color: #F4EECF; /* 따뜻한 파스텔 베이지 강조색 */
   --header-color: #3C7B89; /* 헤더 색상 */
+  --accordian-color:#cfdfdb;
 }
 
 body {
@@ -244,4 +245,8 @@ body {
 #reviewChart {
   width: 100% !important; /* 부모 요소에 맞게 자동 조정 */
   height: auto !important;
+}
+
+.custum-accordian {
+  background-color: var(--accordian-color);
 }
