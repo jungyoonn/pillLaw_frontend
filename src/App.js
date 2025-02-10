@@ -10,14 +10,14 @@ import FollowListt from './component/follow/FollowListt';
 import Signin from './component/member/Signin';
 import SignLayout from './component/layout/SignLayout';
 import MainLayout from './component/layout/MainLayout';
-import Cart from './component/order/cart';
-import Order from './component/order/order';
-import OrderSuccess from './component/order/orderSuccess';
-import OrderFail from './component/order/orderFail';
 import ProductDetail from './component/product/ProductDetail';
 import Signup from './component/member/Signup';
 import ProfilePage from './component/follow/ProfilePage';
 import SendLetter from './component/follow/SendLetter';
+import Cart from './component/order/Cart';
+import Order from './component/order/Order';
+import OrderFail from './component/order/OrderFail';
+import OrderSuccess from './component/order/OrderSuccess';
 
 
 function App() {
@@ -31,9 +31,9 @@ function App() {
           {/* <Route path="/posts" element={<Posts />} />
           <Route path="/posts/:id" element={<PostDetail />} /> */}
           {/* <Route path='FollowListt' element={<FollowListt />} /> */}
-          {/* <Route path='/followlistt' element={<FollowListt />} />
+          <Route path='/followlistt' element={<FollowListt />} />
           <Route path='/profilepage' element={<ProfilePage />} />
-          <Route path='/sendletter' element={<SendLetter />}/> */}
+          <Route path='/sendletter' element={<SendLetter />}/>
           <Route path='/cart' element={<Cart />} />
           <Route path='/order' element={<Order />} />
           <Route path='/order/success' element={<OrderSuccess />} />
