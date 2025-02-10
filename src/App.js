@@ -6,6 +6,7 @@ import Index from './component/common/Index';
 // import Test from './component/follow/Test';
 import Footer from './component/common/Footer';
 import ProductList from './component/product/ProductList';
+import FollowListt from './component/follow/FollowListt';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path='/product/list' element={<ProductList />} />
         {/* <Route path="/posts" element={<Posts />} />
         <Route path="/posts/:id" element={<PostDetail />} /> */}
+        {/* <Route path='FollowListt' element={<FollowListt />} /> */}
       </Routes>
       <Footer />
     </BrowserRouter>
