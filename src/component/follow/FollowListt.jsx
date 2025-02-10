@@ -16,22 +16,15 @@ import FollowHeaderButtonsArea from "./FollowHeaderButtonsArea";
 
 const FollowListt = () => {
   return (
-    
+    <div className="container main-content">
     // <div className="wrap">
-    <div>
       <FollowHeaderButtonsArea />
-       {/* <Container style={{paddingTop: '115.19px'}}>
-      <img className="img-fluid p-0 pb-2" src={mainImage} alt="메인이미지" />
-        <Row>
-        <Col xs lg="9" className="mx-2">
-        </Col>
-      
-        </Row> */}
-      
       {/* 상단 버튼 영역 */}
-      {/* </Container> */}
       
       {/* 팔로우 리스트 영역 */}
+
+      
+
       <div className="list-group m-4">
         <a href="#" className="list-group-item">
           <img
@@ -98,7 +91,9 @@ const FollowListt = () => {
           파인애플
         </a>
       </div>
+      </div>
     </div>
+    
   );
 };
 
