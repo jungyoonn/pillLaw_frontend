@@ -12,10 +12,10 @@ import ProductDetail from './component/product/ProductDetail';
 import Signup from './component/member/Signup';
 import ProfilePage from './component/follow/ProfilePage';
 import SendLetter from './component/follow/SendLetter';
-import Cart from './component/order/Cart';
-import Order from './component/order/Order';
-import OrderFail from './component/order/OrderFail';
-import OrderSuccess from './component/order/OrderSuccess';
+// import Cart from './component/order/Cart';
+// import Order from './component/order/Order';
+// import OrderFail from './component/order/OrderFail';
+// import OrderSuccess from './component/order/OrderSuccess';
 import SignTerms from './component/member/SignTerms';
 
 
@@ -33,10 +33,10 @@ function App() {
           <Route path='/followlistt' element={<FollowListt />} />
           <Route path='/profilepage' element={<ProfilePage />} />
           <Route path='/sendletter' element={<SendLetter />}/>
-          <Route path='/cart' element={<Cart />} />
+          {/* <Route path='/cart' element={<Cart />} />
           <Route path='/order' element={<Order />} />
           <Route path='/order/success' element={<OrderSuccess />} />
-          <Route path='/order/fail' element={<OrderFail />} />
+          <Route path='/order/fail' element={<OrderFail />} /> */}
         </Route>
 
         <Route element={<SignLayout />}>
