@@ -196,7 +196,7 @@ const Order = () => {
 
   return (
     <div className="wrap">
-      <Container style={{ paddingTop: '115.19px'}}>
+      <Container style={{ paddingTop: '115.19px' }}>
         <h4 className="text-center fw-bold my-5">
           <span className="text-secondary">1. 장바구니</span>
           <span className="header-font mx-5">2. 주문서 작성</span>
@@ -313,7 +313,7 @@ const Order = () => {
           <Form.Group controlId="termsCheckbox" className="mb-3">
             <Form.Check
               type="checkbox"
-              label={<span onClick={() => setShowTermsModal(true)} style={{ cursor: 'pointer', textDecoration: 'underline' }}>결제 이용약관에 동의합니다</span>}
+              label={<span onClick={() => setShowTermsModal(true)} style={{ cursor: 'pointer', textDecoration: 'underline' }}>전자금융거래 이용약관에 동의합니다</span>}
               checked={isTermsChecked}
               onChange={(e) => setIsTermsChecked(e.target.checked)}
             />
@@ -346,19 +346,45 @@ const Order = () => {
           </Modal.Body>
         </Modal>
 
-        <Modal show={showTermsModal} onHide={() => setShowTermsModal(false)} style={{ color: "black" }}>
+        <Modal show={showTermsModal} onHide={() => setShowTermsModal(false)}>
           <Modal.Header closeButton>
-            <Modal.Title><strong>결제 이용약관</strong></Modal.Title>
+            <Modal.Title><strong>전자금융거래 이용약관</strong></Modal.Title>
           </Modal.Header>
-          <Modal.Body>
-            <p>고객님께서는 결제 진행 시 다음 약관에 동의하게 됩니다.</p>
-            <ul>
-              <li>결제 완료 후 환불 및 취소는 당사 환불 정책에 따라 진행됩니다.</li>
-              <li>개인정보 및 결제 정보는 안전하게 저장 및 보호됩니다.</li>
-              <li>상품의 배송은 영업일 기준 3~5일 소요되며, 천재지변 및 기타 사유로 인해 지연될 수 있습니다.</li>
-              <li>결제 후 주문 변경은 불가능하며, 변경을 원할 경우 고객센터를 통해 문의해 주세요.</li>
-              <li>일부 상품의 경우 주문 후 제작이 시작되므로 단순 변심에 의한 취소가 어려울 수 있습니다.</li>
-            </ul>
+          <Modal.Body style={{ maxHeight: '300px', overflowY: 'auto' }}>
+            <div className="bg-white w-full h-[400px] p-4 rounded-lg overflow-hidden">
+              <div className="mt-2 h-full overflow-y-auto border p-2">
+                <p>제1조(목적)</p>
+                <p>본 약관은 PILLLAW(필로)가 제공하는 전자금융거래서비스를 회원이 이용함에 있어 회사와 회원 간의 권리, 의무 및 책임사항 등을 규정함을 목적으로 합니다.</p>
+
+                <p className="mt-2">제2조(정의)</p>
+                <p>① ‘전자금융거래’란 회사가 전자적 방식으로 제공하는 금융상품 및 서비스를 회원이 이용하는 거래를 말합니다.</p>
+                <p>② ‘회원’이란 본 약관에 따라 회사와 이용계약을 체결하고 회사가 제공하는 전자금융거래서비스를 이용하는 자를 말합니다.</p>
+
+                <p className="mt-2">제3조(약관의 명시 및 변경)</p>
+                <p>① 회사는 본 약관을 회원이 알 수 있도록 회사의 홈페이지 등에 게시합니다.</p>
+                <p>② 회사는 필요한 경우 관련 법령을 위배하지 않는 범위에서 본 약관을 변경할 수 있습니다.</p>
+
+                <p className="mt-2">제4조(전자금융거래서비스의 종류)</p>
+                <p>회사가 제공하는 전자금융거래서비스의 종류는 다음과 같습니다.</p>
+                <ul className="list-disc list-inside">
+                  <li>인터넷뱅킹</li>
+                  <li>모바일뱅킹</li>
+                  <li>전자지급결제대행서비스</li>
+                </ul>
+
+                <p className="mt-2">제5조(이용시간)</p>
+                <p>전자금융거래서비스는 24시간 이용 가능함을 원칙으로 하나, 회사의 사정에 따라 이용이 제한될 수 있습니다.</p>
+
+                <p className="mt-2">제6조(거래지시의 철회)</p>
+                <p>회원은 전자금융거래법에서 정한 바에 따라 전자금융거래지시를 철회할 수 있습니다.</p>
+
+                <p className="mt-2">제7조(책임)</p>
+                <p>회원이 자신의 관리 소홀로 인해 발생한 손해에 대해서는 회사가 책임지지 않습니다.</p>
+
+                <p className="mt-2">제8조(기타)</p>
+                <p>본 약관에서 정하지 아니한 사항은 관련 법령 및 회사의 이용약관을 따릅니다.</p>
+              </div>
+            </div>
           </Modal.Body>
           <Modal.Footer>
             <Button className="btn-pilllaw" onClick={handleTermsAgree}>동의</Button>
