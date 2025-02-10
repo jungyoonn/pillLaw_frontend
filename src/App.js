@@ -20,6 +20,7 @@ import SignTerms from './component/member/SignTerms';
 import SignEmail from './component/member/SignEmail';
 import AdminLayout from './component/layout/AdminLayout';
 import AIndex from './component/admin/AIndex';
+import UserProfile from './component/follow/UserProfile';
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
           <Route path='/followlistt' element={<FollowListt />} />
           <Route path='/profilepage' element={<ProfilePage />} />
           <Route path='/sendletter' element={<SendLetter />}/>
+          <Route path='/userprofile' element={<UserProfile />}/>
           {/* <Route path='/cart' element={<Cart />} />
           <Route path='/order' element={<Order />} />
           <Route path='/order/success' element={<OrderSuccess />} />
