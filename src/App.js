@@ -7,19 +7,26 @@ import Index from './component/common/Index';
 import Footer from './component/common/Footer';
 import ProductList from './component/product/ProductList';
 import FollowListt from './component/follow/FollowListt';
+import Signin from './component/member/Signin';
+import SignLayout from './component/layout/SignLayout';
+import MainLayout from './component/layout/MainLayout';
 
 function App() {
   return (
     <BrowserRouter>
-      <Headerr />
       <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path='/product/list' element={<ProductList />} />
-        {/* <Route path="/posts" element={<Posts />} />
-        <Route path="/posts/:id" element={<PostDetail />} /> */}
-        {/* <Route path='FollowListt' element={<FollowListt />} /> */}
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<Index />} />
+          <Route path='/product/list' element={<ProductList />} />
+          {/* <Route path="/posts" element={<Posts />} />
+          <Route path="/posts/:id" element={<PostDetail />} /> */}
+          {/* <Route path='FollowListt' element={<FollowListt />} /> */}
+        </Route>
+
+        <Route element={<SignLayout />}>
+          <Route path="/signin" element={<Signin />} />
+        </Route>
       </Routes>
-      <Footer />
     </BrowserRouter>
   );
 }
