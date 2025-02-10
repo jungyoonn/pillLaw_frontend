@@ -16,6 +16,8 @@ import OrderSuccess from './component/order/orderSuccess';
 import OrderFail from './component/order/orderFail';
 import ProductDetail from './component/product/ProductDetail';
 import Signup from './component/member/Signup';
+import ProfilePage from './component/follow/ProfilePage';
+import SendLetter from './component/follow/SendLetter';
 
 
 function App() {
@@ -29,6 +31,9 @@ function App() {
           {/* <Route path="/posts" element={<Posts />} />
           <Route path="/posts/:id" element={<PostDetail />} /> */}
           {/* <Route path='FollowListt' element={<FollowListt />} /> */}
+          {/* <Route path='/followlistt' element={<FollowListt />} />
+          <Route path='/profilepage' element={<ProfilePage />} />
+          <Route path='/sendletter' element={<SendLetter />}/> */}
           <Route path='/cart' element={<Cart />} />
           <Route path='/order' element={<Order />} />
           <Route path='/order/success' element={<OrderSuccess />} />
