@@ -27,7 +27,7 @@ function App() {
         <Route element={<MainLayout />}>
           <Route path="/" element={<Index />} />
           <Route path='/product/list' element={<ProductList />} />
-          <Route path='/product/list' element={<ProductDetail />} />
+          <Route path='/product/detail/:id' element={<ProductDetail />} />
           {/* <Route path="/posts" element={<Posts />} />
           <Route path="/posts/:id" element={<PostDetail />} /> */}
           {/* <Route path='FollowListt' element={<FollowListt />} /> */}
