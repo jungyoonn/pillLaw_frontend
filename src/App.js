@@ -17,6 +17,7 @@ import SendLetter from './component/follow/SendLetter';
 // import OrderFail from './component/order/OrderFail';
 // import OrderSuccess from './component/order/OrderSuccess';
 import SignTerms from './component/member/SignTerms';
+import SignEmail from './component/member/SignEmail';
 
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/signup/terms" element={<SignTerms />} />
+          <Route path="/signup/email" element={<SignEmail />} />
         </Route>
       </Routes>
     </BrowserRouter>
