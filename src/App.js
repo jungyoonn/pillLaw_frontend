@@ -15,6 +15,7 @@ import Order from './component/order/order';
 import OrderSuccess from './component/order/orderSuccess';
 import OrderFail from './component/order/orderFail';
 import ProductDetail from './component/product/ProductDetail';
+import Signup from './component/member/Signup';
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
 
         <Route element={<SignLayout />}>
           <Route path="/signin" element={<Signin />} />
+          <Route path="/signup" element={<Signup />} />
         </Route>
       </Routes>
     </BrowserRouter>
