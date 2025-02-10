@@ -78,14 +78,14 @@ const Cart = () => {
   const finalPrice = totalPrice + shippingFee;
 
   return (
-    <div>
-      <Container className="mt-5">
-        <h4 className="text-center fw-bold mb-4">
-          <span className="text-secondary">1. 장바구니</span>
-          <span className="header-font mx-5">2. 주문서 작성</span>
+    <div className='wrap'>
+      <Container style={{paddingTop: '115.19px'}}>
+        <h4 className="text-center fw-bold my-5">
+          <span className="header-font">1. 장바구니</span>
+          <span className="text-secondary mx-5">2. 주문서 작성</span>
           <span className="text-secondary">3. 결제 완료</span>
         </h4>
-        <Table className="text-center align-middle" responsive>
+        <Table className="text-center align-middle mt-5" responsive>
           <thead>
             <tr>
               <th><input type="checkbox" onChange={handleSelectAll} checked={selectedItems.length === cartItems.length && cartItems.length > 0} /></th>
@@ -111,7 +111,7 @@ const Cart = () => {
                   </td>
                   <td>{(item.price * (item.option === '60일' ? 2 : item.option === '90일' ? 3 : 1)).toLocaleString()}원</td>
                   <td>
-                    <Form.Control type="number" value={item.quantity} min="1" onChange={(e) => handleQuantityChange(item.id, e.target.value)}
+                    <Form.Control className="text-center" type="number" value={item.quantity} min="1" onChange={(e) => handleQuantityChange(item.id, e.target.value)}
                     />
                   </td>
                   <td>{(item.price * (item.option === "60일" ? 2 : item.option === "90일" ? 3 : 1) * item.quantity).toLocaleString()}원</td>
