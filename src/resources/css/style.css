@@ -177,8 +177,33 @@ body {
   transition: background-color 0.3s ease-in-out;
 }
 
+/* input이 포커스되거나 값이 입력되었을 때 */
+.form-floating input:focus ~ label,
+.form-floating input:not(:placeholder-shown) ~ label {
+  color: var(--primary-color) !important; /* 포커스 또는 입력 시 변경할 색상 */
+}
+
 .bg-pilllaw-secondary {
-  background-color: var(--secondary-color);
+  background-color: var(--secondary-color) !important;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.border-pilllaw-secondary {
+  border: var(--secondary-color) 2px solid;
+}
+
+.border-pilllaw-primary {
+  border: var(--primary-color) 2px;
+  /* border-radius: 1px; */
+}
+
+.bg-pilllaw-secondary-opmod {
+  background-color: var(--secondary-color) ;
+  opacity: 20%;
+}
+
+.bg-pilllaw-accent {
+  background-color: var(--accent-color) !important;
   transition: background-color 0.3s ease-in-out;
 }
 
