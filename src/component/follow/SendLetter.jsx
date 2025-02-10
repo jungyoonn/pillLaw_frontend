@@ -1,9 +1,12 @@
 import React,{useState} from 'react';
-import { Container } from "react-bootstrap";
+import {Button, Modal, Container } from "react-bootstrap";
 
 const SendLetter = () => {
    // 맞팔로우 된 사람
-   const mutualFollows = [
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const mutualFollows = [
     "치킨",
     "피자",
     "딸기모찌",
@@ -49,6 +52,9 @@ const SendLetter = () => {
 
   return (
     <div className="wrap">
+    <Button variant="primary" onClick={handleShow}>
+        쪽지보내기
+    </Button>
     <Container style={{paddingTop: '115.19px'}} >
     <div className="container mt-5">
       {/*  받는 사람 */}

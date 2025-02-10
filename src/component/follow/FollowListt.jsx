@@ -1,5 +1,6 @@
 import React from "react";
 import FollowHeaderButtonsArea from "./FollowHeaderButtonsArea";
+import SendLetter from "./SendLetter";
 
 // import Row from 'react-bootstrap/Row';
 // import mainImage from '../../resources/image/main_image_2.jpg';
@@ -26,7 +27,7 @@ const FollowListt = () => {
       
 
       <div className="list-group m-4">
-        <a href="#" className="list-group-item">
+        <a href="sendletter" className="list-group-item">
           <img
             src="../../resources/followImage/사본 -freepik__adjust__7192.png"
             alt="프로필"
