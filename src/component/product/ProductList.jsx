@@ -27,10 +27,10 @@ const ProductList = () => {
       <Container className="text-center" style={{ paddingTop: "115.19px" }}>
         <h1 className="fw-bold my-5">상품 리스트</h1>
         {/* 검색창 */}
-        <div className="form-floating my-2 fs-12 text-pilllaw">
+        <div className="form-floating my-2 fs-12">
           <input 
             type="text"
-            className="form-control bg-pilllaw"
+            className="form-control"
             id="search"
             placeholder="검색어를 입력하세요."
             value={searchTerm}
