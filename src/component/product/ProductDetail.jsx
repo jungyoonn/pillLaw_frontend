@@ -21,6 +21,7 @@ import image2 from "../../resources/image/product2.jpg";
 import image3 from "../../resources/image/product3.jpg";
 import image4 from "../../resources/image/helfugarcinia.jpg";
 import Button from '../common/Button';
+import ReviewForm from './ReviewForm'
 
 //  상품 데이터 (API 연동 전 테스트 데이터)
 const products = [
@@ -65,22 +66,72 @@ const reviews = [
   { id: 2, title: "건강맨", content: "매일 먹으니 효과가 좋은 것 같아요.", rating: 5, date: "2025.02.08", likes: 25 },
 ];
 
+
+
+
 // 점수 분포 데이터
 const ratingDistribution = [2, 5, 7, 3, 3];
 
 const ProductDetail = () => {
   const { id } = useParams();
   const product = products.find((p) => p.id === parseInt(id));
-  const [mainImage, setMainImage] = useState("");
+  const [mainImage, setMainImage] = useState(product ? product.image : "");
   const [activeTab, setActiveTab] = useState("real-product-details");
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
+  const [showReviewModal, setShowReviewModal] = useState(false); // 📌 모달 상태 추가
+  // 📌 초기 리뷰 상태를 `useState`에서 관리하도록 변경
+  const [reviews, setReviews] = useState([
+    { id: 1, title: "건강하면 울리는 사이렌", content: "우리 아이가 참 좋아해요.", rating: 4, date: "2025.02.10", likes: 17, images: [] },
+    { id: 2, title: "건강맨", content: "매일 먹으니 효과가 좋은 것 같아요.", rating: 5, date: "2025.02.08", likes: 25, images: [] },
+  ]);
+  
+  const handleAddReview = (newReview) => {
+    setReviews((prevReviews) => [...prevReviews, newReview]);
+  };
 
   useEffect(() => {
-    if (product) {
-      setMainImage(product.image);
-    }
+    if (!product) return;
+    setMainImage(product.image);
   }, [product]);
+
+  useEffect(() => {
+    if (activeTab !== "real-product-review") return;
+    if (!chartRef.current) return;
+
+    if (chartInstance.current) {
+      chartInstance.current.destroy();
+    }
+
+    const ctx = chartRef.current.getContext("2d");
+    chartInstance.current = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: ["1점", "2점", "3점", "4점", "5점"],
+        datasets: [
+          {
+            label: "리뷰 개수",
+            data: [2, 5, 7, 3, 3], // 예제 데이터
+            backgroundColor: "rgba(75, 192, 192, 0.7)",
+            borderColor: "rgba(75, 192, 192, 1)",
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: { beginAtZero: true, ticks: { stepSize: 1 } },
+        },
+      },
+    });
+    return () => {
+      if (chartInstance.current) {
+        chartInstance.current.destroy();
+      }
+    };
+  }, [activeTab]);
 
 
 
@@ -244,12 +295,14 @@ const ProductDetail = () => {
                     </div>
                   </Col>
 
+                  {/* 📌 리뷰 작성 모달 */}
+                  <ReviewForm show={showReviewModal} handleClose={() => setShowReviewModal(false)} addReview={handleAddReview} />
 
                   {/* 리뷰 작성 버튼 */}
-                  <Col xs={2} className="d-flex align-items-center justify-content-end">
-                    <Button variant="pilllaw-secondary" className="btn-sm fw-bold btn-pilllaw fs-14">
-                      리뷰 작성하기 <FontAwesomeIcon icon={faStar} />
-                    </Button>
+                  <Col xs={2} className="justify-content-end">
+                  <button className="btn-sm fw-bold btn-pilllaw fs-14" onClick={() => setShowReviewModal(true)}>
+                    리뷰 작성하기 <FontAwesomeIcon icon={faStar} />
+                  </button>
                   </Col>
                 </Row>
               </div>
@@ -258,9 +311,13 @@ const ProductDetail = () => {
               <Row className="mt-5">
                 {reviews.map((review) => (
                   <div key={review.id} className="row border border-1 pt-4 pb-3 mx-3 fs-12 mt-2">
-                    {/* 리뷰 이미지 */}
+                    {/* 리뷰 이미지 (첨부된 사진이 있으면 표시) */}
                     <Col xs={2} className="d-flex align-items-center">
-                      <img className="img-fluid w-75 pilllaw-product-image" src={mainImage} alt="리뷰 이미지" />
+                      {review.images && review.images.length > 0 ? (
+                        <img className="img-fluid w-75 pilllaw-product-image" src={review.images[0]} alt="리뷰 이미지" />
+                      ) : (
+                        <img className="img-fluid w-75 pilllaw-product-image" src={mainImage} alt="기본 이미지" />
+                      )}
                     </Col>
 
                     {/* 리뷰 본문 */}
@@ -269,7 +326,7 @@ const ProductDetail = () => {
                         <span className="fw-bold">{review.title}</span>
                       </Row>
                       <Row className="text-start mt-2">
-                        <span>{review.content}</span>
+                        <span dangerouslySetInnerHTML={{ __html: review.content }} />
                       </Row>
                     </Col>
 
@@ -297,6 +354,7 @@ const ProductDetail = () => {
                   </div>
                 ))}
               </Row>
+
             </div>
           )}
         </Row>

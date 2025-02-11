@@ -48,12 +48,6 @@ const MyEditor = () => {
         });
     });
   };
-  
-  
-  
-  
-  
-  
 
   return (
     <Editor

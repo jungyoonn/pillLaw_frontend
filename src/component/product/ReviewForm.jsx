@@ -9,7 +9,6 @@ const ReviewForm = ({ show, handleClose, addReview }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [images, setImages] = useState([]); // 📌 이미지 파일 배열
-
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
     const newImages = [];
@@ -75,11 +74,11 @@ const ReviewForm = ({ show, handleClose, addReview }) => {
           <Form.Group controlId="reviewContent" className="mt-3">
             <Form.Label>리뷰 내용</Form.Label>
             <Editor
-              apiKey="your-tinymce-api-key"
+              apiKey="uzb7mzqvze4iw0jm2jl00qyohdciwzmoq47xt1j3pjoxmok9"
               initialValue=""
               init={{
                 height: 250,
-                menubar: false,
+                menubar: true,
                 plugins: ["advlist autolink lists link charmap print preview anchor", "searchreplace visualblocks code fullscreen", "insertdatetime media table paste code help wordcount"],
                 toolbar: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link",
                 branding: false,
