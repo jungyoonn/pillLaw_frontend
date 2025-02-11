@@ -1,0 +1,191 @@
+import React, { useState, useRef, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
+import "../../resources/css/style.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCapsules,
+  faHeart,
+  faStar,
+} from "@fortawesome/free-solid-svg-icons";
+import Chart from "chart.js/auto";
+import { Col, Container, Row } from "react-bootstrap";
+import image1 from "../../resources/image/product1.jpg";
+import image2 from "../../resources/image/product2.jpg";
+import image3 from "../../resources/image/product3.jpg";
+import image4 from "../../resources/image/helfugarcinia.jpg";
+import Button from "../common/Button";
+import ReviewForm from "./ReviewForm"; // 📌 리뷰 작성 모달 추가
+
+//  상품 데이터 (API 연동 전 테스트 데이터)
+const products = [
+  {
+    id: 1,
+    name: "프레쉬 유산균",
+    price: 22900,
+    discount: 0.1,
+    image: image3,
+    thumbnails: [image3, image2, image1],
+    description: "이 제품은 면역과 건강을 위한 최고의 선택입니다.",
+    tags: ["눈 건강", "단백질", "지방산", "면역"],
+    detailImage: image4,
+  },
+  {
+    id: 2,
+    name: "비타민",
+    price: 26000,
+    discount: 0.15,
+    image: image2,
+    thumbnails: [image2, image1, image3],
+    description: "비타민은 신체 기능을 지원하며 에너지를 공급합니다.",
+    tags: ["비타민 A", "비타민 C", "면역"],
+    detailImage: image4,
+  },
+  {
+    id: 3,
+    name: "홍삼",
+    price: 41500,
+    discount: 0.2,
+    image: image1,
+    thumbnails: [image1, image3, image2],
+    description: "홍삼은 면역력을 증진시키고 피로 회복에 도움을 줍니다.",
+    tags: ["면역", "항산화", "피로 회복"],
+    detailImage: image4,
+  },
+];
+
+// 샘플 리뷰 데이터
+const initialReviews = [
+  { id: 1, title: "건강하면 울리는 사이렌", content: "우리 아이가 참 좋아해요.", rating: 4, date: "2025.02.10", likes: 17, images: [] },
+  { id: 2, title: "건강맨", content: "매일 먹으니 효과가 좋은 것 같아요.", rating: 5, date: "2025.02.08", likes: 25, images: [] },
+];
+
+const ProductDetail = () => {
+  const { id } = useParams();
+  const product = products.find((p) => p.id === parseInt(id));
+  const [mainImage, setMainImage] = useState("");
+  const [activeTab, setActiveTab] = useState("real-product-details");
+  const chartRef = useRef(null);
+  const chartInstance = useRef(null);
+  const [reviews, setReviews] = useState(initialReviews); // 📌 리뷰 상태 추가
+  const [showReviewModal, setShowReviewModal] = useState(false); // 📌 모달 상태 추가
+
+  useEffect(() => {
+    if (product) {
+      setMainImage(product.image);
+    }
+  }, [product]);
+
+  useEffect(() => {
+    if (activeTab !== "real-product-review") return; // 🚀 리뷰 탭이 아닐 경우 실행하지 않음.
+
+    if (!chartRef.current) return;
+
+    if (chartInstance.current) {
+      chartInstance.current.destroy();
+    }
+
+    const ctx = chartRef.current.getContext("2d");
+    chartInstance.current = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: ["1점", "2점", "3점", "4점", "5점"],
+        datasets: [
+          {
+            label: "리뷰 개수",
+            data: [2, 5, 7, 3, 3], // 예제 데이터
+            backgroundColor: "rgba(75, 192, 192, 0.7)",
+            borderColor: "rgba(75, 192, 192, 1)",
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: { beginAtZero: true, ticks: { stepSize: 1 } },
+        },
+      },
+    });
+
+    return () => {
+      if (chartInstance.current) {
+        chartInstance.current.destroy();
+      }
+    };
+  }, [activeTab]);
+
+  if (!product) return <h2 className="text-center mt-5">상품을 찾을 수 없습니다.</h2>;
+
+  const discountedPrice = product.price - product.price * product.discount;
+
+  // 📌 리뷰 추가 함수
+  const handleAddReview = (newReview) => {
+    setReviews([...reviews, newReview]);
+  };
+
+  return (
+    <Container style={{ paddingTop: "115.19px" }}>
+      <Container className="container-fluid product-detail text-center">
+        <h1 className="fw-bold mb-4 text-pilllaw">상품 상세정보</h1>
+        <hr className="text-pilllaw" />
+
+        {/* 리뷰 작성 모달 */}
+        <ReviewForm show={showReviewModal} handleClose={() => setShowReviewModal(false)} addReview={handleAddReview} />
+
+        {/* 리뷰 작성 버튼 */}
+        <Button
+          variant="pilllaw-secondary"
+          className="btn-sm fw-bold btn-pilllaw fs-14"
+          onClick={() => setShowReviewModal(true)}
+        >
+          리뷰 작성하기 <FontAwesomeIcon icon={faStar} />
+        </Button>
+
+        {/* 리뷰 리스트 */}
+        <Row className="mt-5">
+          {reviews.map((review) => (
+            <div key={review.id} className="row border border-1 pt-4 pb-3 mx-3 fs-12 mt-2">
+              {/* 리뷰 이미지 */}
+              <Col xs={2} className="d-flex align-items-center">
+                {review.images && review.images.length > 0 ? (
+                  <img className="img-fluid w-75 pilllaw-product-image" src={review.images[0]} alt="리뷰 이미지" />
+                ) : (
+                  <img className="img-fluid w-75 pilllaw-product-image" src={mainImage} alt="기본 이미지" />
+                )}
+              </Col>
+
+              {/* 리뷰 본문 */}
+              <Col xs={6}>
+                <Row className="text-start">
+                  <span className="fw-bold">{review.title}</span>
+                </Row>
+                <Row className="text-start mt-2">
+                  <span dangerouslySetInnerHTML={{ __html: review.content }} />
+                </Row>
+              </Col>
+
+              {/* 작성일 */}
+              <Col xs={2} className="text-center">
+                <span>작성일: {review.date}</span>
+              </Col>
+
+              {/* 별점 */}
+              <Col xs={2} className="text-center">
+                <span className="fw-bold">별점: </span>
+                {Array.from({ length: review.rating }).map((_, index) => (
+                  <FontAwesomeIcon key={index} icon={faStar} className="text-warning" />
+                ))}
+                ({review.rating}점)
+              </Col>
+            </div>
+          ))}
+        </Row>
+      </Container>
+    </Container>
+  );
+};
+
+export default ProductDetail;
