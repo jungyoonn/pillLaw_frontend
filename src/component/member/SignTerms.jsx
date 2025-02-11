@@ -6,7 +6,7 @@ import Button from '../common/Button';
 
 const SignTerms = () => {
   const [terms, setTerms] = useState({
-    use: false,
+    rule: false,
     info: false,
     marketing: false,
     sms: false,
@@ -19,7 +19,7 @@ const SignTerms = () => {
     
     if (id === "all") {
       setTerms({
-        use: checked,
+        rule: checked,
         info: checked,
         marketing: checked,
         sms: checked,
@@ -30,7 +30,7 @@ const SignTerms = () => {
       setTerms((prev) => ({
         ...prev,
         [id]: checked,
-        all: checked && prev.use && prev.info && prev.marketing && prev.sms && prev.email,
+        all: checked && prev.rule && prev.info && prev.marketing && prev.sms && prev.email,
       }));
     }
   };
@@ -62,13 +62,13 @@ const SignTerms = () => {
         <div className="terms mx-5 px-5 pt-5">
           <Form method="post">
             <div className="form-check-reverse text-start">
-              <Form.Label htmlFor="use">
+              <Form.Label htmlFor="rule">
                 <Form.Check 
                   className="ps-0"
                   style={{display:'inline'}}
                   type="checkbox"
-                  id="use"
-                  checked={terms.use}
+                  id="rule"
+                  checked={terms.rule}
                   label={<><span className="text-success fw-bold">[필수] </span> 필로 이용 약관</>}
                   onChange={handleCheckboxChange}
                 />
