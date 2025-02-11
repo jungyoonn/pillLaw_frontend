@@ -22,6 +22,7 @@ import UserProfile from './component/follow/UserProfile';
 import OrderSuccessed from './component/order/OrderSuccess';
 import SignupForm from './component/member/SignupForm';
 import OrderFailed from './component/order/OrderFailed';
+import UserProfile22 from './component/follow/SendLetter copy';
 
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
           <Route path='/profilepage' element={<ProfilePage />} />
           <Route path='/sendletter' element={<SendLetter />}/>
           <Route path='/userprofile' element={<UserProfile />}/>
+          {/* <Route path='/userprofile22' element={<UserProfile22 />}/> */}
           <Route path='/cart' element={<MyCart />} />
           <Route path='/order' element={<MyOrder />} />
           <Route path='/order/success' element={<OrderSuccessed />} />

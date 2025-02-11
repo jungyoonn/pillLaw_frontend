@@ -1,12 +1,20 @@
-import React,{useState} from 'react';
-import {Button, Modal, Container } from "react-bootstrap";
+import React,{useState ,useRef, useEffect} from 'react';
+import {Container } from "react-bootstrap";
 import { Link } from 'react-router-dom';
 
+// const SendLetter = () => {
+//    // 맞팔로우 된 사람
+//   const [show, setShow] = useState(false);
+//   const handleClose = () => setShow(false);
+//   const handleShow = () => setShow(true);
+
 const SendLetter = () => {
-   // 맞팔로우 된 사람
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [selectedRecipient, setSelectedRecipient] = useState("");
+  const [messageContent, setMessageContent] = useState("");
+  const dropdownRef = useRef(null);
+  const [showToast, setShowToast] = useState(false);
+
   const mutualFollows = [
     "치킨",
     "피자",
@@ -18,29 +26,41 @@ const SendLetter = () => {
     "파인애플",
   ];
 
-  const [recipientInput, setRecipientInput] = useState("");
-  const [selectedRecipient, setSelectedRecipient] = useState("");
+  // const filteredRecipients = mutualFollows.filter((user) =>
+  //   user.toLowerCase().includes(recipientInput.toLowerCase())
+  // );
 
-  const [messageContent, setMessageContent] = useState("");
-  const [showToast, setShowToast] = useState(false);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
- 
-  const filteredRecipients = mutualFollows.filter((user) =>
-    user.toLowerCase().includes(recipientInput.toLowerCase())
-  );
 
+  // 받는 사람 선택
   const handleRecipientSelect = (user) => {
-    setSelectedRecipient(user);
-    setRecipientInput(user);
-  };
+   setSelectedRecipient(user);
+   setShowDropdown(false); // 선택 후 드롭다운 닫기
+ };
+
+  // const handleRecipientSelect = (user) => {
+  //   setSelectedRecipient(user);
+  //   // setRecipientInput(user);
+  //   setShowDropdown(false);
+  // };
 
   const handleSend = () => {
     if (!selectedRecipient || messageContent.trim() === "") {
       alert("받는 사람과 쪽지 내용을 모두 입력해주세요");
       return;
     }
-
-    setShowToast(true);
+    alert(`쪽지가 ${selectedRecipient}님에게 전송되었습니다.`);
+    setMessageContent("");
+    setSelectedRecipient("");
   };
 
   // 토스트 확인 버튼
@@ -48,7 +68,7 @@ const SendLetter = () => {
     setShowToast(false);
     setMessageContent("");
     setSelectedRecipient("");
-    setRecipientInput("");
+    // setRecipientInput("");
   };
 
   return (
@@ -65,14 +85,19 @@ const SendLetter = () => {
           type="text"
           className="form-control"
           placeholder="받는 사람을 검색해주세요"
-          value={recipientInput}
-          onChange={(e) => {
-            setRecipientInput(e.target.value);
-            setSelectedRecipient(""); // 검색 시 선택된 받는 사람 초기화
-          }}
+          value={selectedRecipient}
+          readOnly
+            onClick={() => setShowDropdown(!showDropdown)}
+            
+          // onChange={(e) => {
+          //   setRecipientInput(e.target.value);
+          //   setSelectedRecipient(""); // 검색 시 선택된 받는 사람 초기화
+          // }}
         />
+       
+       
         {/* 검색 목록 */}
-        {recipientInput && !selectedRecipient && (
+        {/* {recipientInput && !selectedRecipient && (
           <ul className="list-group mt-1">
             {filteredRecipients.length > 0 ? (
               filteredRecipients.map((user, index) => (
@@ -90,7 +115,21 @@ const SendLetter = () => {
             )}
           </ul>
         )}
-      </div>
+      </div> */}
+        {showDropdown && (
+            <div className="list-group mt-1" style={{ position: "absolute", zIndex: 1000, width: "100%" }}>
+              {mutualFollows.map((user, index) => (
+                <button
+                  key={index}
+                  className="list-group-item list-group-item-action"
+                  onClick={() => handleRecipientSelect(user)}
+                >
+                  {user}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
 
       {/*쪽지 내용 입력 폼 */}
       <div className="mb-3">
@@ -105,8 +144,8 @@ const SendLetter = () => {
       </div>
 
       {/*보내기 버튼 */}
-      <div className="text-end">
-        <button className="btn btn-pilllaw" onClick={handleSend}>
+      <div className="text-center">
+        <button className="btn btn-pilllaw d-block mx-auto" onClick={handleSend}>
           보내기
         </button>
       </div>
@@ -131,16 +170,16 @@ const SendLetter = () => {
             className="bg-white p-4 rounded shadow"
             style={{ minWidth: "300px", textAlign: "center" }}
           >
-            <p className="mb-3">쪽지가 발송되었습니다.</p>
+            <p className="mb-3">${selectedRecipient}님에게 쪽지가 발송되었습니다.</p>
             <button type="button" className="btn btn-pilllaw" onClick={handleToastConfirm}>
               확인
             </button>
           </div>
         </div>
-        )}
-        </div>
+      )}
+      </div>
         </Container>
-    </div>
+      </div>
   );
 };
 
