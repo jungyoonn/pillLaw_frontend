@@ -181,7 +181,7 @@ body {
 /* input이 포커스되거나 값이 입력되었을 때 */
 .form-floating input:focus ~ label,
 .form-floating input:not(:placeholder-shown) ~ label {
-  color: var(--primary-color) !important; /* 포커스 또는 입력 시 변경할 색상 */
+  /* color: var(--primary-color) !important; 포커스 또는 입력 시 변경할 색상 */
 }
 
 .bg-pilllaw-secondary {
