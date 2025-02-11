@@ -30,12 +30,12 @@ const ProductSummary = ({ product }) => {
         {/* 좋아요 및 공유 버튼 */}
         <Col className="text-end">
           <span className="fw-bold">
-            <Link to="#" className="text-decoration-none text-black">
-              <FontAwesomeIcon icon={faHeart} size="xl" className="fs-16 fw-bold" />
+            <Link to="#" className="text-decoration-none text-pilllaw">
+              <FontAwesomeIcon icon={faHeart} size="xl" className="fs-16" />
             </Link>
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <Link to="#" className="text-decoration-none text-black">
-              <FontAwesomeIcon icon={faShareNodes} size="xl" className="fs-16 fw-bold" />
+            <Link to="#" className="text-decoration-none text-pilllaw">
+              <FontAwesomeIcon icon={faShareNodes} size="xl" className="fs-16 "/>
             </Link>
           </span>
         </Col>
@@ -44,7 +44,7 @@ const ProductSummary = ({ product }) => {
       {/* 정상가 */}
       <Row className="mt-4">
         <Col className="text-start">
-          <FontAwesomeIcon icon={faWonSign} size="xl" />
+          <FontAwesomeIcon icon={faWonSign} size="xl"/>
           &nbsp;&nbsp;&nbsp;&nbsp;
           <span className="fs-14 text-decoration-line-through text-secondary fw-bold">
             {product.price.toLocaleString()}
@@ -65,7 +65,7 @@ const ProductSummary = ({ product }) => {
       {/* 구독 권유 버튼 */}
       <Row>
         <Col className="d-grid mt-4">
-          <Button variant="pilllaw-secondary" className="btn-block">
+          <Button variant="pilllaw" className="btn-block">
             필로 구독 시 배송비 무료! 구독하러 가기 &nbsp;&nbsp;
             <FontAwesomeIcon icon={faShare} size="xl" />
           </Button>
@@ -95,16 +95,16 @@ const ProductSummary = ({ product }) => {
       </Row>
 
       <Row className="mt-5">
-        <Col xs={1}></Col>
+        <Col xs={2}></Col>
         <Col className="d-flex justify-content-between">
-          <Button variant="pilllaw-secondary">
+          <Button variant="pilllaw">
             <FontAwesomeIcon icon={faCartShopping} /> &nbsp; 장바구니
           </Button>
-          <Button variant="pilllaw-secondary">
+          <Button variant="pilllaw">
             <FontAwesomeIcon icon={faCoins} /> &nbsp; 구매하기
           </Button>
         </Col>
-        <Col xs={1}></Col>
+        <Col xs={2}></Col>
       </Row>
     </>
   );

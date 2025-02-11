@@ -1,16 +1,10 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import "../../resources/css/style.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faHeart,
-  // faShareNodes,
-  // faWonSign,
-  // faTruck,
-  // faCartShopping,
-  // faCoins,
   faStar,
 } from "@fortawesome/free-solid-svg-icons";
 import { Col, Container, Row } from "react-bootstrap";
@@ -22,6 +16,7 @@ import Button from '../common/Button';
 import ReviewForm from '../common/ReviewForm'
 import ProductSummary from './ProductSummary'
 import ReviewChart from "../common/ReviewChart"
+import ProductReviewList from "./ProductReviewList";
 
 //  상품 데이터 (API 연동 전 테스트 데이터)
 const products = [
@@ -68,24 +63,28 @@ const ProductDetail = () => {
   const product = products.find((p) => p.id === parseInt(id));
   const [mainImage, setMainImage] = useState(product ? product.image : "");
   const [activeTab, setActiveTab] = useState("real-product-details");
-  const [showReviewModal, setShowReviewModal] = useState(false); // 📌 모달 상태 추가
-  // 📌 초기 리뷰 상태를 `useState`에서 관리하도록 변경
+  const [showReviewModal, setShowReviewModal] = useState(false);
   const [reviews, setReviews] = useState([
     { id: 1, title: "건강하면 울리는 사이렌", content: "우리 아이가 참 좋아해요.", rating: 4, date: "2025.02.10", likes: 17, images: [] },
     { id: 2, title: "건강맨", content: "매일 먹으니 효과가 좋은 것 같아요.", rating: 5, date: "2025.02.08", likes: 25, images: [] },
     { id: 3, title: "좋아요맨", content: "잘 먹고 있어요!", rating: 5, date: "2025.02.10", likes: 10, images: [] },
     { id: 4, title: "괜찮아요맨", content: "괜찮은 제품이에요.", rating: 4, date: "2025.02.08", likes: 5, images: [] }
   ]);
-  
+
+
   const handleAddReview = (newReview) => {
     setReviews((prevReviews) => [...prevReviews, newReview]);
   };
 
+  
   useEffect(() => {
     if (!product) return;
     setMainImage(product.image);
   }, [product]);
 
+  if (!product) return <h2 className="text-center mt-5">상품을 찾을 수 없습니다.</h2>;
+
+  // 🔹 리뷰 점수 분포 계산 함수 (ReviewChart에 전달)
   const calculateRatingDistribution = (reviews) => {
     const distribution = [0, 0, 0, 0, 0]; 
     reviews.forEach((review) => {
@@ -97,8 +96,6 @@ const ProductDetail = () => {
   };
 
   const ratingDistribution = calculateRatingDistribution(reviews);
-
-  if (!product) return <h2 className="text-center mt-5">상품을 찾을 수 없습니다.</h2>;
 
   return (
     <Container style={{ paddingTop: "115.19px" }}>
@@ -133,23 +130,23 @@ const ProductDetail = () => {
 
         {/*  제품 상세정보, 리뷰 보기 탭 */}
         <Row className="mt-5">
-          <ul className="nav nav-tabs nav-justified text-pilllaw">
+          <ul className="nav nav-tabs nav-justified">
             <li className="nav-item">
               <Button 
-                variant="pilllaw-secondary" 
-                className={`nav-link ${activeTab === "real-product-details" ? "active" : ""}`} 
+                variant="pilllaw" 
+                className={`nav-link text-pilllaw btn-pilllaw ${activeTab === "real-product-details" ? "active" : ""}`} 
                 onClick={() => setActiveTab("real-product-details")}>
                 제품 상세정보
               </Button>
             </li>
             <li className="nav-item">
-            <Button
-              variant="pilllaw-secondary"
-              className={`nav-link ${activeTab === "real-product-review" ? "active" : ""}`}
-              onClick={() => setActiveTab("real-product-review")}
-            >
-              제품 리뷰({reviews.length})
-            </Button>
+              <Button
+                variant="pilllaw"
+                className={`nav-link text-pilllaw btn-pilllaw ${activeTab === "real-product-review" ? "active" : ""}`}
+                onClick={() => setActiveTab("real-product-review")}
+              >
+                제품 리뷰({reviews.length})
+              </Button>
             </li>
           </ul>
 
@@ -169,9 +166,9 @@ const ProductDetail = () => {
           {activeTab === "real-product-review" && (
             <div className="tab-content mt-5 mb-5 fade show active">
               <div className="pilllaw-product-score-total text-center p-4">
-                <span className="fs-18 fw-bold">리뷰</span>
+                <span className="fs-18 fw-bold text-pilllaw">리뷰</span>
                 <br />
-                <span className="fs-16">당신의 소중한 후기를 남겨주세요.</span>
+                <span className="fs-14">소중한 후기를 남겨주세요.</span>
                 <br />
 
                 <Row className="mt-5 container">
@@ -217,51 +214,8 @@ const ProductDetail = () => {
                 </Row>
               </div>
 
-              {/* 리뷰 리스트 */}
               <Row className="mt-5">
-                {reviews.map((review) => (
-                  <div key={review.id} className="row border border-1 pt-4 pb-3 mx-3 fs-12 mt-2">
-                    <Col xs={2} className="d-flex align-items-center">
-                      {review.images && review.images.length > 0 ? (
-                        <img className="img-fluid w-75 pilllaw-product-image" src={review.images[0]} alt="리뷰 이미지" />
-                      ) : (
-                        <img className="img-fluid w-75 pilllaw-product-image" src={mainImage} alt="기본 이미지" />
-                      )}
-                    </Col>
-
-                    {/* 리뷰 본문 */}
-                    <Col xs={6}>
-                      <Row className="text-start">
-                        <span className="fw-bold">{review.title}</span>
-                      </Row>
-                      <Row className="text-start mt-2">
-                        <span dangerouslySetInnerHTML={{ __html: review.content }} />
-                      </Row>
-                    </Col>
-
-                    {/* 작성일 */}
-                    <Col xs={2} className="text-center">
-                      <span>작성일: {review.date}</span>
-                    </Col>
-
-                    {/* 별점 */}
-                    <Col xs={2} className="text-center">
-                      <span className="fw-bold">별점: </span>
-                      {Array.from({ length: review.rating }).map((_, index) => (
-                        <FontAwesomeIcon key={index} icon={faStar} className="text-warning" />
-                      ))}
-                      ({review.rating}점)
-                    </Col>
-
-                    {/* 좋아요 버튼 */}
-                    <Row className="row text-end mt-2">
-                      <Col className="col">
-                        도움이 돼요{" "}
-                        <FontAwesomeIcon icon={faHeart} className="text-danger" /> : <span>{review.likes}</span>
-                      </Col>
-                    </Row>
-                  </div>
-                ))}
+                <ProductReviewList reviews={reviews} />
               </Row>
 
             </div>
