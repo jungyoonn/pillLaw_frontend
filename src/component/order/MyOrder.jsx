@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../../resources/css/style.css";
 import { useNavigate } from "react-router-dom";
 
-const Order = () => {
+const MyOrder = () => {
   const [address, setAddress] = useState({
     postcode: "",
     roadAddress: "",
@@ -395,4 +395,4 @@ const Order = () => {
   );
 };
 
-export default Order;
+export default MyOrder;

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Card, Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-const OrderSuccess = () => {
+const OrderSuccessed = () => {
   const [orderData, setOrderData] = useState({
     receiver: '권미은',
     phone: '010-4149-2769',
@@ -70,4 +70,4 @@ const OrderSuccess = () => {
   );
 }
 
-export default OrderSuccess;
+export default OrderSuccessed;

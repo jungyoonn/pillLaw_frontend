@@ -12,15 +12,15 @@ import ProductDetail from './component/product/ProductDetail';
 import Signup from './component/member/Signup';
 import ProfilePage from './component/follow/ProfilePage';
 import SendLetter from './component/follow/SendLetter';
-// import Cart from './component/order/Cart';
-// import Order from './component/order/Order';
-// import OrderFail from './component/order/OrderFail';
-// import OrderSuccess from './component/order/OrderSuccess';
+import MyCart from './component/order/MyCart';
+import MyOrder from './component/order/MyOrder';
 import SignTerms from './component/member/SignTerms';
 import SignEmail from './component/member/SignEmail';
 import AdminLayout from './component/layout/AdminLayout';
 import AIndex from './component/admin/AIndex';
 import UserProfile from './component/follow/UserProfile';
+import OrderFailed from './component/order/OrderFailed';
+import OrderSuccessed from './component/order/OrderSuccess';
 
 
 function App() {
@@ -38,10 +38,10 @@ function App() {
           <Route path='/profilepage' element={<ProfilePage />} />
           <Route path='/sendletter' element={<SendLetter />}/>
           <Route path='/userprofile' element={<UserProfile />}/>
-          {/* <Route path='/cart' element={<Cart />} />
-          <Route path='/order' element={<Order />} />
-          <Route path='/order/success' element={<OrderSuccess />} />
-          <Route path='/order/fail' element={<OrderFail />} /> */}
+          {/* <Route path='/cart' element={<MyCart />} />
+          <Route path='/order' element={<MyOrder />} />
+          <Route path='/order/success' element={<OrderSuccessed />} />
+          <Route path='/order/fail' element={<OrderFailed />} /> */}
         </Route>
 
         <Route element={<SignLayout />}>
@@ -50,8 +50,8 @@ function App() {
           <Route path="/signup/terms" element={<SignTerms />} />
           <Route path="/signup/email" element={<SignEmail />} />
         </Route>
-
-        {/* <Route element={<AdminLayout />}>
+{/* 
+        <Route element={<AdminLayout />}>
           <Route path='/admin/' element={<AIndex />} />
         </Route> */}
 

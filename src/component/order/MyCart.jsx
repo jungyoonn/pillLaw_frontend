@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Container, Button, Table, Modal, Form } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 
-const Cart = () => {
+const MyCart = () => {
   const [cartItems, setCartItems] = useState([
     { id: 1, img: "https://placehold.co/60", name: "콜린 미오 이노시톨", price: 20000, option: "30일", quantity: 1 },
     { id: 2, img: "https://placehold.co/60", name: "철분 24mg", price: 15000, option: "60일", quantity: 1 },
@@ -158,4 +158,4 @@ const Cart = () => {
   );
 };
 
-export default Cart;
+export default MyCart;

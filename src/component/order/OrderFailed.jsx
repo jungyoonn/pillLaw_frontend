@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-const OrderFail = () => {
+const OrderFailed = () => {
     const navigate = useNavigate();
     const goToCart = () => {
       navigate('/cart'); // /cart로 이동
@@ -25,4 +25,4 @@ const OrderFail = () => {
   );
 }
 
-export default OrderFail;
+export default OrderFailed;
