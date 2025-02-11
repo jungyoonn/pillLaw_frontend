@@ -3,7 +3,7 @@ import '../../resources/css/style.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 import { Col, Container, Form, Row } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../resources/image/pilllaw_icon_crop.png';
 import Button from '../common/Button';
 
@@ -14,6 +14,7 @@ const SignEmail = () => {
   const [verificationError, setVerificationError] = useState('');
   const [authVisible, setAuthVisible] = useState(false);
   const [submitVisible, setSubmitVisible] = useState(false);
+  const navigate = useNavigate();
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -52,6 +53,7 @@ const SignEmail = () => {
     // 인증번호가 일치하면 다음 동작
     setVerificationError('');
     // 다음 페이지나 동작으로 이동
+    navigate('/signup/form');
   };
 
   return (

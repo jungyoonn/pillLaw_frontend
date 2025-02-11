@@ -12,15 +12,26 @@ import ProductDetail from './component/product/ProductDetail';
 import Signup from './component/member/Signup';
 import ProfilePage from './component/follow/ProfilePage';
 import SendLetter from './component/follow/SendLetter';
+<<<<<<< HEAD
 import MyCart from './component/order/MyCart';
 import MyOrder from './component/order/MyOrder';
+=======
+import Cart from './component/order/Cart';
+import Order from './component/order/Order';
+import OrderFail from './component/order/OrderFail';
+import OrderSuccess from './component/order/OrderSuccess';
+>>>>>>> f3e60d9ff652f627e55cce8e77fc25fc93883d3d
 import SignTerms from './component/member/SignTerms';
 import SignEmail from './component/member/SignEmail';
 import AdminLayout from './component/layout/AdminLayout';
 import AIndex from './component/admin/AIndex';
 import UserProfile from './component/follow/UserProfile';
+<<<<<<< HEAD
 import OrderFailed from './component/order/OrderFailed';
 import OrderSuccessed from './component/order/OrderSuccess';
+=======
+import SignupForm from './component/member/SignupForm';
+>>>>>>> f3e60d9ff652f627e55cce8e77fc25fc93883d3d
 
 
 function App() {
@@ -38,10 +49,17 @@ function App() {
           <Route path='/profilepage' element={<ProfilePage />} />
           <Route path='/sendletter' element={<SendLetter />}/>
           <Route path='/userprofile' element={<UserProfile />}/>
+<<<<<<< HEAD
           {/* <Route path='/cart' element={<MyCart />} />
           <Route path='/order' element={<MyOrder />} />
           <Route path='/order/success' element={<OrderSuccessed />} />
           <Route path='/order/fail' element={<OrderFailed />} /> */}
+=======
+          <Route path='/cart' element={<Cart />} />
+          <Route path='/order' element={<Order />} />
+          <Route path='/order/success' element={<OrderSuccess />} />
+          <Route path='/order/fail' element={<OrderFail />} />
+>>>>>>> f3e60d9ff652f627e55cce8e77fc25fc93883d3d
         </Route>
 
         <Route element={<SignLayout />}>
@@ -49,6 +67,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/signup/terms" element={<SignTerms />} />
           <Route path="/signup/email" element={<SignEmail />} />
+          <Route path="/signup/form" element={<SignupForm />} />
         </Route>
 {/* 
         <Route element={<AdminLayout />}>
