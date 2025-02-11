@@ -39,10 +39,10 @@ function App() {
           <Route path='/profilepage' element={<ProfilePage />} />
           <Route path='/sendletter' element={<SendLetter />}/>
           <Route path='/userprofile' element={<UserProfile />}/>
-          {/* <Route path='/cart' element={<MyCart />} />
+          <Route path='/cart' element={<MyCart />} />
           <Route path='/order' element={<MyOrder />} />
           <Route path='/order/success' element={<OrderSuccessed />} />
-          <Route path='/order/fail' element={<OrderFailed />} /> */}
+          <Route path='/order/fail' element={<OrderFailed />} />
         </Route>
 
         <Route element={<SignLayout />}>
