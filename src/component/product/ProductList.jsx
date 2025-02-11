@@ -11,6 +11,7 @@ import { Col, Container, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faStar } from "@fortawesome/free-solid-svg-icons";
 import ProductCategorySelector from "./ProductCategorySelector";
+import ProductItem from "./ProductItem";
 
 // 상품 데이터 (추후 API 연동 예정)
 const products = [
@@ -38,7 +39,7 @@ const ProductList = () => {
             style={{opacity:0.3}}
           />
           <label htmlFor="search">
-            <FontAwesomeIcon icon={faMagnifyingGlass} className="fs-14" /> 검색어를 입력하세요.
+            <FontAwesomeIcon icon={faMagnifyingGlass} className="fs-14"/> 검색어를 입력하세요.
           </label>
         </div>
         <hr className="text-pilllaw"/>
@@ -53,22 +54,7 @@ const ProductList = () => {
           {products
             .filter((product) => product.name.includes(searchTerm)) // 검색 필터 적용
             .map((product) => (
-              <Col xs={6} sm={4} lg={3} xl={2} className="mt-2 mb-4 best-item">
-                {/* 상품 클릭 시 ProductDetail로 이동 */}
-                <Link to={`/product/detail/${product.id}`} className="text-decoration-none text-black">
-                  <img className="img-fluid mx-2" src={product.image} alt={product.name} />
-                  <p className="m-0 mt-1 fs-14 fw-bold">{product.name}</p>
-                </Link>
-                <p className="m-0 fs-14 mt-2">
-                  <span className="header-font fw-bold">{product.price.toLocaleString()}</span>원
-                </p>
-                <p className="m-0 fs-12 fw-bold">
-                <FontAwesomeIcon icon={faStar} style={{ color: "#FFD43B" }} /> {product.rating}{" "}
-                  <span className="fs-11" style={{ color: "#AAA" }}>
-                    리뷰({product.reviews})
-                  </span>
-                </p>
-              </Col>
+              <ProductItem key={product.id} product={product} />
             ))}
         </Row>
       </Container>
