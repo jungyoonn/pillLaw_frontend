@@ -5,7 +5,6 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 import "../../resources/css/style.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faCapsules,
   faHeart,
   // faShareNodes,
   // faWonSign,
@@ -14,14 +13,15 @@ import {
   // faCoins,
   faStar,
 } from "@fortawesome/free-solid-svg-icons";
-import Chart from "chart.js/auto";
 import { Col, Container, Row } from "react-bootstrap";
 import image1 from "../../resources/image/product1.jpg";
 import image2 from "../../resources/image/product2.jpg";
 import image3 from "../../resources/image/product3.jpg";
 import image4 from "../../resources/image/helfugarcinia.jpg";
 import Button from '../common/Button';
-import ReviewForm from './ReviewForm'
+import ReviewForm from '../common/ReviewForm'
+import ProductSummary from './ProductSummary'
+import ReviewChart from "../common/ReviewChart"
 
 //  상품 데이터 (API 연동 전 테스트 데이터)
 const products = [
@@ -60,15 +60,6 @@ const products = [
   },
 ];
 
-// 샘플 리뷰 데이터
-const reviews = [
-  { id: 1, title: "건강하면 울리는 사이렌", content: "우리 아이가 참 좋아해요.", rating: 4, date: "2025.02.10", likes: 17 },
-  { id: 2, title: "건강맨", content: "매일 먹으니 효과가 좋은 것 같아요.", rating: 5, date: "2025.02.08", likes: 25 },
-];
-
-
-
-
 // 점수 분포 데이터
 const ratingDistribution = [2, 5, 7, 3, 3];
 
@@ -77,13 +68,13 @@ const ProductDetail = () => {
   const product = products.find((p) => p.id === parseInt(id));
   const [mainImage, setMainImage] = useState(product ? product.image : "");
   const [activeTab, setActiveTab] = useState("real-product-details");
-  const chartRef = useRef(null);
-  const chartInstance = useRef(null);
   const [showReviewModal, setShowReviewModal] = useState(false); // 📌 모달 상태 추가
   // 📌 초기 리뷰 상태를 `useState`에서 관리하도록 변경
   const [reviews, setReviews] = useState([
     { id: 1, title: "건강하면 울리는 사이렌", content: "우리 아이가 참 좋아해요.", rating: 4, date: "2025.02.10", likes: 17, images: [] },
     { id: 2, title: "건강맨", content: "매일 먹으니 효과가 좋은 것 같아요.", rating: 5, date: "2025.02.08", likes: 25, images: [] },
+    { id: 3, title: "좋아요맨", content: "잘 먹고 있어요!", rating: 5, date: "2025.02.10", likes: 10, images: [] },
+    { id: 4, title: "괜찮아요맨", content: "괜찮은 제품이에요.", rating: 4, date: "2025.02.08", likes: 5, images: [] }
   ]);
   
   const handleAddReview = (newReview) => {
@@ -95,93 +86,20 @@ const ProductDetail = () => {
     setMainImage(product.image);
   }, [product]);
 
-  useEffect(() => {
-    if (activeTab !== "real-product-review") return;
-    if (!chartRef.current) return;
-
-    if (chartInstance.current) {
-      chartInstance.current.destroy();
-    }
-
-    const ctx = chartRef.current.getContext("2d");
-    chartInstance.current = new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: ["1점", "2점", "3점", "4점", "5점"],
-        datasets: [
-          {
-            label: "리뷰 개수",
-            data: [2, 5, 7, 3, 3], // 예제 데이터
-            backgroundColor: "rgba(75, 192, 192, 0.7)",
-            borderColor: "rgba(75, 192, 192, 1)",
-            borderWidth: 1,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          y: { beginAtZero: true, ticks: { stepSize: 1 } },
-        },
-      },
-    });
-    return () => {
-      if (chartInstance.current) {
-        chartInstance.current.destroy();
+  const calculateRatingDistribution = (reviews) => {
+    const distribution = [0, 0, 0, 0, 0]; 
+    reviews.forEach((review) => {
+      if (review.rating >= 1 && review.rating <= 5) {
+        distribution[review.rating - 1] += 1;
       }
-    };
-  }, [activeTab]);
-
-
-
-  useEffect(() => {
-    if (activeTab !== "real-product-review") return; // 🚀 리뷰 탭이 아닐 경우 실행하지 않음.
-  
-    console.log("Chart Ref:", chartRef.current);
-  
-    if (!chartRef.current) return;
-  
-    if (chartInstance.current) {
-      chartInstance.current.destroy();
-    }
-  
-    const ctx = chartRef.current.getContext("2d");
-    chartInstance.current = new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: ["1점", "2점", "3점", "4점", "5점"],
-        datasets: [
-          {
-            label: "리뷰 개수",
-            data: ratingDistribution,
-            backgroundColor: "rgba(75, 192, 192, 0.7)",
-            borderColor: "rgba(75, 192, 192, 1)",
-            borderWidth: 1,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          y: { beginAtZero: true, ticks: { stepSize: 1 } },
-        },
-      },
     });
-  
-    return () => {
-      if (chartInstance.current) {
-        chartInstance.current.destroy();
-      }
-    };
-  }, [activeTab]);
-  
+    return distribution;
+  };
+
+  const ratingDistribution = calculateRatingDistribution(reviews);
 
   if (!product) return <h2 className="text-center mt-5">상품을 찾을 수 없습니다.</h2>;
 
-  const discountedPrice = product.price - product.price * product.discount;
-  
   return (
     <Container style={{ paddingTop: "115.19px" }}>
       <Container className="container-fluid product-detail text-center">
@@ -209,11 +127,7 @@ const ProductDetail = () => {
           </Col>
 
           <Col xs={5} className="mt-2">
-            <h4 className="fw-bold">
-              <FontAwesomeIcon icon={faCapsules} size="xl" /> {product.name}
-            </h4>
-            <p className="text-secondary text-decoration-line-through">{product.price.toLocaleString()} 원</p>
-            <p className="fs-18 fw-bold">{discountedPrice.toLocaleString()} 원</p>
+            <ProductSummary product={product} />
           </Col>
         </Row>
 
@@ -260,9 +174,7 @@ const ProductDetail = () => {
                 <span className="fs-16">당신의 소중한 후기를 남겨주세요.</span>
                 <br />
 
-                {/* 리뷰 정보 표기부 */}
                 <Row className="mt-5 container">
-                  {/* 만족도 표시 */}
                   <Col xs={2} className="text-center fs-14">
                     <Row>
                       <p className="fw-bold">만족도</p>
@@ -291,18 +203,16 @@ const ProductDetail = () => {
                   {/* 차트 컨테이너 */}
                   <Col xs={6} className="d-flex justify-content-center align-items-center">
                     <div style={{ width: "100%", maxWidth: "250px", height: "auto" }}>
-                      <canvas id="reviewChart" ref={chartRef}></canvas>
+                      <ReviewChart ratingDistribution={ratingDistribution} activeTab={activeTab}/>
                     </div>
                   </Col>
 
-                  {/* 📌 리뷰 작성 모달 */}
                   <ReviewForm show={showReviewModal} handleClose={() => setShowReviewModal(false)} addReview={handleAddReview} />
 
-                  {/* 리뷰 작성 버튼 */}
                   <Col xs={2} className="justify-content-end">
-                  <button className="btn-sm fw-bold btn-pilllaw fs-14" onClick={() => setShowReviewModal(true)}>
-                    리뷰 작성하기 <FontAwesomeIcon icon={faStar} />
-                  </button>
+                    <Button variant="pilllaw" className="fw-bold fs-14 btn-pilllaw btn" onClick={() => setShowReviewModal(true)}>
+                      리뷰 작성하기 <FontAwesomeIcon icon={faStar} />
+                    </Button>
                   </Col>
                 </Row>
               </div>
@@ -311,7 +221,6 @@ const ProductDetail = () => {
               <Row className="mt-5">
                 {reviews.map((review) => (
                   <div key={review.id} className="row border border-1 pt-4 pb-3 mx-3 fs-12 mt-2">
-                    {/* 리뷰 이미지 (첨부된 사진이 있으면 표시) */}
                     <Col xs={2} className="d-flex align-items-center">
                       {review.images && review.images.length > 0 ? (
                         <img className="img-fluid w-75 pilllaw-product-image" src={review.images[0]} alt="리뷰 이미지" />
