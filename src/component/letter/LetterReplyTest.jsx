@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useParams,Container } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 //컨테이너 안먹어서 수정예정
-const ProfilePage = () => {
+const LetterReplyTest = () => {
   const { username } = useParams(); // URL 파라미터에서 username 추출
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
@@ -69,4 +69,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default LetterReplyTest;

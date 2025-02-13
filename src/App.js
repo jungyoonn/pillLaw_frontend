@@ -10,19 +10,20 @@ import SignLayout from './component/layout/SignLayout';
 import MainLayout from './component/layout/MainLayout';
 import ProductDetail from './component/product/ProductDetail';
 import Signup from './component/member/Signup';
-import ProfilePage from './component/follow/ProfilePage';
-import SendLetter from './component/follow/SendLetter';
+import ProfilePage from './component/follow/LetterReplyTest';
+import SendLetter from './component/letter/SendLetterTest';
 import MyCart from './component/order/MyCart';
 import MyOrder from './component/order/MyOrder';
 import SignTerms from './component/member/SignTerms';
 import SignEmail from './component/member/SignEmail';
 import AdminLayout from './component/layout/AdminLayout';
 import AIndex from './component/admin/AIndex';
-import UserProfile from './component/follow/UserProfile';
+import UserProfile from './component/follow/FollowProfile';
 import OrderSuccessed from './component/order/OrderSuccess';
 import SignupForm from './component/member/SignupForm';
 import OrderFailed from './component/order/OrderFailed';
-import UserProfile22 from './component/follow/SendLetter copy';
+import UserProfile22 from './component/letter/SendLetter copy';
+import SendLetterPage from './component/letter/SendLetter copy';
 
 
 function App() {
@@ -37,10 +38,10 @@ function App() {
           <Route path="/posts/:id" element={<PostDetail />} /> */}
           {/* <Route path='FollowListt' element={<FollowListt />} /> */}
           <Route path='/followlistt' element={<FollowListt />} />
-          <Route path='/profilepage' element={<ProfilePage />} />
+          {/* <Route path='/letterreplytest' element={<LetterReplyTest />} /> */}
           <Route path='/sendletter' element={<SendLetter />}/>
           <Route path='/userprofile' element={<UserProfile />}/>
-          {/* <Route path='/userprofile22' element={<UserProfile22 />}/> */}
+          <Route path='/sendletterpage' element={<SendLetterPage />}/>
           <Route path='/cart' element={<MyCart />} />
           <Route path='/order' element={<MyOrder />} />
           <Route path='/order/success' element={<OrderSuccessed />} />

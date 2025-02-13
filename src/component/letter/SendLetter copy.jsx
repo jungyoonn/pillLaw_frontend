@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Container, Modal, Button } from "react-bootstrap";
 
-const UserProfile22 = () => {
+const SendLetterPage = () => {
   const [showModal, setShowModal] = useState(false); // 모달 상태
   const [showDropdown, setShowDropdown] = useState(false); // 드롭다운 상태
   const [selectedRecipient, setSelectedRecipient] = useState(""); // 선택된 받는 사람
@@ -60,7 +60,7 @@ const UserProfile22 = () => {
   };
 
   return (
-    <Container style={{ paddingTop: "50px" }}>
+    <Container style={{paddingTop: '115.19px'}}>
       <div className="profile-container text-center">
         {/* 프로필 정보 */}
         {/* <img src="../../resources/followImage/사본 -freepik__adjust__7192.png" alt="프로필" className="profile-img" /> */}
@@ -155,4 +155,4 @@ const UserProfile22 = () => {
   );
 };
 
-export default UserProfile22;
+export default SendLetterPage;
