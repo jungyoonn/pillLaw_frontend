@@ -10,7 +10,7 @@ import SignLayout from './component/layout/SignLayout';
 import MainLayout from './component/layout/MainLayout';
 import ProductDetail from './component/product/ProductDetail';
 import Signup from './component/member/Signup';
-import ProfilePage from './component/follow/LetterReplyTest';
+// import ProfilePage from './component/follow/LetterReplyTest';
 import SendLetter from './component/letter/SendLetterTest';
 import MyCart from './component/order/MyCart';
 import MyOrder from './component/order/MyOrder';
@@ -28,7 +28,7 @@ import SendLetterPage from './component/letter/SendLetter copy';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename='/pilllaw'>
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Index />} />
