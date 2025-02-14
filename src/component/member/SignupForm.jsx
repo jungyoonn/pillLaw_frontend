@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import '../../resources/css/style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import logo from '../../resources/image/pilllaw_icon_crop.png';
 import Button from '../common/Button';
-import { Link } from 'react-router-dom';
-import { Alert, Col, Container, Form, Row } from 'react-bootstrap';
+// import { Link } from 'react-router-dom';
+import { Col, Container, Form, Row } from 'react-bootstrap';
+import MemberHeader from './MemberHeader';
 
 const SignupForm = () => {
   const [email, setEmail] = useState("");
@@ -70,31 +70,13 @@ const SignupForm = () => {
 
 
   return (
-    <div className='wrap'>
-      <Container className="mt-5">
-        {/* 헤더 */}
-        <Row className="justify-content-center text-center mb-4">
-          <Col xs={2}></Col>
-          <Col xs={3} className="text-end">
-            <Link to={"/"}>
-              <img
-                src={logo}
-                className="img-fluid header-icon"
-                alt="아이콘"
-              />
-            </Link>
-          </Col>
-          <Col xs={5} className="text-start mt-4 ms-3">
-            <h2 className="fw-bold d-inline">
-              <Link className="text-decoration-none header-font" to={"/"}>
-                PILL LAW
-              </Link>
-            </h2>
-          </Col>
-        </Row>
+    <Container className="mt-5">
+      <MemberHeader />
 
-        {/* 회원가입 폼 */}
-        <Container className="p-5 border rounded">
+      {/* 회원가입 폼 */}
+      <Row className="p-5 mt-3 border rounded">
+        <Col xs="1" lg="3" />
+        <Col>
           <Form onSubmit={handleSubmit}>
             <p className="fs-12 text-end fw-bold">
               <span className="text-danger">*</span>은 필수 입력입니다.
@@ -186,15 +168,16 @@ const SignupForm = () => {
             </Form.Group>
 
             {/* 가입 버튼 */}
-            <div className="text-center mt-4">
+            <div className="text-center mt-4 d-grid">
               <Button type="button" variant="pilllaw" onClick={handleSubmit}>
                 가입하기
               </Button>
             </div>
           </Form>
-        </Container>
-      </Container>
-    </div>
+        </Col>
+        <Col xs="1" lg="3" />
+      </Row>
+    </Container>
   );
 }
 

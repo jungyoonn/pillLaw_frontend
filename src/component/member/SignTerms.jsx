@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import logo from '../../resources/image/pilllaw_icon_crop.png';
 import { Container, Row, Col, Form } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import Button from '../common/Button';
+import MemberHeader from "./MemberHeader";
 
 const SignTerms = () => {
   const [terms, setTerms] = useState({
@@ -36,30 +36,13 @@ const SignTerms = () => {
   };
 
   return (
-    <div className="wrap">
-      <Container className="px-0">
-        <div className="text-center m-2 mt-5">
-          <Row>
-            <Col xs lg="2"></Col>
-            <Col xs lg="3" className="text-end">
-              <Link to={"/"}>
-                <img
-                  src={logo}
-                  className="img-fluid header-icon"
-                  alt="아이콘"
-                />
-              </Link>
-            </Col>
-            <Col className="text-start mt-4 ms-3">
-              <h2 className="mt-4 ms-3 pt-3 fw-bold d-inline">
-                <Link to={"/"} className="text-decoration-none header-font">PILL LAW</Link>
-              </h2>
-            </Col>
-          </Row>
-        </div>
+    <Container className="px-0">
+      <MemberHeader />
 
-        {/* 약관 동의 폼 */}
-        <div className="terms mx-5 px-5 pt-5">
+      {/* 약관 동의 폼 */}
+      <Row className="terms pt-5">
+        <Col xs="1" />
+        <Col>
           <Form method="post">
             <div className="form-check-reverse text-start">
               <Form.Label htmlFor="rule">
@@ -122,7 +105,6 @@ const SignTerms = () => {
                 />
               </Form.Label>
             </div>
-
             <hr />
             <div className="text-center">
               <Form.Label className="mt-2 fw-bold" htmlFor="all">
@@ -138,9 +120,10 @@ const SignTerms = () => {
               <Button variant="pilllaw" to={"/signup/email"} type="submit" className="btn btn-pilllaw mx-5 px-5">다음</Button>
             </div>
           </Form>
-        </div>
-      </Container>
-    </div>
+        </Col>
+        <Col xs="1" />
+      </Row>
+    </Container>
   );
 }
 
