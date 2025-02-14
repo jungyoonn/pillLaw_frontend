@@ -12,12 +12,15 @@ import { Container, Row, Col, Form, Spinner } from 'react-bootstrap';
 import MemberHeader from './MemberHeader';
 import UseAxios from '../../hooks/UseAxios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../hooks/AuthContext';
 
 const Signin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const {loading, error, req} = UseAxios();
+  const {loading, error, req} = UseAxios('http://localhost:8080/api/member/');
   const navigate =  useNavigate();
+
+  const {login} = useAuth();
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -27,8 +30,9 @@ const Signin = () => {
     try {
       const resp = await req('get', `signin?email=${email}`);
       console.log(resp);
+      resp && login(email, resp);
       
-      localStorage.setItem("email", email);
+      // localStorage.setItem("email", email);
       resp && navigate('/');
     } catch(error) {
       console.error("로그인 실패", error);
