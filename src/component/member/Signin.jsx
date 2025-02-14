@@ -8,7 +8,7 @@ import google from '../../resources/image/google-color-svgrepo-com.png';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub, faInstagram } from "@fortawesome/free-brands-svg-icons";
 import Button from '../common/Button';
-import { Container, Row, Col, Form } from 'react-bootstrap';
+import { Container, Row, Col, Form, Spinner } from 'react-bootstrap';
 import MemberHeader from './MemberHeader';
 import UseAxios from '../../hooks/UseAxios';
 import { useNavigate } from 'react-router-dom';
@@ -46,10 +46,10 @@ const Signin = () => {
           <Form method="post" onSubmit={handleSubmit}>
             <Form.Group className="mt-5 mx-5 px-5">
               <Form.Label htmlFor="email"></Form.Label>
-              <Form.Control type="email" id="email" placeholder="이메일" name="email" />
+              <Form.Control type="email" id="email" placeholder="이메일" name="email" value={email} onChange={e => setEmail(e.target.value)} />
             </Form.Group>
             <Form.Group className="mx-5 px-5 mt-1">
-              <Form.Control type="password" id="pwd" placeholder="비밀번호" name="pswd" />
+              <Form.Control type="password" id="password" placeholder="비밀번호" name="password" value={password} onChange={e => setPassword(e.target.value)} />
             </Form.Group>
             <Form.Group className="mb-3 mx-5 px-5">
               <Form.Label className="header-font fw-bold fs-12">
@@ -57,7 +57,7 @@ const Signin = () => {
               </Form.Label>
             </Form.Group>
             <div className="d-grid px-4 mx-4">
-              <Button  variant="pilllaw" type="submit" className="btn btn-pilllaw mx-5 btn-block d-grid">로그인</Button>
+              <Button disabled={loading} variant="pilllaw" type="submit" className="btn btn-pilllaw mx-5 btn-block d-grid">{loading ? <Spinner animation="border" variant="light"> '로그인 중 . . . '</Spinner> : '로그인'}</Button>
               {error && <p className='text-danger'>로그인 실패 <br />{error.message}</p>}
             </div>
           </Form>
