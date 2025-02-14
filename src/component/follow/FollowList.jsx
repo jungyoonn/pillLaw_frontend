@@ -1,6 +1,6 @@
 import React from "react";
 import FollowHeaderButtonsArea from "./FollowHeaderButtonsArea";
-import SendLetter from "../letter/SendLetterTest";
+import SendLetterPage from "../letter/SendLetterPage";
 
 // import Row from 'react-bootstrap/Row';
 // import mainImage from '../../resources/image/main_image_2.jpg';
@@ -15,9 +15,9 @@ import SendLetter from "../letter/SendLetterTest";
 // import slider from '../../resources/image/main_slider.jpg';
 // import { Col, Container } from "react-bootstrap";
 
-const FollowListt = () => {
+const FollowList = () => {
   const follows = [
-    { id: 1, href: "sendletter", label: "치킨" },
+    { id: 1, href: "SendLetterPage", label: "치킨" },
     { id: 2, href: "#", label: "피자" },
     { id: 3, href: "#", label: "딸기모찌" },
     { id: 4, href: "#", label: "재즈맨" },
@@ -68,4 +68,4 @@ const FollowListt = () => {
   );
 };
 
-export default FollowListt;
+export default FollowList;

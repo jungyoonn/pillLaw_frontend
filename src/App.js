@@ -4,14 +4,13 @@ import Index from './component/common/Index';
 // import FollowList from './component/follow/followList';
 // import Test from './component/follow/Test';
 import ProductList from './component/product/ProductList';
-import FollowListt from './component/follow/FollowListt';
 import Signin from './component/member/Signin';
 import SignLayout from './component/layout/SignLayout';
 import MainLayout from './component/layout/MainLayout';
 import ProductDetail from './component/product/ProductDetail';
 import Signup from './component/member/Signup';
 // import ProfilePage from './component/follow/LetterReplyTest';
-import SendLetter from './component/letter/SendLetterTest';
+// import SendLetter from './component/letter/SendLetterTest';
 import MyCart from './component/order/MyCart';
 import MyOrder from './component/order/MyOrder';
 import SignTerms from './component/member/SignTerms';
@@ -22,8 +21,10 @@ import UserProfile from './component/follow/FollowProfile';
 import OrderSuccessed from './component/order/OrderSuccess';
 import SignupForm from './component/member/SignupForm';
 import OrderFailed from './component/order/OrderFailed';
-import UserProfile22 from './component/letter/SendLetter copy';
-import SendLetterPage from './component/letter/SendLetter copy';
+// import UserProfile22 from './component/letter/SendLetterPage';
+import SendLetterPage from './component/letter/SendLetterPage';
+import SendLetterPage33 from './resources/followhtml/SendLetterTest2';
+import FollowList from './component/follow/FollowList';
 
 
 function App() {
@@ -37,9 +38,9 @@ function App() {
           {/* <Route path="/posts" element={<Posts />} />
           <Route path="/posts/:id" element={<PostDetail />} /> */}
           {/* <Route path='FollowListt' element={<FollowListt />} /> */}
-          <Route path='/followlistt' element={<FollowListt />} />
           {/* <Route path='/letterreplytest' element={<LetterReplyTest />} /> */}
-          <Route path='/sendletter' element={<SendLetter />}/>
+          <Route path='/followlist' element={<FollowList/> }/>
+          <Route path='/sendletter33' element={<SendLetterPage33 />}/>
           <Route path='/userprofile' element={<UserProfile />}/>
           <Route path='/sendletterpage' element={<SendLetterPage />}/>
           <Route path='/cart' element={<MyCart />} />

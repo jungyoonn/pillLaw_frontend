@@ -1,24 +1,16 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Container, Modal, Button } from "react-bootstrap";
+import React, { useEffect, useState, useRef } from "react";
+import { Modal, Container } from "react-bootstrap";
 
-const SendLetterPage = () => {
+const SendLetterPage33 = () => {
   const [showModal, setShowModal] = useState(false); // 모달 상태
   const [showDropdown, setShowDropdown] = useState(false); // 드롭다운 상태
   const [selectedRecipient, setSelectedRecipient] = useState(""); // 선택된 받는 사람
-  const [messageContent, setMessageContent] = useState(""); // 쪽지 내용
+  const [SendLetterContent, setSendLetterContent] = useState(""); // 쪽지 내용
   const [showToast, setShowToast] = useState(false); // 전송 완료 모달
+  const [mutualFollows, setMutualFollows] = useState([]); // 사용자 목록 (DB에서 가져오기)
   const dropdownRef = useRef(null);
 
-  const mutualFollows = [
-    "치킨",
-    "피자",
-    "딸기모찌",
-    "재즈맨",
-    "쿠키",
-    "초코쿠키",
-    "딸기쿠키",
-    "파인애플",
-  ];
+  const receiverId = "123";  // 이 값은 실제로 선택된 받는 사람의 ID로 대체됩니다.
 
   // 드롭다운 외부 클릭 시 닫기
   useEffect(() => {
@@ -31,6 +23,18 @@ const SendLetterPage = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // 컴포넌트가 처음 렌더링될 때 서버에서 사용자 목록을 가져옵니다.
+  useEffect(() => {
+    fetch(`/letter/${receiverId}`)  // receiverId를 경로에 포함
+      .then((response) => response.json())
+      .then((data) => {
+        setMutualFollows(data);  // 서버에서 받은 사용자 목록을 상태에 저장
+      })
+      .catch((error) => {
+        console.error("사용자 목록을 가져오는 데 실패했습니다:", error);
+      });
+  }, [receiverId]);  // receiverId가 변경될 때마다 다시 호출됨
+
   // 받는 사람 선택
   const handleRecipientSelect = (user) => {
     setSelectedRecipient(user);
@@ -39,7 +43,7 @@ const SendLetterPage = () => {
 
   // 쪽지 전송
   const handleSend = () => {
-    if (!selectedRecipient || messageContent.trim() === "") {
+    if (!selectedRecipient || SendLetterContent.trim() === "") {
       alert("받는 사람과 쪽지 내용을 모두 입력해주세요");
       return;
     }
@@ -50,7 +54,7 @@ const SendLetterPage = () => {
   const handleCloseModal = () => {
     setShowModal(false);
     setSelectedRecipient("");
-    setMessageContent("");
+    setSendLetterContent("");
   };
 
   // 전송 완료 모달 닫기
@@ -60,10 +64,9 @@ const SendLetterPage = () => {
   };
 
   return (
-    <Container style={{paddingTop: '115.19px'}}>
+    <Container style={{ paddingTop: "115.19px" }}>
       <div className="profile-container text-center">
         {/* 프로필 정보 */}
-        {/* <img src="../../resources/followImage/사본 -freepik__adjust__7192.png" alt="프로필" className="profile-img" /> */}
         <h3>참돌이</h3>
         <p>ID: CHAM</p>
 
@@ -92,7 +95,14 @@ const SendLetterPage = () => {
             />
             {/* 드롭다운 리스트 */}
             {showDropdown && (
-              <div className="list-group mt-1" style={{ position: "absolute", zIndex: 1000, width: "100%" }}>
+              <div
+                className="list-group mt-1"
+                style={{
+                  position: "absolute",
+                  zIndex: 1000,
+                  width: "100%",
+                }}
+              >
                 {mutualFollows.map((user, index) => (
                   <button
                     key={index}
@@ -113,8 +123,8 @@ const SendLetterPage = () => {
               className="form-control"
               rows="5"
               placeholder="쪽지 내용을 입력해주세요"
-              value={messageContent}
-              onChange={(e) => setMessageContent(e.target.value)}
+              value={SendLetterContent}
+              onChange={(e) => setSendLetterContent(e.target.value)}
             ></textarea>
           </div>
         </Modal.Body>
@@ -143,8 +153,13 @@ const SendLetterPage = () => {
             justifyContent: "center",
           }}
         >
-          <div className="bg-white p-4 rounded shadow" style={{ minWidth: "300px", textAlign: "center" }}>
-            <p className="mb-3">쪽지가 {selectedRecipient}님에게 전송되었습니다.</p>
+          <div
+            className="bg-white p-4 rounded shadow"
+            style={{ minWidth: "300px", textAlign: "center" }}
+          >
+            <p className="mb-3">
+              쪽지가 {selectedRecipient}님에게 전송되었습니다.
+            </p>
             <button type="button" className="btn btn-pilllaw" onClick={handleToastConfirm}>
               확인
             </button>
@@ -155,4 +170,4 @@ const SendLetterPage = () => {
   );
 };
 
-export default SendLetterPage;
+export default SendLetterPage33;
