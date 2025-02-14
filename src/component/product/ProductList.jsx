@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import "font-awesome/css/font-awesome.min.css";
@@ -7,9 +6,9 @@ import "../../resources/css/style.css";
 import image1 from "../../resources/image/product1.jpg";
 import image2 from "../../resources/image/product2.jpg";
 import image3 from "../../resources/image/product3.jpg";
-import { Col, Container, Row } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass, faStar } from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import ProductCategorySelector from "./ProductCategorySelector";
 import ProductItem from "./ProductItem";
 
