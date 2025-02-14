@@ -2,13 +2,13 @@ import { useCallback, useState } from 'react';
 import axios from 'axios';
 // import { useAuth } from './AuthContext';
 
-const BASE_URL = 'http://localhost:8080/api/v1/';
+const BASE_URL = 'http://localhost:8080/api/';
 
 const UseAxios = (baseUrl = BASE_URL) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const {token} = useAuth();
+  // const {token} = useAuth();
 
   const req = useCallback(
     async (method, endpoint, body = null, addHeaders = {}) => {
@@ -21,7 +21,7 @@ const UseAxios = (baseUrl = BASE_URL) => {
           data: body,
           headers: {
             'Content-Type':'application/json',
-            'Authorization':`Bearer ${token}`,
+            // 'Authorization':`Bearer ${token}`,
             ...addHeaders
           }
         });
@@ -33,7 +33,7 @@ const UseAxios = (baseUrl = BASE_URL) => {
         setLoading(false);
       }
     }
-  , [baseUrl, token]);
+  , [baseUrl]);
 
   return {data, loading, error, req};
 }

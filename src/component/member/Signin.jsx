@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../../resources/css/style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import kakao from '../../resources/image/kakao-svgrepo-com.png';
@@ -10,8 +10,31 @@ import { faGithub, faInstagram } from "@fortawesome/free-brands-svg-icons";
 import Button from '../common/Button';
 import { Container, Row, Col, Form } from 'react-bootstrap';
 import MemberHeader from './MemberHeader';
+import UseAxios from '../../hooks/UseAxios';
+import { useNavigate } from 'react-router-dom';
 
 const Signin = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const {loading, error, req} = UseAxios();
+  const navigate =  useNavigate();
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+    const member = {email, password};
+    console.log(member);
+
+    try {
+      const resp = await req('get', `signin?email=${email}`);
+      console.log(resp);
+      
+      localStorage.setItem("email", email);
+      resp && navigate('/');
+    } catch(error) {
+      console.error("로그인 실패", error);
+    }
+  }
+
   return (
     <Container>
       <MemberHeader />
@@ -20,7 +43,7 @@ const Signin = () => {
       <Row>
         <Col xs="1" lg="3" />
         <Col className='mx-3'>
-          <Form method="post">
+          <Form method="post" onSubmit={handleSubmit}>
             <Form.Group className="mt-5 mx-5 px-5">
               <Form.Label htmlFor="email"></Form.Label>
               <Form.Control type="email" id="email" placeholder="이메일" name="email" />
@@ -35,6 +58,7 @@ const Signin = () => {
             </Form.Group>
             <div className="d-grid px-4 mx-4">
               <Button  variant="pilllaw" type="submit" className="btn btn-pilllaw mx-5 btn-block d-grid">로그인</Button>
+              {error && <p className='text-danger'>로그인 실패 <br />{error.message}</p>}
             </div>
           </Form>
 
