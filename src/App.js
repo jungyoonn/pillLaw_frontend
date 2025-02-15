@@ -38,11 +38,11 @@ function App() {
           {/* <Route path="/posts" element={<Posts />} />
           <Route path="/posts/:id" element={<PostDetail />} /> */}
           {/* <Route path='FollowListt' element={<FollowListt />} /> */}
-          <Route path='/letterreplytest' element={<LetterReplyTest />} />
           <Route path='/followlist' element={<FollowList/> }/>
-          <Route path='/sendletter33' element={<SendLetterPage33 />}/>
           <Route path='/userprofile' element={<UserProfile />}/>
+          <Route path='/letterreplytest' element={<LetterReplyTest />} />
           <Route path='/sendletterpage' element={<SendLetterPage />}/>
+          <Route path='/sendletter33' element={<SendLetterPage33 />}/>
           <Route path='/cart' element={<MyCart />} />
           <Route path='/order' element={<MyOrder />} />
           <Route path='/order/success' element={<OrderSuccessed />} />

@@ -63,6 +63,7 @@ const SendLetterPage = () => {
     <Container style={{paddingTop: '115.19px'}}>
       <div className="profile-container text-center">
         {/* 프로필 정보 */}
+        <img class="bibim" width="15%" src="//i.namu.wiki/i/wMLM2wVoMtlX2vXSU5Zpf-_ern-MqnSqvTFAF6mm6xt5yxl8XmapNtoYWGL1OJH3z50h93mtK53-jdKQY-G2bw2ihs14_jG50I855d94U1MVRYL8_WTK2H4kPuXZEar5IAwtr1VHjJJjRl-csQuwqw.webp" data-filesize="23804" data-src="//i.namu.wiki/i/wMLM2wVoMtlX2vXSU5Zpf-_ern-MqnSqvTFAF6mm6xt5yxl8XmapNtoYWGL1OJH3z50h93mtK53-jdKQY-G2bw2ihs14_jG50I855d94U1MVRYL8_WTK2H4kPuXZEar5IAwtr1VHjJJjRl-csQuwqw.webp" alt="Yubibim" data-doc="/jump/OAli83h5qwlNahRezRF%2BRLLgx27g2COmZUMYBr2cHOE2NZDwdtXBRWZvHQNcNvlh" data-v-5748abb3="" loading="lazy"></img>
         {/* <img src="../../resources/followImage/사본 -freepik__adjust__7192.png" alt="프로필" className="profile-img" /> */}
         <h3>유비빔</h3>
         <p>ID: Bibim</p>
@@ -93,7 +94,9 @@ const SendLetterPage = () => {
             {/* 드롭다운 리스트 */}
             {showDropdown && (
               // <div className="list-group mt-1" style={{ position: "absolute", zIndex: 1000, width: "100%" }}>
-              <div className="list-group ma-4" style={{ position: "absolute", zIndex: 1050, width: "100%",border:"1px solid", borderRadius:"5px",overflowY:"auto"}}>
+              // <div className="list-group ma-4" 
+              <div className="list-group mt-1 custom-scrollbar"  
+                style={{ position: "absolute", zIndex: 1050, width: "100%",border:"1px solid", borderRadius:"5px",maxHeight: "200px",overflowY:"auto"}}>
                 {mutualFollows.map((user, index) => (
                   <button
                     key={index}
@@ -130,6 +133,7 @@ const SendLetterPage = () => {
 
       {/* ✅ 쪽지 전송 완료 모달 */}
       {showToast && (
+        
         <div
           style={{
             position: "fixed",
@@ -142,6 +146,7 @@ const SendLetterPage = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            
           }}
         >
           <div className="bg-white p-4 rounded shadow" style={{ minWidth: "300px", textAlign: "center" }}>
