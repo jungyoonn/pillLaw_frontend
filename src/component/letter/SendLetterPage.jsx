@@ -64,6 +64,7 @@ const SendLetterPage = () => {
       <div className="profile-container text-center">
         {/* 프로필 정보 */}
         <img class="bibim" width="15%" src="//i.namu.wiki/i/wMLM2wVoMtlX2vXSU5Zpf-_ern-MqnSqvTFAF6mm6xt5yxl8XmapNtoYWGL1OJH3z50h93mtK53-jdKQY-G2bw2ihs14_jG50I855d94U1MVRYL8_WTK2H4kPuXZEar5IAwtr1VHjJJjRl-csQuwqw.webp" data-filesize="23804" data-src="//i.namu.wiki/i/wMLM2wVoMtlX2vXSU5Zpf-_ern-MqnSqvTFAF6mm6xt5yxl8XmapNtoYWGL1OJH3z50h93mtK53-jdKQY-G2bw2ihs14_jG50I855d94U1MVRYL8_WTK2H4kPuXZEar5IAwtr1VHjJJjRl-csQuwqw.webp" alt="Yubibim" data-doc="/jump/OAli83h5qwlNahRezRF%2BRLLgx27g2COmZUMYBr2cHOE2NZDwdtXBRWZvHQNcNvlh" data-v-5748abb3="" loading="lazy"></img>
+        
         {/* <img src="../../resources/followImage/사본 -freepik__adjust__7192.png" alt="프로필" className="profile-img" /> */}
         <h3>유비빔</h3>
         <p>ID: Bibim</p>
