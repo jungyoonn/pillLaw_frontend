@@ -64,8 +64,8 @@ const SendLetterPage = () => {
       <div className="profile-container text-center">
         {/* 프로필 정보 */}
         {/* <img src="../../resources/followImage/사본 -freepik__adjust__7192.png" alt="프로필" className="profile-img" /> */}
-        <h3>참돌이</h3>
-        <p>ID: CHAM</p>
+        <h3>유비빔</h3>
+        <p>ID: Bibim</p>
 
         {/* 쪽지 보내기 버튼 */}
         <button className="btn btn-pilllaw" onClick={() => setShowModal(true)}>
@@ -80,7 +80,7 @@ const SendLetterPage = () => {
         </Modal.Header>
         <Modal.Body>
           {/* 받는 사람 드롭다운 */}
-          <div className="mb-3" ref={dropdownRef}>
+          <div className="mb-3 position-relative"  ref={dropdownRef}>
             <label className="form-label fw-bold">받는 사람:</label>
             <input
               type="text"
@@ -92,13 +92,14 @@ const SendLetterPage = () => {
             />
             {/* 드롭다운 리스트 */}
             {showDropdown && (
-              <div className="list-group mt-1" style={{ position: "absolute", zIndex: 1000, width: "100%" }}>
+              // <div className="list-group mt-1" style={{ position: "absolute", zIndex: 1000, width: "100%" }}>
+              <div className="list-group ma-4" style={{ position: "absolute", zIndex: 1050, width: "100%",border:"1px solid", borderRadius:"5px",overflowY:"auto"}}>
                 {mutualFollows.map((user, index) => (
                   <button
                     key={index}
                     className="list-group-item list-group-item-action"
                     onClick={() => handleRecipientSelect(user)}
-                  >
+                    >
                     {user}
                   </button>
                 ))}
