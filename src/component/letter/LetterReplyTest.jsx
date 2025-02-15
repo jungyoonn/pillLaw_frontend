@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useParams,Container } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import '../../resources/css/style.css';
 //컨테이너 안먹어서 수정예정
 const LetterReplyTest = () => {
   const { username } = useParams(); // URL 파라미터에서 username 추출
@@ -10,7 +11,8 @@ const LetterReplyTest = () => {
 
   const handleSend = () => {
     if (message.trim() !== "") {
-      setMessages([...messages, message]);
+      setMessages((prevMessages) => [message, ...prevMessages]);
+      // setMessages([...messages, message]);
       setMessage("");
     }
   };

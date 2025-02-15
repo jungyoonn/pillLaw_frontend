@@ -9,7 +9,6 @@ import SignLayout from './component/layout/SignLayout';
 import MainLayout from './component/layout/MainLayout';
 import ProductDetail from './component/product/ProductDetail';
 import Signup from './component/member/Signup';
-// import ProfilePage from './component/follow/LetterReplyTest';
 // import SendLetter from './component/letter/SendLetterTest';
 import MyCart from './component/order/MyCart';
 import MyOrder from './component/order/MyOrder';
@@ -25,6 +24,7 @@ import OrderFailed from './component/order/OrderFailed';
 import SendLetterPage from './component/letter/SendLetterPage';
 import SendLetterPage33 from './resources/followhtml/SendLetterTest2';
 import FollowList from './component/follow/FollowList';
+import LetterReplyTest from './component/letter/LetterReplyTest';
 
 
 function App() {
@@ -38,7 +38,7 @@ function App() {
           {/* <Route path="/posts" element={<Posts />} />
           <Route path="/posts/:id" element={<PostDetail />} /> */}
           {/* <Route path='FollowListt' element={<FollowListt />} /> */}
-          {/* <Route path='/letterreplytest' element={<LetterReplyTest />} /> */}
+          <Route path='/letterreplytest' element={<LetterReplyTest />} />
           <Route path='/followlist' element={<FollowList/> }/>
           <Route path='/sendletter33' element={<SendLetterPage33 />}/>
           <Route path='/userprofile' element={<UserProfile />}/>
