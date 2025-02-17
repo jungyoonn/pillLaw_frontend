@@ -18,6 +18,7 @@ const Signin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const {loading, error, req} = UseAxios('http://localhost:8080/api/member/');
+  const [err, setErr] = useState('')
   const navigate =  useNavigate();
 
   const {login} = useAuth();
@@ -28,14 +29,25 @@ const Signin = () => {
     console.log(member);
 
     try {
-      const resp = await req('get', `signin?email=${email}`);
+      const resp = await req('post', 'signin', member);
       console.log(resp);
-      resp && login(email, resp);
-      
-      // localStorage.setItem("email", email);
+      resp && login(member.email, resp);
       resp && navigate('/');
     } catch(error) {
       console.error("로그인 실패", error);
+      if (error.response) {
+        switch (error.response.status) {
+          case 401:
+            setErr('이메일 또는 비밀번호가 올바르지 않습니다.');
+            break;
+          case 404:
+            setErr('존재하지 않는 계정입니다.');
+            break;
+          default:
+            setErr('서버 오류가 발생했습니다.');
+        }
+      }
+      // setMessage(new Error(message));
     }
   }
 
@@ -62,7 +74,7 @@ const Signin = () => {
             </Form.Group>
             <div className="d-grid px-4 mx-4">
               <Button disabled={loading} variant="pilllaw" type="submit" className="btn btn-pilllaw mx-5 btn-block d-grid">{loading ? <Spinner animation="border" variant="light"> '로그인 중 . . . '</Spinner> : '로그인'}</Button>
-              {error && <p className='text-danger'>로그인 실패 <br />{error.message}</p>}
+              {error && <p className='text-danger fs-12 fw-bold mx-5'>{err}</p>}
             </div>
           </Form>
 
