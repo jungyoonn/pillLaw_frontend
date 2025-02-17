@@ -21,10 +21,6 @@ export const AuthProvider = ({children}) => {
     setEmail(email);
     setToken(token);
 
-    console.log("FHGEAFSDFGHDFSAGDFDSFDGHFH");
-    console.log(token);
-    console.log("FHGEAFSDFGHDFSAGDFDSFDGHFH");
-
     localStorage.setItem('token', token);
     localStorage.setItem('email', email);
 
