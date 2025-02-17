@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import "font-awesome/css/font-awesome.min.css";
@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import ProductCategorySelector from "./ProductCategorySelector";
 import ProductItem from "./ProductItem";
+import axios from "axios";
 
 // 상품 데이터 (추후 API 연동 예정)
 const products = [
@@ -21,6 +22,22 @@ const products = [
 
 const ProductList = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [product, setProduct] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null); 
+
+  useEffect(()=>{
+    const getList = async() => {
+      try{
+        const resp = await axios.get("http://localhost:8080/api/v1/product/list");
+      }catch(err){
+        console.log(err);
+        setError(err);
+      }finally{
+        setLoading(false);
+      }
+    }
+  })
 
   return (
     <div className="wrap">
