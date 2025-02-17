@@ -25,43 +25,46 @@ import SendLetterPage from './component/letter/SendLetterPage';
 import SendLetterPage33 from './resources/followhtml/SendLetterTest2';
 import FollowList from './component/follow/FollowList';
 import LetterReplyTest from './component/letter/LetterReplyTest';
+import { AuthProvider } from "./hooks/AuthContext";
 
 
 function App() {
   return (
     <BrowserRouter basename='/pilllaw'>
-      <Routes>
-        <Route element={<MainLayout />}>
-          <Route path="/" element={<Index />} />
-          <Route path='/product/list' element={<ProductList />} />
-          <Route path='/product/detail/:id' element={<ProductDetail />} />
-          {/* <Route path="/posts" element={<Posts />} />
-          <Route path="/posts/:id" element={<PostDetail />} /> */}
-          {/* <Route path='FollowListt' element={<FollowListt />} /> */}
-          <Route path='/followlist' element={<FollowList/> }/>
-          <Route path='/userprofile' element={<UserProfile />}/>
-          <Route path='/letterreplytest' element={<LetterReplyTest />} />
-          <Route path='/sendletterpage' element={<SendLetterPage />}/>
-          <Route path='/sendletter33' element={<SendLetterPage33 />}/>
-          <Route path='/cart' element={<MyCart />} />
-          <Route path='/order' element={<MyOrder />} />
-          <Route path='/order/success' element={<OrderSuccessed />} />
-          <Route path='/order/fail' element={<OrderFailed />} />
-        </Route>
+      <AuthProvider>
+        <Routes>
+          <Route element={<MainLayout />}>
+            <Route path="/" element={<Index />} />
+            <Route path='/product/list' element={<ProductList />} />
+            <Route path='/product/detail/:id' element={<ProductDetail />} />
+            {/* <Route path="/posts" element={<Posts />} />
+            <Route path="/posts/:id" element={<PostDetail />} /> */}
+            {/* <Route path='FollowListt' element={<FollowListt />} /> */}
+            <Route path='/followlist' element={<FollowList/> }/>
+            <Route path='/userprofile' element={<UserProfile />}/>
+            <Route path='/letterreplytest' element={<LetterReplyTest />} />
+            <Route path='/sendletterpage' element={<SendLetterPage />}/>
+            <Route path='/sendletter33' element={<SendLetterPage33 />}/>
+            <Route path='/cart' element={<MyCart />} />
+            <Route path='/order' element={<MyOrder />} />
+            <Route path='/order/success' element={<OrderSuccessed />} />
+            <Route path='/order/fail' element={<OrderFailed />} />
+          </Route>
 
-        <Route element={<SignLayout />}>
-          <Route path="/signin" element={<Signin />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/signup/terms" element={<SignTerms />} />
-          <Route path="/signup/email" element={<SignEmail />} />
-          <Route path="/signup/form" element={<SignupForm />} />
-        </Route>
-{/* 
-        <Route element={<AdminLayout />}>
-          <Route path='/admin/' element={<AIndex />} />
-        </Route> */}
+          <Route element={<SignLayout />}>
+            <Route path="/signin" element={<Signin />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/signup/terms" element={<SignTerms />} />
+            <Route path="/signup/email" element={<SignEmail />} />
+            <Route path="/signup/form" element={<SignupForm />} />
+          </Route>
+  {/* 
+          <Route element={<AdminLayout />}>
+            <Route path='/admin/' element={<AIndex />} />
+          </Route> */}
 
-      </Routes>
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   );
 }
