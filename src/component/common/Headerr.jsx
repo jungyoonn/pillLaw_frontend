@@ -49,7 +49,7 @@ const Headerr = () => {
             <div className="float-start py-4 ps-5">
               {navItems.map((item, index) => (
                 <h6 key={index} className="float-start m-4 text-center fw-bold">
-                  <Link className="text-decoration-none header-font pt-4" to={item.path}>
+                  <Link key={index} className="text-decoration-none header-font pt-4" to={item.path}>
                     {item.name}
                   </Link>
                 </h6>
