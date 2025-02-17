@@ -27,7 +27,7 @@ const Signin = () => {
     e.preventDefault();
     const member = {email, password};
     console.log(member);
-
+    
     try {
       const resp = await req('post', 'signin', member);
       console.log(resp);
@@ -35,6 +35,20 @@ const Signin = () => {
       resp && navigate('/');
     } catch(error) {
       console.error("로그인 실패", error);
+      
+      if(member.email === '' && member.password === '') {
+        setErr('이메일과 비밀번호를 입력해 주세요.');
+        return;
+      }
+      if(member.email === '') {
+        setErr('이메일을 입력해 주세요.');
+        return;
+      }
+      if(member.password === '') {
+        setErr('비밀번호를 입력해 주세요.');
+        return;
+      }
+
       if (error.response) {
         switch (error.response.status) {
           case 401:
@@ -47,7 +61,6 @@ const Signin = () => {
             setErr('서버 오류가 발생했습니다.');
         }
       }
-      // setMessage(new Error(message));
     }
   }
 
