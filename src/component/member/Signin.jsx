@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../../resources/css/style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import kakao from '../../resources/image/kakao-svgrepo-com.png';
@@ -19,13 +19,31 @@ const Signin = () => {
   const [password, setPassword] = useState('');
   const {loading, error, req} = UseAxios('http://localhost:8080/api/member/');
   const [err, setErr] = useState('')
+  const [rememberMe, setRememberMe] = useState(false);
   const navigate =  useNavigate();
 
   const {login} = useAuth();
 
+  useEffect(() => {
+    const savedEmail = localStorage.getItem('remember-email');
+    if (savedEmail) {
+      setEmail(savedEmail);
+      setRememberMe(true);
+    }
+  }, []);
+
   const handleSubmit = async e => {
     e.preventDefault();
-    const member = {email, password};
+
+    if(rememberMe) {
+      localStorage.setItem('remember-email', email);
+    }
+
+    const member = {
+      email, 
+      password,
+      'remember-me': rememberMe
+    };
     console.log(member);
     
     try {
@@ -82,7 +100,7 @@ const Signin = () => {
             </Form.Group>
             <Form.Group className="mb-3 mx-5 px-5">
               <Form.Label className="header-font fw-bold fs-12">
-                <Form.Check type="switch" className="mx-2" label="로그인 정보 기억하기" name="remember" />
+                <Form.Check type="switch" className="mx-2" label="로그인 정보 기억하기" name="remember-me" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
               </Form.Label>
             </Form.Group>
             <div className="d-grid px-4 mx-4">
