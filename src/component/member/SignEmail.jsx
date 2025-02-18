@@ -104,7 +104,7 @@ const SignEmail = () => {
               <Spinner animation="border" role="status" className='text-pilllaw float-start' />
               <p className='fs-14 fw-bold text-pilllaw float-start mx-3 mt-2'>이메일 전송 중 . . .</p>
             </div>)}
-            {!loading && (<Form.Group className="text-center d-grid">
+            {!loading && (<Form.Group className="text-center d-grid mt-3">
             <Button variant='pilllaw' type="button" className="btn btn-pilllaw text-decoration-none btn-next" id="btn-next" onClick={handleSendMailClick}>
               {message}
             </Button>
