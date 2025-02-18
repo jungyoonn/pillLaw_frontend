@@ -26,6 +26,7 @@ import SendLetterPage33 from './resources/followhtml/SendLetterTest2';
 import FollowList from './component/follow/FollowList';
 import LetterReplyTest from './component/letter/LetterReplyTest';
 import { AuthProvider } from "./hooks/AuthContext";
+import VerifyEmail from './component/member/VerifyEmail';
 
 
 function App() {
@@ -57,6 +58,7 @@ function App() {
             <Route path="/signup/terms" element={<SignTerms />} />
             <Route path="/signup/email" element={<SignEmail />} />
             <Route path="/signup/form" element={<SignupForm />} />
+            <Route path='/signup/email/verify' element={<VerifyEmail />} />
           </Route>
   {/* 
           <Route element={<AdminLayout />}>
