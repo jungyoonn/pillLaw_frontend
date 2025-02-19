@@ -14,9 +14,9 @@ import {
   faBell,
   faMagnifyingGlass,
   faCommentDots,
-  faAddressCard
+  faCapsules
 } from "@fortawesome/free-solid-svg-icons";
-import UseAxios from '../../hooks/UseAxios';
+import { useAuth } from '../../hooks/AuthContext';
 
 const navItems = [
   { name: "전체 상품", path: "/product/list" },
@@ -26,39 +26,21 @@ const navItems = [
 ];
 
 const Headerr = () => {
+// const Headerr = (login, email, setEmail, setLogin) => {
   const [login, setLogin] = useState(false);
-  const [email, setEmail] = useState('');
-  const [nickname, setNickname] = useState('');
-  const {req} = UseAxios("http://localhost:8080/api");
-
-
+  const {logout} = useAuth();
+  
   useEffect(() => {
     const storedEmail = localStorage.getItem('email');
-    setEmail(storedEmail);
+    console.log(localStorage.getItem('token'));
+    console.log(localStorage.getItem('email'));
+    
     setLogin(!!storedEmail);
 
-    const loadUser = async () => {
-      try {
-        // email이 있을 때만 API 호출
-        if (storedEmail) {
-          const resp = await req('get', `?email=${storedEmail}`);
-          // null 체크 추가
-          if (resp && resp.nickname) {
-            setNickname(resp.nickname);
-          }
-        }
-      } catch (error) {
-        console.error('사용자 정보 로드 실패:', error);
-      }
-    };
-
-    loadUser();
-  }, [login, email, req]);
+  }, [login, logout]);
 
   const handleLogout = () => {
-    localStorage.removeItem('email');
-    localStorage.removeItem('token');
-    setEmail(null);
+    logout();
     setLogin(false);
   }
 
@@ -127,8 +109,8 @@ const Headerr = () => {
                     </p>
                     <div className="float-end pt-4 text-center fw-bold fs-12">
                       <p className="header-font text-decoration-none">
-                      <FontAwesomeIcon icon={faAddressCard} className="fa-regular fa-lg mx-1" />
-                      {nickname + " 님"}
+                      <FontAwesomeIcon icon={faCapsules} className="fa-regular fa-lg mx-1" />
+                      환영합니다!
                       </p>
                     </div>
                   </>

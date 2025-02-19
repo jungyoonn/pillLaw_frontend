@@ -4,16 +4,14 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faGear, faCoins, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import Button from './Button';
+import { useAuth } from '../../hooks/AuthContext';
 
-const ProfileCard = ({onLogout, nickname}) => {
+const ProfileCard = ({nickname}) => {
+  const{logout} = useAuth();
+
   const handleClick = (e) => {
     e.preventDefault();
-
-    try {
-      onLogout();
-    } catch (error) {
-      console.error('Error during logout:', error);
-    }
+    logout();
   };
 
   return (

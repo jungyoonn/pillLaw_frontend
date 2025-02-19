@@ -20,14 +20,12 @@ import LoginCard from './LoginCard';
 import UseAxios from '../../hooks/UseAxios';
 
 const Index = () => {
-  const [email, setEmail] = useState('');
   const [login, setLogin] = useState(false);
   const [nickname, setNickname] = useState('');
   const {req} = UseAxios("http://localhost:8080/api");
 
   useEffect(() => {
     const storedEmail = localStorage.getItem('email');
-    setEmail(storedEmail);
     setLogin(!!storedEmail);
 
     const loadUser = async () => {
@@ -46,15 +44,7 @@ const Index = () => {
     };
 
     loadUser();
-  }, [email, req]);
-
-  const handleLogout = () => {
-    localStorage.removeItem('email');
-    localStorage.removeItem('token');
-    setEmail(null);
-    setLogin(false);
-  };
-
+  }, [login, req]);
 
   return (
     <div className='wrap'>
@@ -144,7 +134,7 @@ const Index = () => {
               <div className="clearfix">
                 <div className="card-body p-0">
                   {login ? (
-                    <ProfileCard onLogout={handleLogout} nickname={nickname} />
+                    <ProfileCard nickname={nickname} />
                   ) : (
                     <LoginCard />
                   )}
