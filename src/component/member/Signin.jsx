@@ -49,7 +49,7 @@ const Signin = () => {
     try {
       const resp = await req('post', 'signin', member);
       console.log(resp);
-      resp && login(member.email, resp);
+      resp && login(member.email, resp.token);
       resp && navigate('/');
     } catch(error) {
       console.error("로그인 실패", error);
