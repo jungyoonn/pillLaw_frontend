@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import Button from '../common/Button';
-import UseAxios from '../../hooks/UseAxios';
 
 const SignInfo = ({onSubmit}) => {
   const [email, setEmail] = useState("");
@@ -11,7 +10,6 @@ const SignInfo = ({onSubmit}) => {
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState(false);
   const [nickname, setNickname] = useState("");
-  const {req} = UseAxios("http://localhost:8080/api");
 
   // 오류 메시지 상태
   const [emailError, setEmailError] = useState(false);
@@ -76,7 +74,6 @@ const SignInfo = ({onSubmit}) => {
       };
 
       onSubmit(userData); // 부모 컴포넌트로 userData 전달
-      alert("가입을 환영합니다!");
     }
 
   };

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Row, Col, Form } from 'react-bootstrap';
 import Button from '../common/Button';
-import UseAxios from '../../hooks/UseAxios';
 
 const SignTerms = ({onSubmit}) => {
   const [terms, setTerms] = useState({
@@ -12,7 +11,6 @@ const SignTerms = ({onSubmit}) => {
     email: false,
     all: false,
   });
-  const {req} = UseAxios("http://localhost:8080/api");
 
   const handleCheckboxChange = (e) => {
     const { id, checked } = e.target;
