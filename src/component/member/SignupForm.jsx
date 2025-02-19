@@ -6,12 +6,13 @@ import MemberHeader from './MemberHeader';
 import SignTerms from './SignTerms';
 import SignInfo from './SignInfo';
 import UseAxios from '../../hooks/UseAxios';
+import { useNavigate } from 'react-router-dom';
 
 const SignupForm = () => {
   const [term, setTerm] = useState(true);
   const [termsData, setTermsData] = useState(null);
-  const [userData, setUserData] = useState(null);
   const {req} = UseAxios("http://localhost:8080/api");
+  const navigate = useNavigate();
 
   const handleTermsSubmit = (termsFormData) => {
     setTermsData(termsFormData);
@@ -20,7 +21,6 @@ const SignupForm = () => {
 
   const handleUserSubmit = async (userFormData) => {
     // terms와 userData를 합친 최종 데이터 생성
-    setUserData(userFormData);
     const finalData = {
       terms: {
         rule: termsData.rule,
@@ -30,11 +30,11 @@ const SignupForm = () => {
         email: termsData.email
       },
       memberInfo: {
-        email: userData.email,
-        password: userData.password,
-        name: userData.name,
-        tel: userData.tel,
-        nickname: userData.nickname
+        email: userFormData.email,
+        password: userFormData.password,
+        name: userFormData.name,
+        tel: userFormData.tel,
+        nickname: userFormData.nickname
       }
     };
 
@@ -43,7 +43,9 @@ const SignupForm = () => {
     try {
       const resp = await req('post', '/member/signup/terms', finalData);
       console.log(resp);
-      // 성공 처리...
+      resp.ok && alert("가입이 완료되었습니다!");
+      navigate("/");
+
     } catch(error) {
       console.error("회원가입 실패:", error);
     }
