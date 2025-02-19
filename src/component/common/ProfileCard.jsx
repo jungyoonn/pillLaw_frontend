@@ -5,17 +5,23 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faGear, faCoins, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import Button from './Button';
 
-const ProfileCard = ({onLogout}) => {
-  const handleClick = () => {
-    onLogout();
-  }
+const ProfileCard = ({onLogout, nickname}) => {
+  const handleClick = (e) => {
+    e.preventDefault();
+
+    try {
+      onLogout();
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
+  };
 
   return (
     <>
       <Row>
         <Col xs lg="1" className="float-start p-2 pe-0 ms-4"><FontAwesomeIcon icon={faUser} className="fa-xl header-font" /></Col>
         <Col className="mt-2 ms-1">
-          <span className="fs-16 fw-bold">김철수 </span>
+          <span className="fs-16 fw-bold">{nickname + ' ' || '익명의 사용자 '} </span>
           <span className="fs-14">님, 환영합니다!</span>
         </Col>
         <Col xs lg="2" className="float-end p-2 me-2"><Link to={"/"} className="text-decoration-none"><FontAwesomeIcon icon={faGear} className="fa-xl header-font" /></Link></Col>

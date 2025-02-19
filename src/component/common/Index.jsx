@@ -17,18 +17,35 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLessThan, faGreaterThan, faCrown, faStar, faCircle } from "@fortawesome/free-solid-svg-icons";
 import ProfileCard from './ProfileCard';
 import LoginCard from './LoginCard';
+import UseAxios from '../../hooks/UseAxios';
 
 const Index = () => {
   const [email, setEmail] = useState('');
   const [login, setLogin] = useState(false);
+  const [nickname, setNickname] = useState('');
+  const {loading, error, req} = UseAxios("http://localhost:8080/api");
 
   useEffect(() => {
     const storedEmail = localStorage.getItem('email');
-    console.log("localStorage :: " + storedEmail);
-    console.log("email :: " + email);
-
     setEmail(storedEmail);
     setLogin(!!storedEmail);
+
+    const loadUser = async () => {
+      try {
+        // email이 있을 때만 API 호출
+        if (storedEmail) {
+          const resp = await req('get', `?email=${storedEmail}`);
+          // null 체크 추가
+          if (resp && resp.nickname) {
+            setNickname(resp.nickname);
+          }
+        }
+      } catch (error) {
+        console.error('사용자 정보 로드 실패:', error);
+      }
+    };
+
+    loadUser();
   }, [email]);
 
   const handleLogout = () => {
@@ -127,7 +144,7 @@ const Index = () => {
               <div className="clearfix">
                 <div className="card-body p-0">
                   {login ? (
-                    <ProfileCard onLogout={handleLogout} />
+                    <ProfileCard onLogout={handleLogout} nickname={nickname} />
                   ) : (
                     <LoginCard />
                   )}
