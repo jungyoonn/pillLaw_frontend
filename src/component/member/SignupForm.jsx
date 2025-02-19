@@ -1,182 +1,62 @@
 import React, { useState } from 'react';
 import '../../resources/css/style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Button from '../common/Button';
-// import { Link } from 'react-router-dom';
-import { Col, Container, Form, Row } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import MemberHeader from './MemberHeader';
+import SignTerms from './SignTerms';
+import SignInfo from './SignInfo';
+import UseAxios from '../../hooks/UseAxios';
 
 const SignupForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [nickname, setNickname] = useState("");
+  const [term, setTerm] = useState(true);
+  const [termsData, setTermsData] = useState(null);
+  const [userData, setUserData] = useState(null);
+  const {req} = UseAxios("http://localhost:8080/api");
 
-  // 오류 메시지 상태
-  const [emailError, setEmailError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
-  const [passwordMismatchError, setPasswordMismatchError] = useState(false);
+  const handleTermsSubmit = (termsFormData) => {
+    setTermsData(termsFormData);
+    setTerm(false); // 약관 동의 완료 후 회원가입 폼으로 전환
+  };
 
-  // 이메일 검증 정규식
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const handleUserSubmit = async (userFormData) => {
+    // terms와 userData를 합친 최종 데이터 생성
+    setUserData(userFormData);
+    const finalData = {
+      terms: {
+        rule: termsData.rule,
+        info: termsData.info,
+        marketing: termsData.marketing,
+        tel: termsData.tel,
+        email: termsData.email
+      },
+      memberInfo: {
+        email: userData.email,
+        password: userData.password,
+        name: userData.name,
+        tel: userData.tel,
+        nickname: userData.nickname
+      }
+    };
 
-  // 비밀번호 검증 정규식 (영어 대문자, 소문자, 숫자 포함 8자 이상)
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    console.log('전송 데이터:', finalData);
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); // 폼 제출 시 페이지 리로드 방지
-
-    let isValid = true;
-
-    // 이메일 검증
-    if (!emailRegex.test(email)) {
-      setEmailError(true);
-      isValid = false;
-    } else {
-      setEmailError(false);
-    }
-
-    // 비밀번호 검증
-    if (!passwordRegex.test(password)) {
-      setPasswordError(true);
-      isValid = false;
-    } else {
-      setPasswordError(false);
-    }
-
-    // 비밀번호 확인 검사
-    if (password !== passwordConfirm) {
-      setPasswordMismatchError(true);
-      isValid = false;
-    } else {
-      setPasswordMismatchError(false);
-    }
-
-    if (isValid) {
-      alert("가입을 환영합니다!");
+    try {
+      const resp = await req('post', '/member/signup/terms', finalData);
+      console.log(resp);
+      // 성공 처리...
+    } catch(error) {
+      console.error("회원가입 실패:", error);
     }
   };
 
-  const handlePasswordConfirmChange = (e) => {
-    if(password !== e.target.value) {
-      setPasswordMismatchError(true);
-    } else {
-      setPasswordMismatchError(false);
-    }
-    setPasswordConfirm(e.target.value);
-  }
-
-
   return (
-    <Container className="mt-5">
+    <Container>
       <MemberHeader />
-
-      {/* 회원가입 폼 */}
-      <Row className="p-5 mt-3 border rounded">
-        <Col xs="1" lg="3" />
-        <Col>
-          <Form onSubmit={handleSubmit}>
-            <p className="fs-12 text-end fw-bold">
-              <span className="text-danger">*</span>은 필수 입력입니다.
-            </p>
-
-            {/* 이메일 입력 */}
-            <Form.Group className="mb-3">
-              <Form.Label>이메일 <span className="text-danger">*</span></Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="이메일을 입력해 주세요"
-                value={email}
-                name='email'
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-              {emailError && <p className="fs-12 fw-bold text-danger email-failed">유효한 이메일을 입력해 주세요.</p>}
-            </Form.Group>
-
-            {/* 비밀번호 입력 */}
-            <Form.Group className="mb-3">
-              <Form.Label>비밀번호 <span className="text-danger">*</span></Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="영어 대소문자, 숫자 조합 8자 이상"
-                value={password}
-                name='pw'
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-              {passwordError && <p className="fs-12 fw-bold text-danger email-failed">비밀번호가 올바르지 않습니다. (영어 대소문자, 숫자 조합 8자 이상)</p>}
-            </Form.Group>
-
-            {/* 비밀번호 확인 */}
-            <Form.Group className="mb-3">
-              <Form.Label>비밀번호 확인 <span className="text-danger">*</span></Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="비밀번호 재입력"
-                value={passwordConfirm}
-                onChange={handlePasswordConfirmChange}
-                required
-              />
-              {passwordMismatchError && <p className="fs-12 fw-bold text-danger email-failed">비밀번호가 일치하지 않습니다. 다시 입력해 주세요.</p>}
-            </Form.Group>
-
-            {/* 비밀번호 오류 메시지 */}
-            {/* {passwordError && (
-              <Alert variant="danger">비밀번호가 일치하지 않습니다. 다시 입력해 주세요.</Alert>
-            )} */}
-
-            {/* 이름 입력 */}
-            <Form.Group className="mb-3">
-              <Form.Label>이름 <span className="text-danger">*</span></Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="이름을 입력해 주세요"
-                value={name}
-                name='name'
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-            </Form.Group>
-
-            {/* 휴대전화 입력 */}
-            <Form.Group className="mb-3">
-              <Form.Label>휴대전화 번호 <span className="text-danger">*</span></Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="휴대전화 번호를 입력해 주세요(- 제외하고 입력)"
-                value={phone}
-                name='phone'
-                onChange={(e) => setPhone(e.target.value)}
-                required
-              />
-            </Form.Group>
-
-            {/* 닉네임 입력 */}
-            <Form.Group className="mb-3">
-              <Form.Label>닉네임 <span className="text-danger">*</span></Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="닉네임을 입력해 주세요"
-                value={nickname}
-                name='nickname'
-                onChange={(e) => setNickname(e.target.value)}
-                required
-              />
-            </Form.Group>
-
-            {/* 가입 버튼 */}
-            <div className="text-center mt-4 d-grid">
-              <Button type="button" variant="pilllaw" onClick={handleSubmit}>
-                가입하기
-              </Button>
-            </div>
-          </Form>
-        </Col>
-        <Col xs="1" lg="3" />
-      </Row>
+      {term ? (
+        <SignTerms onSubmit={handleTermsSubmit} /> 
+      ) : (
+        <SignInfo onSubmit={handleUserSubmit} />
+      )}
     </Container>
   );
 }

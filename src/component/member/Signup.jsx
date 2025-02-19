@@ -26,7 +26,7 @@ const Signup = () => {
           </h2>
             <div className="mt-5"></div>
             <div className="d-grid mt-3">
-              <Button variant='pilllaw' to={"/signup/terms"} className="btn btn-pilllaw btn-block fw-bold text-white fs-14 py-2">
+              <Button variant='pilllaw' to={"/signup/form"} className="btn btn-pilllaw btn-block fw-bold text-white fs-14 py-2">
                 <FontAwesomeIcon icon={faEnvelope} className="fa-lg mx-2" />
                 이메일로 시작하기
               </Button>

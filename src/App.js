@@ -12,13 +12,11 @@ import Signup from './component/member/Signup';
 // import SendLetter from './component/letter/SendLetterTest';
 import MyCart from './component/order/MyCart';
 import MyOrder from './component/order/MyOrder';
-import SignTerms from './component/member/SignTerms';
 import SignEmail from './component/member/SignEmail';
 import AdminLayout from './component/layout/AdminLayout';
 import AIndex from './component/admin/AIndex';
 import UserProfile from './component/follow/FollowProfile';
 import OrderSuccessed from './component/order/OrderSuccess';
-import SignupForm from './component/member/SignupForm';
 import OrderFailed from './component/order/OrderFailed';
 // import UserProfile22 from './component/letter/SendLetterPage';
 import SendLetterPage from './component/letter/SendLetterPage';
@@ -27,6 +25,7 @@ import FollowList from './component/follow/FollowList';
 import LetterReplyTest from './component/letter/LetterReplyTest';
 import { AuthProvider } from "./hooks/AuthContext";
 import VerifyEmail from './component/member/VerifyEmail';
+import SignupForm from './component/member/SignupForm';
 
 
 function App() {
@@ -55,10 +54,9 @@ function App() {
           <Route element={<SignLayout />}>
             <Route path="/signin" element={<Signin />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/signup/terms" element={<SignTerms />} />
-            <Route path="/signup/email" element={<SignEmail />} />
             <Route path="/signup/form" element={<SignupForm />} />
-            <Route path='/signup/email/verify' element={<VerifyEmail />} />
+            <Route path="/verify/email" element={<SignEmail />} />
+            <Route path='/verify/email/verify' element={<VerifyEmail />} />
           </Route>
   {/* 
           <Route element={<AdminLayout />}>
