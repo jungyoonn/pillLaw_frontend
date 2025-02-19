@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../../resources/css/style.css';
 import Container from 'react-bootstrap/Container';
@@ -14,7 +14,9 @@ import {
   faBell,
   faMagnifyingGlass,
   faCommentDots,
+  faAddressCard
 } from "@fortawesome/free-solid-svg-icons";
+import UseAxios from '../../hooks/UseAxios';
 
 const navItems = [
   { name: "전체 상품", path: "/product/list" },
@@ -24,6 +26,42 @@ const navItems = [
 ];
 
 const Headerr = () => {
+  const [login, setLogin] = useState(false);
+  const [email, setEmail] = useState('');
+  const [nickname, setNickname] = useState('');
+  const {req} = UseAxios("http://localhost:8080/api");
+
+
+  useEffect(() => {
+    const storedEmail = localStorage.getItem('email');
+    setEmail(storedEmail);
+    setLogin(!!storedEmail);
+
+    const loadUser = async () => {
+      try {
+        // email이 있을 때만 API 호출
+        if (storedEmail) {
+          const resp = await req('get', `?email=${storedEmail}`);
+          // null 체크 추가
+          if (resp && resp.nickname) {
+            setNickname(resp.nickname);
+          }
+        }
+      } catch (error) {
+        console.error('사용자 정보 로드 실패:', error);
+      }
+    };
+
+    loadUser();
+  }, [login, email, req]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('email');
+    localStorage.removeItem('token');
+    setEmail(null);
+    setLogin(false);
+  }
+
   return (
     <header
       className="container-fluid mb-0"
@@ -31,7 +69,7 @@ const Headerr = () => {
     >
       <Container>
         <Row>
-          <Col xs lg="3">
+          <Col xs="1" lg="3">
             <Link to="/" className="float-start m-2">
               <img
                 className="img-fluid header-icon"
@@ -67,16 +105,34 @@ const Headerr = () => {
                   </Link>
                 )
               )}
-              <p className="float-end mx-2 pt-4 text-center fw-bold fs-12">
-                <Link className="header-font pt-3" to="/signup">
-                  회원가입
-                </Link>
-              </p>
-              <p className="float-end pt-4 text-center fw-bold fs-12">
-                <Link className="header-font pt-3" to="/signin">
-                  로그인
-                </Link>
-              </p>
+                {!login ? (
+                  <>
+                    <p className="float-end mx-2 pt-4 text-center fw-bold fs-12">
+                      <Link className="header-font pt-3" to="/signup">
+                        회원가입
+                      </Link>
+                    </p>
+                    <p className="float-end pt-4 text-center fw-bold fs-12">
+                      <Link className="header-font pt-3" to="/signin">
+                        로그인
+                      </Link>
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p className="float-end mx-2 pt-4 text-center fw-bold fs-12">
+                      <Link className="header-font pt-3" onClick={handleLogout}>
+                        로그아웃
+                      </Link>
+                    </p>
+                    <div className="float-end pt-4 text-center fw-bold fs-12">
+                      <p className="header-font text-decoration-none">
+                      <FontAwesomeIcon icon={faAddressCard} className="fa-regular fa-lg mx-1" />
+                      {nickname + " 님"}
+                      </p>
+                    </div>
+                  </>
+                )}
             </div>
           </Col>
         </Row>

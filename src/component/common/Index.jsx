@@ -23,7 +23,7 @@ const Index = () => {
   const [email, setEmail] = useState('');
   const [login, setLogin] = useState(false);
   const [nickname, setNickname] = useState('');
-  const {loading, error, req} = UseAxios("http://localhost:8080/api");
+  const {req} = UseAxios("http://localhost:8080/api");
 
   useEffect(() => {
     const storedEmail = localStorage.getItem('email');
@@ -46,7 +46,7 @@ const Index = () => {
     };
 
     loadUser();
-  }, [email]);
+  }, [email, req]);
 
   const handleLogout = () => {
     localStorage.removeItem('email');
