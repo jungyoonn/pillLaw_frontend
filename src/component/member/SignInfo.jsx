@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Col, Form, Row } from 'react-bootstrap';
+import { Alert, Col, Form, Row } from 'react-bootstrap';
 import Button from '../common/Button';
 
-const SignInfo = ({onSubmit}) => {
+const SignInfo = ({onSubmit, failure}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
@@ -148,11 +148,6 @@ const SignInfo = ({onSubmit}) => {
             {passwordMismatchError && <p className="fs-12 fw-bold text-danger email-failed">비밀번호가 일치하지 않습니다. 다시 입력해 주세요.</p>}
           </Form.Group>
 
-          {/* 비밀번호 오류 메시지 */}
-          {/* {passwordError && (
-            <Alert variant="danger">비밀번호가 일치하지 않습니다. 다시 입력해 주세요.</Alert>
-          )} */}
-
           {/* 이름 입력 */}
           <Form.Group className="mb-3">
             <Form.Label>이름 <span className="text-danger">*</span></Form.Label>
@@ -195,6 +190,13 @@ const SignInfo = ({onSubmit}) => {
               required
             />
           </Form.Group>
+
+          {failure && (
+            <Alert variant="danger">
+              이미 존재하는 회원입니다. <br />
+              <Alert.Link href="/signin">로그인하러 가기</Alert.Link>
+            </Alert>
+          )}
 
           {/* 가입 버튼 */}
           <div className="text-center mt-4 d-grid">

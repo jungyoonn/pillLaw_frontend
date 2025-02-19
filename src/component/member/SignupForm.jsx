@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 const SignupForm = () => {
   const [term, setTerm] = useState(true);
   const [termsData, setTermsData] = useState(null);
+  const [failure, setFailure] = useState(false);
   const {req} = UseAxios("http://localhost:8080/api");
   const navigate = useNavigate();
 
@@ -43,8 +44,14 @@ const SignupForm = () => {
     try {
       const resp = await req('post', '/member/signup/terms', finalData);
       console.log(resp);
-      resp.ok && alert("가입이 완료되었습니다!");
-      navigate("/");
+
+      if(resp.ok) {
+        resp.ok && alert("가입이 완료되었습니다!");
+        navigate("/");
+      } else {
+        setFailure(true);
+      }
+
 
     } catch(error) {
       console.error("회원가입 실패:", error);
@@ -57,7 +64,7 @@ const SignupForm = () => {
       {term ? (
         <SignTerms onSubmit={handleTermsSubmit} /> 
       ) : (
-        <SignInfo onSubmit={handleUserSubmit} />
+        <SignInfo onSubmit={handleUserSubmit} failure={failure}/>
       )}
     </Container>
   );
