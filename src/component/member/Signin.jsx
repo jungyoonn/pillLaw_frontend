@@ -70,10 +70,10 @@ const Signin = () => {
       if (error.response) {
         switch (error.response.status) {
           case 401:
-            setErr('이메일 또는 비밀번호가 올바르지 않습니다.');
+            setErr(error.response.data.clientMsg);
             break;
-          case 404:
-            setErr('존재하지 않는 계정입니다.');
+          case 403:
+            setErr('잘못된 접근입니다.');
             break;
           default:
             setErr('서버 오류가 발생했습니다.');
