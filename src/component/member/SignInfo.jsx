@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Alert, Col, Form, Row } from 'react-bootstrap';
+import { Col, Form, Row } from 'react-bootstrap';
 import Button from '../common/Button';
 
-const SignInfo = ({onSubmit, failure}) => {
+const SignInfo = ({onSubmit}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
@@ -191,12 +191,12 @@ const SignInfo = ({onSubmit, failure}) => {
             />
           </Form.Group>
 
-          {failure && (
+          {/* {failure && (
             <Alert variant="danger">
               이미 존재하는 회원입니다. <br />
               <Alert.Link href="/signin">로그인하러 가기</Alert.Link>
             </Alert>
-          )}
+          )} */}
 
           {/* 가입 버튼 */}
           <div className="text-center mt-4 d-grid">
