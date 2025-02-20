@@ -1,48 +1,73 @@
-import React from "react";
-import { Accordion, Form, Row, Col } from "react-bootstrap";
+import React, { useCallback, useEffect, useState } from "react";
 import '../../resources/css/style.css';
+import useAxios from '../../hooks/UseAxios';
+import ProductCategoryBioActive from "./ProductCategoryBioActive";
+import ProductCategoryNutrient from "./ProductCategoryNutrient";
+import { Form, Row } from "react-bootstrap";
 
-const ProductCategorySelector = () => {
-  const categories = [
-    {
-      title: "생리활성",
-      options: [
-        "기억력", "혈행", "간건강", "체지방", "갱년기 남", "갱년기 여",
-        "혈당", "눈", "면역", "관절, 뼈", "전립선", "피로", "피부",
-        "콜레스테롤", "혈압", "긴장", "장", "칼슘", "요로", "소화", "항산화",
-        "혈중중성지방", "인지능력", "운동수행, 지구력", "치아", "배뇨",
-        "면역과민 피부", "월경", "정자", "질 유산균", "유아 성장"
-      ]
-    },
-    {
-      title: "영양소",
-      options: [
-        "비타민 A", "비타민 B", "비타민 D", "비타민 E", "비타민 K",
-        "비타민 B1", "비타민 B2", "비타민 B6", "비타민 B12", "비타민 C",
-        "나이아신", "엽산", "비오틴", "칼슘", "마그네슘", "철", "아연", "구리",
-        "셀레늄", "요오드", "망간", "몰리브덴", "칼륨", "크롬", "식이섬유",
-        "단백질", "필수 지방산"
-      ]
-    }
-  ];
+const ProductCategorySelector = ({}) => {
+  const [categoryType, setCategoryType] = useState(true);
+  const { loading: loading1, error: error1, req: req1 } = useAxios();
+  const [bio, setBio] = useState(null);
+  const { loading: loading2, error: error2, req: req2 } = useAxios();
+  const [nutri, setNutri] = useState(null);
+  const [selectedBio, setSelectedBio] = useState({});
+  const [selectedNutri, setSelectedNutri] = useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [result1, result2] = await Promise.all([
+          req1('get', 'v1/category/list/bioactive'),
+          req2('get', 'v1/category/list/nutrient')
+        ]);
+
+        setBio(result1);
+        setNutri(result2);
+
+      } catch (err) {
+        console.error('데이터 로딩 실패:', err);
+      }
+    };
+
+    fetchData();
+  }, [req1, req2]);
+
+  if (loading1 || loading2) return <div>Loading...</div>;
+  if (error1 || error2) return <div>Error occurred!</div>;
 
   return (
-    <Accordion>
-      {categories.map((category, index) => (
-        <Accordion.Item key={index} eventKey={index.toString()} className="fw-bold">
-          <Accordion.Header className="border-pilllaw-secondary ">{category.title}</Accordion.Header>
-          <Accordion.Body className="border-pilllaw-secondary custum-accordian">
-            <Row>
-              {category.options.map((option, idx) => (
-                <Col key={idx} xs={6} sm={3} className="mb-2 fs-12">
-                  <Form.Check type="checkbox" label={option} style={{opacity:1}}/>
-                </Col>
-              ))}
-            </Row>
-          </Accordion.Body>
-        </Accordion.Item>
-      ))}
-    </Accordion>
+    <>
+      <Row>
+        <Form>
+          <div className="mb-3">
+            <Form.Check
+              inline
+              label="1"
+              name="group1"
+              type="radio"
+              checked={categoryType === true}
+              id="inline-radio-1"
+              onChange={() => setCategoryType(true)}
+            />
+            <Form.Check
+              inline
+              label="2"
+              name="group1"
+              type="radio"
+              checked={categoryType === false}
+              id="inline-radio-2"
+              onChange={() => setCategoryType(false)}
+            />
+          </div>
+        </Form>
+      </Row>
+      {categoryType ? 
+      <ProductCategoryBioActive data={bio} selected={selectedBio} setSelectedBio={setSelectedBio} />  
+      : 
+      <ProductCategoryNutrient data={nutri} selected={selectedNutri} setSelectedNutri={setSelectedNutri} />
+      }
+    </>
   );
 };
 
