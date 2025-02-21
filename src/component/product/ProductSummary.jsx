@@ -24,7 +24,7 @@ const ProductSummary = ({ product }) => {
         {/* 상품 제목 */}
         <Col className="text-start">
           <h4 className="fw-bold">
-            <FontAwesomeIcon icon={faCapsules} size="xl" /> &nbsp;&nbsp;&nbsp; {product.name}
+            <FontAwesomeIcon icon={faCapsules} size="xl" /> &nbsp;&nbsp;&nbsp; {product.pname}
           </h4>
         </Col>
         {/* 좋아요 및 공유 버튼 */}
@@ -47,7 +47,7 @@ const ProductSummary = ({ product }) => {
           <FontAwesomeIcon icon={faWonSign} size="xl"/>
           &nbsp;&nbsp;&nbsp;&nbsp;
           <span className="fs-14 text-decoration-line-through text-secondary fw-bold">
-            {product.price.toLocaleString()}
+            {/* {product.price.toLocaleString()} */}
           </span>{" "}
           <span> 원 </span>
         </Col>
@@ -56,9 +56,9 @@ const ProductSummary = ({ product }) => {
       {/* 할인가 */}
       <Row className="mt-2">
         <Col className="text-start">
-          <span className="text-pilllaw fs-12 fw-bold">-{product.discount * 100}%</span>
+          {/* <span className="text-pilllaw fs-12 fw-bold">-{product.discount * 100}%</span> */}
           &nbsp;&nbsp;&nbsp;
-          <span className="fs-14 fw-bold">{discountedPrice.toLocaleString()}</span> <span> 원 </span>
+          {/* <span className="fs-14 fw-bold">{discountedPrice.toLocaleString()}</span> <span> 원 </span> */}
         </Col>
       </Row>
 
@@ -86,9 +86,12 @@ const ProductSummary = ({ product }) => {
             <option className="text-secondary" disabled selected>
               (필수)옵션 선택
             </option>
-            <option className="fs-12">30일 &nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;&nbsp; {discountedPrice.toLocaleString()}원</option>
-            <option className="fs-12">60일 &nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;&nbsp; {(discountedPrice * 2).toLocaleString()}원</option>
-            <option className="fs-12">90일 &nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;&nbsp; {(discountedPrice * 3).toLocaleString()}원</option>
+            {/* {discountedPrice.toLocaleString()}원 */}
+            {/* {(discountedPrice * 2).toLocaleString()}원 */}
+            {/* {(discountedPrice * 3).toLocaleString()}원 */}
+            <option className="fs-12">30일 &nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;&nbsp;</option>
+            <option className="fs-12">60일 &nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;&nbsp; </option>
+            <option className="fs-12">90일 &nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;&nbsp; </option>
           </Form.Select>
         </Col>
         <Col xs={1}></Col>

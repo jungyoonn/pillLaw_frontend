@@ -17,6 +17,7 @@ import ReviewForm from '../common/ReviewForm'
 import ProductSummary from './ProductSummary'
 import ReviewChart from "../common/ReviewChart"
 import ProductReviewList from "./ProductReviewList";
+import useAxios from '../../hooks/UseAxios';
 
 //  상품 데이터 (API 연동 전 테스트 데이터)
 const products = [
@@ -55,13 +56,18 @@ const products = [
   },
 ];
 
-// 점수 분포 데이터
-const ratingDistribution = [2, 5, 7, 3, 3];
 
-const ProductDetail = () => {
-  const { id } = useParams();
-  const product = products.find((p) => p.id === parseInt(id));
-  const [mainImage, setMainImage] = useState(product ? product.image : "");
+
+
+// 점수 분포 데이터
+// const ratingDistribution = [2, 5, 7, 3, 3];
+
+const ProductDetail = (product) => {
+  const {loading, error, req} = useAxios();
+  const { pno } = useParams();
+  // const product = products.find((p) => p.id === parseInt(id));
+  const img = "https://placehold.co/400x400"
+  // const [mainImage, setMainImage] = useState(product ? product.image : "");
   const [activeTab, setActiveTab] = useState("real-product-details");
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [reviews, setReviews] = useState([
@@ -71,16 +77,23 @@ const ProductDetail = () => {
     { id: 4, title: "괜찮아요맨", content: "괜찮은 제품이에요.", rating: 4, date: "2025.02.08", likes: 5, images: [] }
   ]);
 
+  useEffect(()=>{
+    if(pno){
+      req('get', `v1/product/detail/${pno}`);
+    }
+  },[pno, req]);
+
+  if(error){
+    return <div><h2>상품을 찾을 수 없어요!</h2></div>;
+  }
+  if(loading){
+    return <div><h1>loading,,,</h1></div>;
+  }
+
 
   const handleAddReview = (newReview) => {
     setReviews((prevReviews) => [...prevReviews, newReview]);
   };
-
-  
-  useEffect(() => {
-    if (!product) return;
-    setMainImage(product.image);
-  }, [product]);
 
   if (!product) return <h2 className="text-center mt-5">상품을 찾을 수 없습니다.</h2>;
 
@@ -106,7 +119,7 @@ const ProductDetail = () => {
         {/*  상품 이미지 및 정보 */}
         <Row className="mt-4">
           <Col xs={5}>
-            <img className="img-fluid mx-2 pilllaw-product-image" src={mainImage} alt={product.name} />
+            <img className="img-fluid mx-2 pilllaw-product-image"  alt={product.pname} />
           </Col>
 
           <Col xs={2} className="mt-4">
@@ -116,7 +129,6 @@ const ProductDetail = () => {
                   className="img-fluid mx-auto float-end w-75 pilllaw-product-image"
                   src={img}
                   alt={`thumbnail-${index}`}
-                  onClick={() => setMainImage(img)}
                   style={{ cursor: "pointer" }}
                 />
               </Row>
@@ -153,7 +165,7 @@ const ProductDetail = () => {
           {/*  제품 상세정보 탭 */}
           {activeTab === "real-product-details" && (
             <div className="tab-content mt-5 fade show active">
-              {product.tags.map((tag, index) => (
+              {product.effect.map((tag, index) => (
                 <span key={index} className="badge bg-success fs-14 mx-1">{tag}</span>
               ))}
               <div className="d-flex justify-content-center mt-3">
