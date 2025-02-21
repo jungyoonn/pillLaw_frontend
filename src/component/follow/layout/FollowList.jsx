@@ -1,6 +1,6 @@
 import React from "react";
-import FollowHeaderButtonsArea from "./FollowHeaderButtonsArea";
-import SendLetterPage from "../letter/SendLetterPage";
+import FollowHeaderButtonsArea from "../FollowHeaderButtonsArea";
+import SendLetterPage from "../../letter/SendLetterPage";
 
 // import Row from 'react-bootstrap/Row';
 // import mainImage from '../../resources/image/main_image_2.jpg';
