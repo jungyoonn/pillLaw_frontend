@@ -11,7 +11,7 @@ const ProfileCard = ({nickname}) => {
   const{logout} = useAuth();
   const [followersCount, setFollowersCount] = useState(0); // 팔로워 수
   const [followingCount, setFollowingCount] = useState(0); // 팔로잉 수
-  const [sendLetterCount, setSendLetterCount] = useState(0); //받은 쪽지 수
+  const [receiverLetterCount, setReceiverLetterCount] = useState(0); //받은 쪽지 수
   const { req } = UseAxios('');
 
   const handleClick = (e) => {
@@ -20,26 +20,29 @@ const ProfileCard = ({nickname}) => {
   };
   
   useEffect(() => {
-    const mno = localStorage.getItem("senderFollowId"); // 현재 로그인한 사용자의 ID
+    const mno = localStorage.getItem("receiverFollowId"); // 현재 로그인한 사용자의 ID
     if (!mno) return; // 로그인하지 않았으면 요청 안 함
 
     const followAndLetterData = async () => {
       try {
         // 팔로워 수 가져오기
-        const followersResp = await req(`/api/follow/${mno}`);
+        
+        const followersResp = await req('get', `/api/follow/${mno}`);
+        // const followersResp = await req(`/api/follow/${mno}`);
         if (followersResp.data) {
           setFollowersCount(followersResp.data.length);
         }
 
         // // 팔로잉 수 가져오기 (추가적인 API 필요) 추가 수정예정건.
-        const followingResp = await req(`/api/follow/following/${mno}`);
+        const followingResp = await req('get', `/api/follow/sender/${mno}`);
+        // const followingResp = await req(`/api/follow/following/${mno}`);
         if (followingResp.data) {
           setFollowingCount(followingResp.data.length);
         }
         
-        const letterResp = await req(`/api/letter/count/${mno}`);
+        const letterResp = await req('get', `/api/letter/count/${mno}`);
         if (letterResp.data) {
-          setSendLetterCount(letterResp.data.count); // 쪽지 개수
+          setReceiverLetterCount(letterResp.data.count); // 쪽지 개수
         }
 
       } catch (error) {
@@ -48,7 +51,8 @@ const ProfileCard = ({nickname}) => {
     };
 
     followAndLetterData();
-  }, []);
+  }, [localStorage.getItem("senderFollowId")]);
+  // }, []);
 
   return (
     <>
@@ -63,7 +67,7 @@ const ProfileCard = ({nickname}) => {
       <Row className="card-body p-0">
         <Col xs lg="7">
           <div className="px-2 ms-4 mb-0 fs-14"><FontAwesomeIcon icon={faCoins} className="fw-bold header-font me-1" />&nbsp;포인트 1500p</div>
-          <div className="px-2 ms-4 mt-0 fs-14"><FontAwesomeIcon icon={faPaperPlane} className="fw-bold header-font me-1" />&nbsp;쪽지{sendLetterCount}개</div>
+          <div className="px-2 ms-4 mt-0 fs-14"><FontAwesomeIcon icon={faPaperPlane} className="fw-bold header-font me-1" />&nbsp;쪽지{receiverLetterCount}개</div>
         </Col>
         <Col className="mt-2">
           <Button variant='pilllaw' className="btn btn-pilllaw fs-14" onClick={handleClick} >로그아웃</Button>
