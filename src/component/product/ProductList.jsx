@@ -6,30 +6,59 @@ import "../../resources/css/style.css";
 import { Col, Container, Form, InputGroup, Nav, Navbar, Row } from "react-bootstrap";
 import ProductCategorySelector from "./ProductCategorySelector";
 import ProductItem from "./ProductItem";
-import { useNavigate } from "react-router-dom";
 import useAxios from '../../hooks/UseAxios';
-
-
 
 const ProductList = () => {
   const {data, loading, error, req} = useAxios();
-
-  // 검색어
   const [searchTerm, setSearchTerm] = useState("");
-  // 검색 방식
   const [searchType, setSearchType] = useState("name");
+  const [selectedCategories, setSelectedCategories] = useState(new Set());
+  const [forceUpdate, setForceUpdate] = useState(false);
 
-  const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log("상품 데이터:", data);
+  }, [data]);
 
   useEffect(()=>{
     req('get', 'v1/product/list');
-  },[req]);
+  },[]);
   if(error){
     return <div><h1>Error Occured!</h1></div>;
   }
   if(loading){
     return <div><h1>loading,,,</h1></div>;
   }
+
+  const filteredData = data?.filter((p) => {
+    const matchesSearch = searchTerm.trim() === "" || p.product.pname.includes(searchTerm);
+  
+    const matchesCategory = selectedCategories.size === 0 || 
+      Array.from(selectedCategories).every(selected => 
+        p.categories.some(category => category.cname === selected)
+      );
+  
+    return matchesSearch && matchesCategory; 
+  }) || [];
+
+  const onCategoryChange = (category) => {
+    setSelectedCategories((prev) => {
+      const updatedCategories = new Set(prev);
+      if (updatedCategories.has(category)) {
+        updatedCategories.delete(category);
+      } else {
+        updatedCategories.add(category);
+      }
+  
+      console.log("🔹 선택한 카테고리:", category);
+      console.log("🔹 업데이트된 카테고리:", Array.from(updatedCategories));
+  
+      setForceUpdate(prev => !prev); 
+      return new Set(updatedCategories);
+    });
+  };
+
+
 
   return (
     <div className="wrap">
@@ -67,14 +96,16 @@ const ProductList = () => {
 
         {searchType === "category" && (
           <div className="category-selector">
-            <ProductCategorySelector />
+            <ProductCategorySelector className="mt-3" onCategoryChange={onCategoryChange} selectedCategories={selectedCategories} />
           </div>
         )}
         <Row className="text-center container-fluid mt-4">
-          {data && data
-                  .filter((p) => p.pname.includes(searchTerm))
-                  .map(p => <ProductItem key={p.pno} product={p}/>)
-          }
+          <p className="fs-12 text-secondary">현재 검색 결과에 일치하는 상품이 {filteredData.length} 개 있습니다.</p>
+          {filteredData.length > 0 ? (
+            filteredData.map(p => <ProductItem className="mt-3" key={p.product.pno} product={p.product} />)
+          ) : (
+            <h3>선택한 카테고리에 해당하는 상품이 없습니다.</h3>
+          )}
         </Row>
       </Container>
     </div>
