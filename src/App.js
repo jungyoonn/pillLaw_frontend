@@ -26,6 +26,8 @@ import FollowList from './component/follow/layout/FollowList';
 import { AuthProvider } from "./hooks/AuthContext";
 import VerifyEmail from './component/member/VerifyEmail';
 import SignupForm from './component/member/SignupForm';
+import OAuth2RedirectHandler from './component/member/OAuth2RedirectHandler';
+import ProfileCard from './component/common/ProfileCard';
 
 
 function App() {
@@ -42,7 +44,7 @@ function App() {
             {/* <Route path='FollowListt' element={<FollowListt />} /> */}
 
             <Route path='/profilecard' element={<ProfileCard/> }/>
-            <Route path='/followers' element={<Followers/> }/>
+            {/* <Route path='/followers' element={<Followers/> }/> */}
             <Route path='/followlist' element={<FollowList/> }/>
             {/* <Route path='/chatroomList' element={<ChatRoomList/> }/> */}
             {/* <Route path='/userprofile' element={<UserProfile />}/> */}
@@ -61,6 +63,7 @@ function App() {
             <Route path="/signup/form" element={<SignupForm />} />
             <Route path="/verify/email" element={<SignEmail />} />
             <Route path='/verify/email/verify' element={<VerifyEmail />} />
+            <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
           </Route>
   {/* 
           <Route element={<AdminLayout />}>
