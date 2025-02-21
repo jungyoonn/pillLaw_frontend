@@ -4,11 +4,9 @@ import { faHeart, faStar } from "@fortawesome/free-solid-svg-icons";
 import { Row, Col } from "react-bootstrap";
 
 const ProductReviewList = ({ reviews }) => {
-  // 리뷰 좋아요 상태 관리
   const [reviewLikes, setReviewLikes] = useState({});
   const [likedReviews, setLikedReviews] = useState({});
 
-  // 🔹 `reviews` 변경될 때 `reviewLikes` 초기화
   useEffect(() => {
     const initialLikes = reviews.reduce((acc, review) => {
       acc[review.id] = review.likes;
@@ -25,7 +23,7 @@ const ProductReviewList = ({ reviews }) => {
 
     setLikedReviews((prevLiked) => ({
       ...prevLiked,
-      [reviewId]: !prevLiked[reviewId], // 좋아요 상태 변경 (토글)
+      [reviewId]: !prevLiked[reviewId], 
     }));
   };
 
@@ -33,10 +31,8 @@ const ProductReviewList = ({ reviews }) => {
 
   return (
     <div>
-      {/* ✅ 리뷰 리스트 렌더링 */}
       {reviews.map((review) => (
         <div key={review.id} className="row border border-1 pt-4 pb-3 mx-3 fs-12 mt-2">
-          {/* 리뷰 이미지 */}
           <Col xs={2} className="d-flex align-items-center">
             {review.images && review.images.length > 0 ? (
               <img className="img-fluid w-75 pilllaw-product-image" src={review.images[0]} alt="리뷰 이미지" />
@@ -45,7 +41,6 @@ const ProductReviewList = ({ reviews }) => {
             )}
           </Col>
 
-          {/* 리뷰 본문 */}
           <Col xs={6}>
             <Row className="text-start">
               <span className="fw-bold">{review.title}</span>
@@ -55,12 +50,10 @@ const ProductReviewList = ({ reviews }) => {
             </Row>
           </Col>
 
-          {/* 작성일 */}
           <Col xs={2} className="text-center">
             <span>작성일: {review.date}</span>
           </Col>
 
-          {/* 별점 */}
           <Col xs={2} className="text-center">
             <span className="fw-bold">별점: </span>
             {Array.from({ length: review.rating }).map((_, index) => (
@@ -69,7 +62,6 @@ const ProductReviewList = ({ reviews }) => {
             ({review.rating}점)
           </Col>
 
-          {/* 좋아요 버튼 */}
           <Row className="row text-end mt-2">
             <Col className="col">
               <button

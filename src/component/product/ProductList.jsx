@@ -3,75 +3,78 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import "font-awesome/css/font-awesome.min.css";
 import "../../resources/css/style.css";
-import image1 from "../../resources/image/product1.jpg";
-import image2 from "../../resources/image/product2.jpg";
-import image3 from "../../resources/image/product3.jpg";
-import { Container, Row } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { Col, Container, Form, InputGroup, Nav, Navbar, Row } from "react-bootstrap";
 import ProductCategorySelector from "./ProductCategorySelector";
 import ProductItem from "./ProductItem";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import useAxios from '../../hooks/UseAxios';
 
-// 상품 데이터 (추후 API 연동 예정)
-const products = [
-  { id: 1, name: "프레쉬 유산균", price: 30500, image: image1, rating: 4.1, reviews: 19 },
-  { id: 2, name: "비타민", price: 26000, image: image2, rating: 4.5, reviews: 25 },
-  { id: 3, name: "홍삼", price: 41500, image: image3, rating: 4.2, reviews: 30 },
-];
+
 
 const ProductList = () => {
+  const {data, loading, error, req} = useAxios();
+
+  // 검색어
   const [searchTerm, setSearchTerm] = useState("");
-  const [product, setProduct] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null); 
+  // 검색 방식
+  const [searchType, setSearchType] = useState("name");
+
+  const navigate = useNavigate();
 
   useEffect(()=>{
-    const getList = async() => {
-      try{
-        const resp = await axios.get("http://localhost:8080/api/v1/product/list");
-      }catch(err){
-        console.log(err);
-        setError(err);
-      }finally{
-        setLoading(false);
-      }
-    }
-  })
+    req('get', 'v1/product/list');
+  },[req]);
+  if(error){
+    return <div><h1>Error Occured!</h1></div>;
+  }
+  if(loading){
+    return <div><h1>loading,,,</h1></div>;
+  }
 
   return (
     <div className="wrap">
       <Container className="text-center" style={{ paddingTop: "115.19px" }}>
         <h1 className="fw-bold my-5">상품 리스트</h1>
-        {/* 검색창 */}
-        <div className="form-floating my-2 fs-12">
-          <input 
-            type="text"
-            className="form-control"
-            id="search"
-            placeholder="검색어를 입력하세요."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            style={{opacity:0.3}}
-          />
-          <label htmlFor="search">
-            <FontAwesomeIcon icon={faMagnifyingGlass} className="fs-14"/> 검색어를 입력하세요.
-          </label>
-        </div>
-        <hr className="text-pilllaw"/>
-        {/* 카테고리 필터 */}
-        <div className="category-selector">
-          <ProductCategorySelector/>
-        </div>
+        <Row>
+          <Navbar bg="light" data-bs-theme="light">
+            <Container className="justify-content-center">
+              <Nav>
+                <Nav.Link onClick={() => setSearchType("name")} active={searchType === "name"}>이름으로 검색</Nav.Link>  
+                <Nav.Link onClick={() => setSearchType("category")} active={searchType === "category"}>카테고리로 검색</Nav.Link>
+              </Nav>
+            </Container>
+          </Navbar>
+        </Row>
 
+        {searchType === "name" && (
+          <Row>
+            <Col xs="3"></Col>
+              <Col>
+                <InputGroup className="mb-3 border border-pilllaw-primary rounded" >
+                  <Form.Control
+                    aria-label="Default"
+                    aria-describedby="inputGroup-sizing-default"
+                    placeholder="검색어를 입력하세요"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="fs-11"
+                  />
+                </InputGroup>
+              </Col>
+            <Col xs="3"></Col>
+          </Row>
+        )}
 
-        {/* 상품 리스트 */}
+        {searchType === "category" && (
+          <div className="category-selector">
+            <ProductCategorySelector />
+          </div>
+        )}
         <Row className="text-center container-fluid mt-4">
-          {products
-            .filter((product) => product.name.includes(searchTerm)) // 검색 필터 적용
-            .map((product) => (
-              <ProductItem key={product.id} product={product} />
-            ))}
+          {data && data
+                  .filter((p) => p.pname.includes(searchTerm))
+                  .map(p => <ProductItem key={p.pno} product={p}/>)
+          }
         </Row>
       </Container>
     </div>
