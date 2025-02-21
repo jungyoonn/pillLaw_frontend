@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Container, Modal, Button } from "react-bootstrap";
+import UseAxios from '../../hooks/UseAxios';
+
 
 const SendLetterPage = () => {
   const [showModal, setShowModal] = useState(false); // 모달 상태
@@ -7,18 +9,21 @@ const SendLetterPage = () => {
   const [selectedRecipient, setSelectedRecipient] = useState(""); // 선택된 받는 사람
   const [SendLetterContent, setSendLetterContent] = useState(""); // 쪽지 내용
   const [showToast, setShowToast] = useState(false); // 전송 완료 모달
+  const [mutualFollows] = useState([]);
   const dropdownRef = useRef(null);
-
-  const mutualFollows = [
-    "치킨",
-    "피자",
-    "딸기모찌",
-    "재즈맨",
-    "쿠키",
-    "초코쿠키",
-    "딸기쿠키",
-    "파인애플",
-  ];
+  const { req } = UseAxios('');
+  // const mutualFollows = [
+  //   "치킨",
+  //   "피자",
+  //   "딸기모찌",
+  //   "재즈맨",
+  //   "쿠키",
+  //   "초코쿠키",
+  //   "딸기쿠키",
+  //   "파인애플",
+  // ];
+  
+  
 
   // 드롭다운 외부 클릭 시 닫기
   useEffect(() => {
@@ -38,13 +43,14 @@ const SendLetterPage = () => {
   };
 
   // 쪽지 전송
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!selectedRecipient || SendLetterContent.trim() === "") {
       alert("받는 사람과 쪽지 내용을 모두 입력해주세요");
       return;
     }
     setShowToast(true); // 전송 완료 모달 표시
   };
+
 
   // 모달 닫기 & 입력 초기화
   const handleCloseModal = () => {
@@ -58,6 +64,7 @@ const SendLetterPage = () => {
     setShowToast(false);
     handleCloseModal(); // 전체 모달 닫기
   };
+  
 
   return (
     <Container style={{paddingTop: '115.19px'}}>

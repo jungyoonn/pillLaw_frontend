@@ -22,12 +22,14 @@ import OrderFailed from './component/order/OrderFailed';
 import SendLetterPage from './component/letter/SendLetterPage';
 import SendLetterPage33 from './resources/followhtml/SendLetterTest2';
 import FollowList from './component/follow/layout/FollowList';
-import LetterReplyTest from './component/letter/LetterReplyTest';
+// import LetterReplyTest from './component/letter/layout/LetterReplyTest';
 import { AuthProvider } from "./hooks/AuthContext";
 import VerifyEmail from './component/member/VerifyEmail';
 import SignupForm from './component/member/SignupForm';
 import Followers from './component/follow/FollowersList';
 import ProfileCard from './component/common/ProfileCard';
+// import SendLetterPages from './component/letter/layout/SenderLetterPage';
+// import ChatRoomList from './component/chat/ChatList';
 
 
 function App() {
@@ -46,9 +48,10 @@ function App() {
             <Route path='/profilecard' element={<ProfileCard/> }/>
             <Route path='/followers' element={<Followers/> }/>
             <Route path='/followlist' element={<FollowList/> }/>
+            {/* <Route path='/chatroomList' element={<ChatRoomList/> }/> */}
             {/* <Route path='/userprofile' element={<UserProfile />}/> */}
-            <Route path='/letterreplytest' element={<LetterReplyTest />} />
             <Route path='/sendletterpage' element={<SendLetterPage />}/>
+            <Route path='/senderletterpage' element={<SendLetterPage />}/>
             <Route path='/sendletter33' element={<SendLetterPage33 />}/>
             <Route path='/cart' element={<MyCart />} />
             <Route path='/order' element={<MyOrder />} />
