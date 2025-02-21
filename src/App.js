@@ -15,17 +15,19 @@ import MyOrder from './component/order/MyOrder';
 import SignEmail from './component/member/SignEmail';
 import AdminLayout from './component/layout/AdminLayout';
 import AIndex from './component/admin/AIndex';
-import UserProfile from './component/follow/FollowProfile';
+// import UserProfile from './component/follow/FollowProfile';
 import OrderSuccessed from './component/order/OrderSuccess';
 import OrderFailed from './component/order/OrderFailed';
 // import UserProfile22 from './component/letter/SendLetterPage';
 import SendLetterPage from './component/letter/SendLetterPage';
 import SendLetterPage33 from './resources/followhtml/SendLetterTest2';
-import FollowList from './component/follow/FollowList';
+import FollowList from './component/follow/layout/FollowList';
 import LetterReplyTest from './component/letter/LetterReplyTest';
 import { AuthProvider } from "./hooks/AuthContext";
 import VerifyEmail from './component/member/VerifyEmail';
 import SignupForm from './component/member/SignupForm';
+import Followers from './component/follow/FollowersList';
+import ProfileCard from './component/common/ProfileCard';
 
 
 function App() {
@@ -40,8 +42,11 @@ function App() {
             {/* <Route path="/posts" element={<Posts />} />
             <Route path="/posts/:id" element={<PostDetail />} /> */}
             {/* <Route path='FollowListt' element={<FollowListt />} /> */}
+
+            <Route path='/profilecard' element={<ProfileCard/> }/>
+            <Route path='/followers' element={<Followers/> }/>
             <Route path='/followlist' element={<FollowList/> }/>
-            <Route path='/userprofile' element={<UserProfile />}/>
+            {/* <Route path='/userprofile' element={<UserProfile />}/> */}
             <Route path='/letterreplytest' element={<LetterReplyTest />} />
             <Route path='/sendletterpage' element={<SendLetterPage />}/>
             <Route path='/sendletter33' element={<SendLetterPage33 />}/>

@@ -1,18 +1,54 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faGear, faCoins, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import Button from './Button';
 import { useAuth } from '../../hooks/AuthContext';
+import UseAxios from '../../hooks/UseAxios';
 
 const ProfileCard = ({nickname}) => {
   const{logout} = useAuth();
+  const [followersCount, setFollowersCount] = useState(0); // 팔로워 수
+  const [followingCount, setFollowingCount] = useState(0); // 팔로잉 수
+  const [sendLetterCount, setSendLetterCount] = useState(0); //받은 쪽지 수
+  const { req } = UseAxios('');
 
   const handleClick = (e) => {
     e.preventDefault();
     logout();
   };
+  
+  useEffect(() => {
+    const mno = localStorage.getItem("senderFollowId"); // 현재 로그인한 사용자의 ID
+    if (!mno) return; // 로그인하지 않았으면 요청 안 함
+
+    const followAndLetterData = async () => {
+      try {
+        // 팔로워 수 가져오기
+        const followersResp = await req(`/api/follow/${mno}`);
+        if (followersResp.data) {
+          setFollowersCount(followersResp.data.length);
+        }
+
+        // // 팔로잉 수 가져오기 (추가적인 API 필요) 추가 수정예정건.
+        const followingResp = await req(`/api/follow/following/${mno}`);
+        if (followingResp.data) {
+          setFollowingCount(followingResp.data.length);
+        }
+        
+        const letterResp = await req(`/api/letter/count/${mno}`);
+        if (letterResp.data) {
+          setSendLetterCount(letterResp.data.count); // 쪽지 개수
+        }
+
+      } catch (error) {
+        console.error("정보 가져오기 실패:", error);
+      }
+    };
+
+    followAndLetterData();
+  }, []);
 
   return (
     <>
@@ -27,7 +63,7 @@ const ProfileCard = ({nickname}) => {
       <Row className="card-body p-0">
         <Col xs lg="7">
           <div className="px-2 ms-4 mb-0 fs-14"><FontAwesomeIcon icon={faCoins} className="fw-bold header-font me-1" />&nbsp;포인트 1500p</div>
-          <div className="px-2 ms-4 mt-0 fs-14"><FontAwesomeIcon icon={faPaperPlane} className="fw-bold header-font me-1" />&nbsp;쪽지 0개</div>
+          <div className="px-2 ms-4 mt-0 fs-14"><FontAwesomeIcon icon={faPaperPlane} className="fw-bold header-font me-1" />&nbsp;쪽지{sendLetterCount}개</div>
         </Col>
         <Col className="mt-2">
           <Button variant='pilllaw' className="btn btn-pilllaw fs-14" onClick={handleClick} >로그아웃</Button>
@@ -35,10 +71,10 @@ const ProfileCard = ({nickname}) => {
       </Row>
       <Row className="row mt-4 d-flex justify-content-center">
         <Col>
-          <p className="fs-14 fw-bold text-center ms-2"><Link to={"/"} className="text-pilllaw" >팔로잉 15명</Link></p>
+          <p className="fs-14 fw-bold text-center ms-2"><Link to={"/"} className="text-pilllaw" >팔로잉 {followingCount}명</Link></p>
         </Col>
         <Col>
-          <p className="fs-14 fw-bold text-center me-2"><Link to={"/"} className="text-pilllaw">팔로워 20명</Link></p>
+          <p className="fs-14 fw-bold text-center me-2"><Link to={"/"} className="text-pilllaw">팔로워 {followersCount}명</Link></p>
         </Col>
       </Row>
     </>
