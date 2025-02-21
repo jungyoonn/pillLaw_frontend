@@ -26,6 +26,7 @@ import LetterReplyTest from './component/letter/LetterReplyTest';
 import { AuthProvider } from "./hooks/AuthContext";
 import VerifyEmail from './component/member/VerifyEmail';
 import SignupForm from './component/member/SignupForm';
+import OAuth2RedirectHandler from './component/member/OAuth2RedirectHandler';
 
 
 function App() {
@@ -57,6 +58,7 @@ function App() {
             <Route path="/signup/form" element={<SignupForm />} />
             <Route path="/verify/email" element={<SignEmail />} />
             <Route path='/verify/email/verify' element={<VerifyEmail />} />
+            <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
           </Route>
   {/* 
           <Route element={<AdminLayout />}>
