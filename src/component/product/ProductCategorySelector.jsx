@@ -5,21 +5,22 @@ import ProductCategoryBioActive from "./ProductCategoryBioActive";
 import ProductCategoryNutrient from "./ProductCategoryNutrient";
 import { Form, Row } from "react-bootstrap";
 
-const ProductCategorySelector = ({}) => {
+const ProductCategorySelector = ({ selectedCategories, onCategoryChange}) => {
   const [categoryType, setCategoryType] = useState(true);
   const { loading: loading1, error: error1, req: req1 } = useAxios();
-  const [bio, setBio] = useState(null);
+  const [bio, setBio] = useState([]);
   const { loading: loading2, error: error2, req: req2 } = useAxios();
-  const [nutri, setNutri] = useState(null);
-  const [selectedBio, setSelectedBio] = useState({});
-  const [selectedNutri, setSelectedNutri] = useState({});
+  const [nutri, setNutri] = useState([]);
+
+  // const [selectedBio, setSelectedBio] = useState({});
+  // const [selectedNutri, setSelectedNutri] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [result1, result2] = await Promise.all([
           req1('get', 'v1/category/list/bioactive'),
-          req2('get', 'v1/category/list/nutrient')
+          req2('get', 'v1/category/list/nutrient'),
         ]);
 
         setBio(result1);
@@ -43,7 +44,7 @@ const ProductCategorySelector = ({}) => {
           <div className="mb-3">
             <Form.Check
               inline
-              label="1"
+              label="생리활성"
               name="group1"
               type="radio"
               checked={categoryType === true}
@@ -52,7 +53,7 @@ const ProductCategorySelector = ({}) => {
             />
             <Form.Check
               inline
-              label="2"
+              label="영양소"
               name="group1"
               type="radio"
               checked={categoryType === false}
@@ -63,9 +64,9 @@ const ProductCategorySelector = ({}) => {
         </Form>
       </Row>
       {categoryType ? 
-      <ProductCategoryBioActive data={bio} selected={selectedBio} setSelectedBio={setSelectedBio} />  
+      <ProductCategoryBioActive data={bio} selectedCategories={selectedCategories} onCategoryChange={onCategoryChange} />  
       : 
-      <ProductCategoryNutrient data={nutri} selected={selectedNutri} setSelectedNutri={setSelectedNutri} />
+      <ProductCategoryNutrient data={nutri} selectedCategories={selectedCategories} onCategoryChange={onCategoryChange} />
       }
     </>
   );
