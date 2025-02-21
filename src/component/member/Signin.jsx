@@ -15,6 +15,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/AuthContext';
 
 const Signin = () => {
+  const BACKEND_URL= "//localhost:8080";
+  const FRONTEND_URL = "http://localhost:3000";
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const {loading, error, req} = UseAxios('http://localhost:8080/api/member/');
@@ -82,6 +85,12 @@ const Signin = () => {
     }
   }
 
+  const handleSocialLogin = (provider) => {
+    const redirectUri = encodeURIComponent(`${FRONTEND_URL}/pilllaw/oauth2/redirect`);
+    console.log(redirectUri);
+    window.location.href = `${BACKEND_URL}/oauth2/authorization/${provider}?redirect_uri=${redirectUri}`;
+  };
+
   return (
     <Container>
       <MemberHeader />
@@ -142,7 +151,7 @@ const Signin = () => {
 
             {/* Google 로그인 */}
             <div className="d-grid px-4 mx-4 mt-1">
-              <Button variant='google' to={"/"} className="btn btn-google mx-5 fw-bold mb-1 fs-14 py-2">
+              <Button variant='google' onClick={() => handleSocialLogin('google')} className="btn btn-google mx-5 fw-bold mb-1 fs-14 py-2">
                 <img className="img-fluid me-2 mb-1" src={google} width="18" alt="구글 로그인" />
                 Google 로그인
               </Button>
