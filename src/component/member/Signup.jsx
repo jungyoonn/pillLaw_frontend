@@ -13,6 +13,15 @@ import Button from '../common/Button';
 import MemberHeader from './MemberHeader';
 
 const Signup = () => {
+  const BACKEND_URL= "//localhost:8080";
+  const FRONTEND_URL = "http://localhost:3000";
+
+  const handleSocialLogin = (provider) => {
+    const redirectUri = encodeURIComponent(`${FRONTEND_URL}/pilllaw/oauth2/redirect`);
+    console.log(redirectUri);
+    window.location.href = `${BACKEND_URL}/oauth2/authorization/${provider}?redirect_uri=${redirectUri}`;
+  };
+
   return (
     <Container>
       <MemberHeader />
@@ -43,7 +52,7 @@ const Signup = () => {
               </Button>
             </div>
             <div className="d-grid mt-2 fs-12 align-items-center">
-              <Button variant='naver' to={"/"} className="btn btn-naver btn-block fw-bold text-white pt-2 fs-14">
+              <Button variant='naver' onClick={() => handleSocialLogin('naver')} className="btn btn-naver btn-block fw-bold text-white pt-2 fs-14">
                 <img
                   className="img-fluid me-2 mb-1"
                   src={naver}
@@ -66,7 +75,7 @@ const Signup = () => {
               </Button>
             </div>
             <div className="d-grid mt-1 fs-12">
-              <Button variant='google' to={"/"} className="btn btn-google fw-bold mb-1 fs-14 py-2">
+              <Button variant='google' onClick={() => handleSocialLogin('google')} className="btn btn-google fw-bold mb-1 fs-14 py-2">
                 <img
                   className="img-fluid me-2 mb-1"
                   src={google}
