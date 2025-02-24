@@ -41,7 +41,7 @@ const Signup = () => {
               </Button>
             </div>
             <div className="d-grid mt-2">
-              <Button variant='kakao' to={"/"} className="btn btn-kakao btn-block fw-bold text-kakao p-1 fs-14 pt-2">
+              <Button variant='kakao' onClick={() => handleSocialLogin('kakao')} className="btn btn-kakao btn-block fw-bold text-kakao p-1 fs-14 pt-2">
                 <img
                   className="img-fluid me-2 mb-1"
                   src={kakao}

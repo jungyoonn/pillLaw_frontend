@@ -51,8 +51,9 @@ const Signin = () => {
     
     try {
       const resp = await req('post', 'signin', member);
+      console.log(" :::::::: ");
       console.log(resp);
-      resp && login(member.email, resp.token);
+      resp && login(member.email, resp.token, resp.mno);
       resp && navigate('/');
     } catch(error) {
       console.error("로그인 실패", error);
@@ -121,7 +122,7 @@ const Signin = () => {
           <div>
             {/* 카카오 로그인 */}
             <div className="d-grid px-4 mx-4 mt-5">
-              <Button variant='kakao' to={"/"} className="btn btn-kakao mx-5 btn-block fw-bold text-kakao pt-2 fs-14">
+              <Button variant='kakao' onClick={() => handleSocialLogin('kakao')} className="btn btn-kakao mx-5 btn-block fw-bold text-kakao pt-2 fs-14">
                 <img className="img-fluid me-2 mb-1" src={kakao} width="18" alt="카카오 로그인" />
                 카카오 로그인
               </Button>
@@ -129,7 +130,7 @@ const Signin = () => {
 
             {/* 네이버 로그인 */}
             <div className="d-grid px-4 mx-4 mt-2">
-              <Button variant='naver' to={"/"} className="btn btn-naver mx-5 btn-block fw-bold text-white pt-2 fs-14">
+              <Button variant='naver' onClick={() => handleSocialLogin('naver')} className="btn btn-naver mx-5 btn-block fw-bold text-white pt-2 fs-14">
                 <img className="img-fluid me-2 mb-1" src={naver} width="18" alt="네이버 로그인" />
                 네이버 로그인
               </Button>
