@@ -60,11 +60,11 @@ const ProfileCard = ({nickname}) => {
         <Col xs lg="1" className="float-start p-2 pe-0 ms-4"><FontAwesomeIcon icon={faUser} className="fa-xl header-font" /></Col>
         <Col className="mt-2 ms-1">
           <span className="fs-16 fw-bold">{nickname + ' ' || '익명의 사용자 '} </span>
-          <span className="fs-14">님, 환영합니다!</span>
+          <span className="fs-14">님, <br /> 환영합니다!</span>
         </Col>
         <Col xs lg="2" className="float-end p-2 me-2"><Link to={"/"} className="text-decoration-none"><FontAwesomeIcon icon={faGear} className="fa-xl header-font" /></Link></Col>
       </Row>
-      <Row className="card-body p-0">
+      <Row className="card-body p-0 mt-2">
         <Col xs lg="7">
           <div className="px-2 ms-4 mb-0 fs-14"><FontAwesomeIcon icon={faCoins} className="fw-bold header-font me-1" />&nbsp;포인트 1500p</div>
           <div className="px-2 ms-4 mt-0 fs-14"><FontAwesomeIcon icon={faPaperPlane} className="fw-bold header-font me-1" />&nbsp;쪽지{receiverLetterCount}개</div>

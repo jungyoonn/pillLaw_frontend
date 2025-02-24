@@ -25,18 +25,27 @@ const Index = () => {
   const {req} = UseAxios("http://localhost:8080/api");
 
   useEffect(() => {
+    const storedMno = localStorage.getItem('mno');
     const storedEmail = localStorage.getItem('email');
-    setLogin(!!storedEmail);
+    setLogin(!!storedMno);
+
+    console.log(storedMno);
+    console.log(storedEmail);
 
     const loadUser = async () => {
       try {
-        // email이 있을 때만 API 호출
-        if (storedEmail) {
-          const resp = await req('get', `?email=${storedEmail}`);
-          // null 체크 추가
+        // mno가 있을 때만 API 호출
+        if (storedMno) {
+          const resp = await req('get', `?mno=${storedMno}&email=${storedEmail}`);
+          console.log(resp)
+
+          // 소셜 체크 추가
           if (resp && resp.nickname) {
             setNickname(resp.nickname);
+            return;
           }
+
+          setNickname(resp.socialProvider + "_USER");
         }
       } catch (error) {
         console.error('사용자 정보 로드 실패:', error);
