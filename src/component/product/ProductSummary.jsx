@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCapsules,
@@ -14,6 +14,7 @@ import { Col, Row, Button, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 const ProductSummary = ({ product }) => {
+  const [selectedOption, setSelectedOption] = useState("");
   if (!product) return null;
 
   const discountedPrice = product.price - product.price * product.discount;
@@ -82,8 +83,8 @@ const ProductSummary = ({ product }) => {
       <Row className="mt-5">
         <Col xs={1}></Col>
         <Col>
-          <Form.Select className="fs-16">
-            <option className="text-secondary" disabled selected>
+          <Form.Select className="fs-16" value={selectedOption} onChange={(e)=> setSelectedOption(e.target.value)}>
+            <option className="text-secondary" disabled>
               (필수)옵션 선택
             </option>
             {/* {discountedPrice.toLocaleString()}원 */}
