@@ -28,6 +28,8 @@ import VerifyEmail from './component/member/VerifyEmail';
 import SignupForm from './component/member/SignupForm';
 import OAuth2RedirectHandler from './component/member/OAuth2RedirectHandler';
 import ProfileCard from './component/common/ProfileCard';
+import ChatRoomList from './component/chat/ChatList';
+import ChatTestList from './component/chat/layout/ChatTestList';
 
 
 function App() {
@@ -46,7 +48,8 @@ function App() {
             <Route path='/profilecard' element={<ProfileCard/> }/>
             {/* <Route path='/followers' element={<Followers/> }/> */}
             <Route path='/followlist' element={<FollowList/> }/>
-            {/* <Route path='/chatroomList' element={<ChatRoomList/> }/> */}
+            <Route path='/chatroomList' element={<ChatRoomList/> }/>
+            <Route path='/chattestlist' element={<ChatTestList/> }/>
             {/* <Route path='/userprofile' element={<UserProfile />}/> */}
             <Route path='/sendletterpage' element={<SendLetterPage />}/>
             <Route path='/senderletterpage' element={<SendLetterPage />}/>
