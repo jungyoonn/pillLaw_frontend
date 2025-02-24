@@ -2,13 +2,11 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../hooks/AuthContext';
-import UseAxios from '../../hooks/UseAxios';
 
 const OAuth2RedirectHandler = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { login } = useAuth();
-  const { req } = UseAxios('http://localhost:8080/api/member/');
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -22,10 +20,12 @@ const OAuth2RedirectHandler = () => {
         const params = new URLSearchParams(location.search);
         const token = params.get('token');
         const email = params.get('email');
+        const mno = params.get('mno');
         const error = params.get('error');
 
         console.log(token);
         console.log(email);
+        console.log(mno);
 
         if (error) {
           throw new Error(decodeURIComponent(error));
@@ -36,7 +36,7 @@ const OAuth2RedirectHandler = () => {
         }
 
         // 토큰 저장 및 로그인 처리
-        await login(email, token);
+        await login(email, token, mno);
         navigate('/');
 
       } catch (error) {
@@ -52,7 +52,7 @@ const OAuth2RedirectHandler = () => {
     };
 
     processLogin();
-  }, [location]);
+  }, [location, login]);
 
   if (error) {
     return (
