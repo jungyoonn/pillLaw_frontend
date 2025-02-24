@@ -3,9 +3,16 @@ import { Link } from "react-router-dom";
 import { Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import ProductDetail from "./ProductDetail";
+import useAxios from '../../hooks/UseAxios';
 
 const ProductItem = ({ product }) => {
+  const {loading, error} = useAxios();
+  if(error){
+    return <div><h1>Error Occured!</h1></div>;
+  }
+  if(loading){
+    return <div><h1>loading,,,</h1></div>;
+  }
   return (
     <Col xs={6} sm={4} lg={3} xl={2} className="mt-2 mb-4">
       <Link to={`/v1/product/detail/${product.pno}`} className="text-decoration-none text-black">
