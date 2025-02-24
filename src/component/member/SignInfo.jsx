@@ -10,6 +10,8 @@ const SignInfo = ({onSubmit}) => {
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState(false);
   const [nickname, setNickname] = useState("");
+  const [nameError, setNameError] = useState(false);
+  const [nicknameError, setNicknameError] = useState(false);
 
   // 오류 메시지 상태
   const [emailError, setEmailError] = useState(false);
@@ -24,6 +26,12 @@ const SignInfo = ({onSubmit}) => {
 
   // 휴대전화 번호 검증 정규식
   const phoneRegex = /^010[0-9]{8}$/;
+
+  // 한글 이름 정규식 (자음/모음 제외, 2-4글자)
+  const nameRegex = /^[가-힣]{2,4}$/;
+
+  // 닉네임 정규식 (자음/모음 제외, 2-5글자 한글, 4-10글자 알파벳)
+  const nicknameRegex = /^([가-힣]{2,5}|[a-zA-Z]{4,10})$/;
 
   const handleSubmit = (e) => {
     e.preventDefault(); // 폼 제출 시 페이지 리로드 방지
@@ -60,6 +68,22 @@ const SignInfo = ({onSubmit}) => {
       isValid = false;
     } else {
       setPhoneError(false);
+    }
+
+    // 이름 검증
+    if (!nameRegex.test(name)) {
+      setNameError(true);
+      isValid = false;
+    } else {
+      setNameError(false);
+    }
+
+    // 닉네임 검증
+    if (!nicknameRegex.test(nickname)) {
+      setNicknameError(true);
+      isValid = false;
+    } else {
+      setNicknameError(false);
     }
 
     if (isValid) {
@@ -159,6 +183,9 @@ const SignInfo = ({onSubmit}) => {
               onChange={(e) => setName(e.target.value)}
               required
             />
+            {nameError && 
+              <p className="fs-12 fw-bold text-danger">이름은 2-4글자의 한글만 입력 가능합니다.</p>
+            }
           </Form.Group>
 
           {/* 휴대전화 입력 */}
@@ -183,12 +210,15 @@ const SignInfo = ({onSubmit}) => {
             <Form.Label>닉네임 <span className="text-danger">*</span></Form.Label>
             <Form.Control
               type="text"
-              placeholder="닉네임을 입력해 주세요"
+              placeholder="닉네임을 입력해 주세요(2-5글자)"
               value={nickname}
               name='nickname'
               onChange={(e) => setNickname(e.target.value)}
               required
             />
+            {nicknameError && 
+              <p className="fs-12 fw-bold text-danger">닉네임은 2-5글자의 한글 혹은 4-10글자의 영문만 입력 가능합니다.</p>
+            }
           </Form.Group>
 
           {/* {failure && (
