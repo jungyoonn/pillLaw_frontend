@@ -3,21 +3,6 @@ import { Col, Form } from 'react-bootstrap';
 
 const ProductCategoryBioActive = ({ data = [], selectedCategories, onCategoryChange}) => {
 
-  // const handleCheckboxChange = (event, category) => {
-  //   event.stopPropagation(); // ✅ 이벤트 중복 실행 방지
-  //   event.preventDefault();  // ✅ 기본 이벤트 차단
-  
-  //   onCategoryChange(category);
-  // };
-  // if (!data.length) return <h1>No Data Available</h1>;
-  
-  // const handleCheck = (cno) => {
-  //   setSelectedBio((prev) => ({
-  //     ...prev,
-  //     [cno]: !prev[cno],
-  //   }));
-  // };
-  
   return (
     <Col>
       <Form>
@@ -28,7 +13,7 @@ const ProductCategoryBioActive = ({ data = [], selectedCategories, onCategoryCha
             inline
             label={category.cname}
             type="checkbox"
-            checked={!!selectedCategories.has(category.cname)} // ✅ Boolean 값으로 변환하여 확실한 상태 적용
+            checked={!!selectedCategories.has(category.cname)}
             onChange={() => {
               console.log(`✅ 체크박스 클릭됨: ${category.cname}, 현재 상태: ${selectedCategories.has(category.cname)}`);
               onCategoryChange(category.cname);

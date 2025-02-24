@@ -8,12 +8,9 @@ import { Form, Row } from "react-bootstrap";
 const ProductCategorySelector = ({ selectedCategories, onCategoryChange}) => {
   const [categoryType, setCategoryType] = useState(true);
   const { loading: loading1, error: error1, req: req1 } = useAxios();
-  const [bio, setBio] = useState([]);
   const { loading: loading2, error: error2, req: req2 } = useAxios();
+  const [bio, setBio] = useState([]);
   const [nutri, setNutri] = useState([]);
-
-  // const [selectedBio, setSelectedBio] = useState({});
-  // const [selectedNutri, setSelectedNutri] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,15 +19,12 @@ const ProductCategorySelector = ({ selectedCategories, onCategoryChange}) => {
           req1('get', 'v1/category/list/bioactive'),
           req2('get', 'v1/category/list/nutrient'),
         ]);
-
         setBio(result1);
         setNutri(result2);
-
       } catch (err) {
         console.error('데이터 로딩 실패:', err);
       }
     };
-
     fetchData();
   }, [req1, req2]);
 
