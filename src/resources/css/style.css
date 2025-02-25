@@ -178,6 +178,11 @@ body {
   transition: background-color 0.3s ease-in-out;
 }
 
+.bg-pilllaw-form {
+  background-color: var(--background-color) !important;
+  transition: background-color 0.3s ease-in-out;
+}
+
 /* input이 포커스되거나 값이 입력되었을 때 */
 .form-floating input:focus ~ label,
 .form-floating input:not(:placeholder-shown) ~ label {
