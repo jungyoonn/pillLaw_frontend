@@ -31,6 +31,7 @@ import ProfileCard from './component/common/ProfileCard';
 import ChatRoomList from './component/chat/ChatList';
 import ChatTestList from './component/chat/layout/ChatTestList';
 import FollowersList from './component/follow/layout/FollowersList';
+import MyPageLayout from './component/member/MyPageLayout';
 
 
 function App() {
@@ -59,6 +60,7 @@ function App() {
             <Route path='/order' element={<MyOrder />} />
             <Route path='/order/success' element={<OrderSuccessed />} />
             <Route path='/order/fail' element={<OrderFailed />} />
+            <Route path='/mypage' element={<MyPageLayout />} />
           </Route>
 
           <Route element={<SignLayout />}>
