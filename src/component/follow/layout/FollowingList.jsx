@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import FollowHeaderButtonsArea from "./FollowHeaderButtonsArea";
 import SendLetterPage from "../../letter/SendLetterPage";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import UseAxios from '../../../hooks/UseAxios';
 // import Row from 'react-bootstrap/Row';
 // import mainImage from '../../resources/image/main_image_2.jpg';
@@ -17,17 +18,17 @@ import UseAxios from '../../../hooks/UseAxios';
 
 const FollowingList = () => {
   const {req} = UseAxios();
-  // const follows = [
-  //   { id: 1, href: "SendLetterPage", label: "치킨" },
-  //   { id: 2, href: "#", label: "피자" },
-  //   { id: 3, href: "#", label: "딸기모찌" },
-  //   { id: 4, href: "#", label: "재즈맨" },
-  //   { id: 5, href: "#", label: "쿠키" },
-  //   { id: 6, href: "#", label: "초코쿠키" },
-  //   { id: 7, href: "#", label: "딸기쿠키" },
-  //   { id: 8, href: "#", label: "파인애플" },
-  // ];
-  const [follows, setFollows] = useState([]);
+  const follows = [
+    { id: 1, href: "SendLetterPage", label: "치킨" },
+    { id: 2, href: "#", label: "피자" },
+    { id: 3, href: "#", label: "딸기모찌" },
+    { id: 4, href: "#", label: "재즈맨" },
+    { id: 5, href: "#", label: "쿠키" },
+    { id: 6, href: "#", label: "초코쿠키" },
+    { id: 7, href: "#", label: "딸기쿠키" },
+    { id: 8, href: "#", label: "파인애플" },
+  ];
+  // const [follows, setFollows] = useState([]);
   const mno = localStorage.getItem('mno');
   
   useEffect (() => {
@@ -39,7 +40,7 @@ const FollowingList = () => {
         const resp = await req('get', `follow/sender/${mno}`);
         console.log(resp);
         console.log("배열 여부:", Array.isArray(resp));
-        setFollows([...resp]);
+        // setFollows([...resp]);
         console.log(follows);
         
       } catch (error) {

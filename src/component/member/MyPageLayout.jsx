@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link, useNavigate } from 'react-router-dom';
 import MyInfo from './myPageChildren/MyInfo';
 import ModifyInfo from './myPageChildren/ModifyInfo';
+import FollowList from '../follow/layout/FollowList';
 
 const MyPageLayout = () => {
   const navigate = useNavigate();
@@ -20,6 +21,8 @@ const MyPageLayout = () => {
         return <MyInfo activeKey={activeKey} />;
       case "edit-info":
         return <ModifyInfo activeKey={activeKey} />
+      case 'follow':
+        return <FollowList activeKey={activeKey} />
       default:
         return <div>선택된 메뉴가 없습니다.</div>;
     }
@@ -65,7 +68,7 @@ const MyPageLayout = () => {
               <br />
               <Nav.Link eventKey="link-2">보낸 쪽지</Nav.Link>
               <Nav.Link eventKey="link-2">받은 쪽지</Nav.Link>
-              <Nav.Link eventKey="link-2">팔로우 / 팔로워</Nav.Link>
+              <Nav.Link eventKey="follow">팔로우 / 팔로워</Nav.Link>
               <br />
               <Nav.Link eventKey="link-2">로그아웃</Nav.Link>
               <Nav.Link eventKey="link-2">회원 탈퇴</Nav.Link>
