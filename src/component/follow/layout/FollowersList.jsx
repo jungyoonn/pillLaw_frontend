@@ -15,7 +15,7 @@ import UseAxios from '../../../hooks/UseAxios';
 // import slider from '../../resources/image/main_slider.jpg';
 // import { Col, Container } from "react-bootstrap";
 
-const FollowList = () => {
+const FollowersList = () => {
   const {req} = UseAxios();
   // const follows = [
   //   { id: 1, href: "SendLetterPage", label: "치킨" },
@@ -36,7 +36,7 @@ const FollowList = () => {
 
     const fetchData = async () => {
       try {
-        const resp = await req('get', `follow/${mno}`);
+        const resp = await req('get', `follow/sender/${mno}`);
         console.log(resp);
         console.log("배열 여부:", Array.isArray(resp));
         setFollows([...resp]);
@@ -91,4 +91,4 @@ const FollowList = () => {
   );
 };
 
-export default FollowList;
+export default FollowersList;

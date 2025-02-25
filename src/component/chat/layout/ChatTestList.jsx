@@ -47,6 +47,9 @@ const ChatTestList = () => {
     alignItems: 'center',
     gap: '5px', // 아이콘과 텍스트 간격
   };
+  // const faPlus = {
+  //   size: ' 50%'
+  // }
 
   return (
     <div>

@@ -30,6 +30,7 @@ import OAuth2RedirectHandler from './component/member/OAuth2RedirectHandler';
 import ProfileCard from './component/common/ProfileCard';
 import ChatRoomList from './component/chat/ChatList';
 import ChatTestList from './component/chat/layout/ChatTestList';
+import FollowersList from './component/follow/layout/FollowersList';
 
 
 function App() {
@@ -46,8 +47,8 @@ function App() {
             {/* <Route path='FollowListt' element={<FollowListt />} /> */}
 
             <Route path='/profilecard' element={<ProfileCard/> }/>
-            {/* <Route path='/followers' element={<Followers/> }/> */}
             <Route path='/followlist' element={<FollowList/> }/>
+            <Route path='/followerslist' element={<FollowersList/> }/>
             <Route path='/chatroomList' element={<ChatRoomList/> }/>
             <Route path='/chattestlist' element={<ChatTestList/> }/>
             {/* <Route path='/userprofile' element={<UserProfile />}/> */}
