@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import FollowHeaderButtonsArea from "./FollowHeaderButtonsArea";
 import SendLetterPage from "../../letter/SendLetterPage";
 import UseAxios from '../../../hooks/UseAxios';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
 // import Row from 'react-bootstrap/Row';
 // import mainImage from '../../resources/image/main_image_2.jpg';
 // import favicon from '../../resources/image/pilllaw_favicon.png';
@@ -36,7 +38,7 @@ const FollowList = () => {
 
     const fetchData = async () => {
       try {
-        const resp = await req('get', `follow/${mno}`);
+        const resp = await req('get', `follow/followBack/${mno}`);
         console.log(resp);
         console.log("배열 여부:", Array.isArray(resp));
         setFollows([...resp]);
@@ -61,29 +63,45 @@ const FollowList = () => {
       
 
       <div className="list-group m-4">
-        {/* <a href="sendletter" className="list-group-item">
-          <img
-            src="../../resources/followImage/사본 -freepik__adjust__7192.png"
-            alt="프로필"
-            style={{ marginRight: "8px" }}
-          />
-          치킨
-        </a> */}
+      {follows.map((follow) => (
+        <a key={follow.followId}
+        href={follow.href}
+        />
+      ))}
+
+         
+         {/* <Link to={follows.followId} className="list-group-item">  */}
+          {/* <FontAwesomeIcon icon="fa-solid fa-user" /> */}
+         {/* </Link> */}
         
-        {follows.map((follow) => (
+     
+        
+        {/* {follows.map((follow) => (
         <a
           key={follow.followId}
           href={follow.href}
           className="list-group-item"
-        >
-          <img
+        > */}
+          {/* <img
             src="../../resources/followImage/사본 -freepik__adjust__7192.png"
             alt="프로필"
             style={{ marginRight: "8px" }}
-          />
-          {follow.sender.mno}
+            /> */}
+          {/* {follow.sender.nickname}
         </a>
-      ))}
+      ))} */}
+
+    {follows.map((follow) => (
+      <a key={follow.followId} href="#" className="list-group-item">
+        {/* <img
+          src="../../resources/followImage/profile.png"
+          alt="프로필"
+          style={{ marginRight: "8px" }}
+        /> */}
+        {follow.sender.mno} {/* 맞팔된 상대방 mno 표시 */}
+      </a>
+    ))}
+      
       </div>
       </div>
     </div>

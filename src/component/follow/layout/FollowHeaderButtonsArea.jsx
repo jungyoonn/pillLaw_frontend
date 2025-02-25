@@ -19,7 +19,7 @@ const FollowHeaderButtonsArea = () => {
           </Link>
         </button>
         <button type="button" className="btn btn-pilllaw">
-          <Link to="/following-list" className="text-decoration-none text-secondary">
+          <Link to="/followingList" className="text-decoration-none text-secondary">
             팔로잉
           </Link>
         </button>

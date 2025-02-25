@@ -32,6 +32,7 @@ import ChatRoomList from './component/chat/ChatList';
 import ChatTestList from './component/chat/layout/ChatTestList';
 import FollowersList from './component/follow/layout/FollowersList';
 import MyPageLayout from './component/member/MyPageLayout';
+import FollowingList from './component/follow/layout/FollowingList';
 
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
             <Route path='/profilecard' element={<ProfileCard/> }/>
             <Route path='/followlist' element={<FollowList/> }/>
             <Route path='/followerslist' element={<FollowersList/> }/>
+            <Route path='/followinglist' element={<FollowingList/> }/>
             <Route path='/chatroomList' element={<ChatRoomList/> }/>
             <Route path='/chattestlist' element={<ChatTestList/> }/>
             {/* <Route path='/userprofile' element={<UserProfile />}/> */}

@@ -15,7 +15,7 @@ import UseAxios from '../../../hooks/UseAxios';
 // import slider from '../../resources/image/main_slider.jpg';
 // import { Col, Container } from "react-bootstrap";
 
-const FollowersList = () => {
+const FollowingList = () => {
   const {req} = UseAxios();
   // const follows = [
   //   { id: 1, href: "SendLetterPage", label: "치킨" },
@@ -36,7 +36,7 @@ const FollowersList = () => {
 
     const fetchData = async () => {
       try {
-        const resp = await req('get', `follow/${mno}`);
+        const resp = await req('get', `follow/sender/${mno}`);
         console.log(resp);
         console.log("배열 여부:", Array.isArray(resp));
         setFollows([...resp]);
@@ -72,7 +72,7 @@ const FollowersList = () => {
         
         {follows.map((follow) => (
         <a
-          key={follow.receiver}
+          key={follow.followId.mno}
           href={follow.href}
           className="list-group-item"
         >
@@ -81,7 +81,7 @@ const FollowersList = () => {
             alt="프로필"
             style={{ marginRight: "8px" }}
           />
-          {follow.sender.nickname}
+          {follow.receiver.nickname}
         </a>
       ))}
       </div>
@@ -91,4 +91,4 @@ const FollowersList = () => {
   );
 };
 
-export default FollowersList;
+export default FollowingList;
