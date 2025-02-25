@@ -1,5 +1,6 @@
 import React from "react";
 import { Container } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const FollowHeaderButtonsArea = () => {
   return (
@@ -8,28 +9,19 @@ const FollowHeaderButtonsArea = () => {
     <div className="row">
       <div className="btn-group">
         <button type="button" className="btn btn-pilllaw">
-          <a
-            className="text-decoration-none text-secondary"
-            href="#"
-            >
+          <Link to="/followList" className="text-decoration-none text-secondary">
             맞팔로우
-          </a>
+          </Link>
         </button>
         <button type="button" className="btn btn-pilllaw">
-          <a
-            className="text-decoration-none text-secondary"
-            href="FollowerdList333.html"
-            >
+          <Link to="/followersList" className="text-decoration-none text-secondary">
             팔로워
-          </a>
+          </Link>
         </button>
         <button type="button" className="btn btn-pilllaw">
-          <a
-            className="text-decoration-none text-secondary"
-            href="#"
-            >
+          <Link to="/following-list" className="text-decoration-none text-secondary">
             팔로잉
-          </a>
+          </Link>
         </button>
       </div>
     </div>
