@@ -15,9 +15,12 @@ import { Link } from "react-router-dom";
 
 const ProductSummary = ({ product }) => {
   const [selectedOption, setSelectedOption] = useState("");
+  console.log("서머리 서머리 :::::::::::::::::::::::::::::: ");
+  console.log(product);
   if (!product) return null;
 
-  const discountedPrice = product.price - product.price * product.discount;
+  // const discountedPrice = product.price.rate
+  // const formatPrice = (product.saleprice) => new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' }).format(product.saleprice);
 
   return (
     <>
@@ -48,7 +51,7 @@ const ProductSummary = ({ product }) => {
           <FontAwesomeIcon icon={faWonSign} size="xl"/>
           &nbsp;&nbsp;&nbsp;&nbsp;
           <span className="fs-14 text-decoration-line-through text-secondary fw-bold">
-            {/* {product.price.toLocaleString()} */}
+            {product.priceInfo.price} 
           </span>{" "}
           <span> 원 </span>
         </Col>
@@ -57,9 +60,9 @@ const ProductSummary = ({ product }) => {
       {/* 할인가 */}
       <Row className="mt-2">
         <Col className="text-start">
-          {/* <span className="text-pilllaw fs-12 fw-bold">-{product.discount * 100}%</span> */}
+          <span className="text-pilllaw fs-12 fw-bold">-{product.priceInfo.rate}%</span>
           &nbsp;&nbsp;&nbsp;
-          {/* <span className="fs-14 fw-bold">{discountedPrice.toLocaleString()}</span> <span> 원 </span> */}
+          <span className="fs-14 fw-bold">{product.priceInfo.salePrice}</span> <span> 원 </span>
         </Col>
       </Row>
 
