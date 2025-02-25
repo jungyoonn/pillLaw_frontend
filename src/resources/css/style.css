@@ -290,3 +290,52 @@ body {
   min-height: 100vh; /* 화면 높이에 맞게 최소 높이 설정 */
 }
 
+/* Nav 컴포넌트 커스텀 스타일 */
+.custom-nav {
+  border: none !important;
+}
+
+.custom-nav .nav-link {
+  /* 기본 스타일 */
+  color: var(--primary-color); /* 글자 색상 (원하는 색상으로 변경) */
+  border: none;   /* 테두리 제거 */
+  background-color: transparent;
+  padding: 0.7rem 1rem;
+  transition: all 0.3s ease;
+}
+
+/* Hover 시 스타일 */
+.custom-nav .nav-link:hover {
+  color: var(--header-color); /* hover 시 글자 색상 */
+  /* background-color: rgba(0, 123, 255, 0.05); 아주 연한 배경 (선택사항) */
+  border: none;
+  transform: translateY(-1px) !important; /* 살짝 위로 올라가는 효과 (선택사항) */
+  outline: none;  /* 기본 outline 제거 */
+  font-weight: bold;
+}
+
+/* Focus 시 스타일 */
+.custom-nav .nav-link:focus {
+  color: var(--header-color);; /* focus 시 글자 색상 */
+  box-shadow: none; /* 기본 focus 테두리 제거 */
+  border: none;
+  outline: none;  /* 기본 outline 제거 */
+  font-weight: bold;
+}
+
+/* Active 시 스타일 */
+.custom-nav .nav-link.active,
+.custom-nav .nav-item .active,
+.custom-nav .active {
+  color: var(--active-color) !important;  /* !important 추가 */
+  font-weight: bold !important;
+  background-color: #7da9a70c !important;
+  border: none !important;
+}
+
+
+/* 비활성화 상태 스타일 */
+.custom-nav .nav-link.disabled {
+  color: #6c757d;
+  opacity: 0.5;
+}
