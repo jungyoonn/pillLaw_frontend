@@ -69,11 +69,12 @@ const FollowersList = () => {
           />
           치킨
         </a> */}
-        
+        {/* <a key={follow.followId} href="#" className="list-group-item"></a> */}
         {follows.map((follow) => (
+          
         <a
           key={follow.receiver}
-          href={follow.href}
+          href={follow.href="#"}
           className="list-group-item"
         >
           <img
@@ -81,6 +82,7 @@ const FollowersList = () => {
             alt="프로필"
             style={{ marginRight: "8px" }}
           />
+          {/* <SendLetterPage /> */}
           {follow.sender.nickname}
         </a>
       ))}
