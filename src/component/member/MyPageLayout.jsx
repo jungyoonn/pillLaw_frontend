@@ -18,7 +18,7 @@ const MyPageLayout = () => {
     console.log('renderContent called, activeKey:', activeKey);
     switch(activeKey) {
       case "myinfo":
-        return <MyInfo activeKey={activeKey} />;
+        return <MyInfo activeKey={activeKey} setActiveKey={setActiveKey} />;
       case "edit-info":
         return <ModifyInfo activeKey={activeKey} />
       case 'follow':
