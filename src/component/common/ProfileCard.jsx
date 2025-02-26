@@ -10,8 +10,8 @@ import UseAxios from '../../hooks/UseAxios';
 const ProfileCard = ({nickname}) => {
   const{logout} = useAuth();
   const [follow, setFollow] = useState('');// 팔로워 수
-  const [following, setFollowing] = useState(0); // 팔로잉 수
-  const [receiverId, setReceiverid] = useState(0); //받은 쪽지 수
+  const [following, setFollowing] = useState(''); // 팔로잉 수
+  const [receiverId, setReceiverId] = useState(0); //받은 쪽지 수
   const mno = localStorage.getItem('mno');
   const { req, req2 } = UseAxios();
 
@@ -40,7 +40,7 @@ const ProfileCard = ({nickname}) => {
     };
     const fetchData2 = async () => {
       try {
-        const resp2 = await req2('get', `follow${mno}`);
+        const resp2 = await req2('get', `follow/${mno}`);
         console.log(resp2);
         console.log("배열 여부:", Array.isArray(resp2));
         setFollowing(resp2.length);
@@ -84,10 +84,10 @@ const ProfileCard = ({nickname}) => {
       </Row>
       <Row className="row mt-4 d-flex justify-content-center">
         <Col>
-          <p className="fs-14 fw-bold text-center ms-2"><Link to={"/followList"} className="text-pilllaw" >팔로잉 {following}명</Link></p>
+          <p className="fs-14 fw-bold text-center ms-2"><Link to={"/followinglist"} className="text-pilllaw" >팔로잉 {following}명</Link></p>
         </Col>
         <Col>
-          <p className="fs-14 fw-bold text-center me-2"><Link to={"/followingList"} className="text-pilllaw">팔로워 {follow} 명</Link></p>
+          <p className="fs-14 fw-bold text-center me-2"><Link to={"/followerslist"} className="text-pilllaw">팔로워 {follow} 명</Link></p>
         </Col>
       </Row>
     </>

@@ -18,19 +18,20 @@ import UseAxios from '../../../hooks/UseAxios';
 
 const FollowingList = () => {
   const {req} = UseAxios();
-  const follows = [
-    { id: 1, href: "SendLetterPage", label: "치킨" },
-    { id: 2, href: "#", label: "피자" },
-    { id: 3, href: "#", label: "딸기모찌" },
-    { id: 4, href: "#", label: "재즈맨" },
-    { id: 5, href: "#", label: "쿠키" },
-    { id: 6, href: "#", label: "초코쿠키" },
-    { id: 7, href: "#", label: "딸기쿠키" },
-    { id: 8, href: "#", label: "파인애플" },
-  ];
+  // const follows = [
+  //   { id: 1, href: "SendLetterPage", label: "치킨" },
+  //   { id: 2, href: "#", label: "피자" },
+  //   { id: 3, href: "#", label: "딸기모찌" },
+  //   { id: 4, href: "#", label: "재즈맨" },
+  //   { id: 5, href: "#", label: "쿠키" },
+  //   { id: 6, href: "#", label: "초코쿠키" },
+  //   { id: 7, href: "#", label: "딸기쿠키" },
+  //   { id: 8, href: "#", label: "파인애플" },
+  // ];
   // const [follows, setFollows] = useState([]);
+  const [follow, setFollow] = useState([]);
   const mno = localStorage.getItem('mno');
-  
+    
   useEffect (() => {
     console.log("mno before useEffect:", mno);
     console.log(mno);
@@ -40,8 +41,8 @@ const FollowingList = () => {
         const resp = await req('get', `follow/sender/${mno}`);
         console.log(resp);
         console.log("배열 여부:", Array.isArray(resp));
-        // setFollows([...resp]);
-        console.log(follows);
+        setFollow([...resp]);
+        console.log(follow);
         
       } catch (error) {
         console.error("Error fetching follow list:", error);
@@ -71,9 +72,9 @@ const FollowingList = () => {
           치킨
         </a> */}
         
-        {follows.map((follow) => (
+        {follow.map((follow) => (
         <a
-          key={follow.followId.mno}
+          key={follow.followId}
           href={follow.href}
           className="list-group-item"
         >
