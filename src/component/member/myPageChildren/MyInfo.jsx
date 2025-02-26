@@ -104,7 +104,7 @@ const MyInfo = ({ activeKey, setActiveKey }) => {
             disabled
             readOnly
           />
-          <Button variant='pillllaw' className="btn btn-pilllaw btn-sm mt-1">등록하러 가기</Button>
+          <Button variant='pilllaw' className="btn btn-pilllaw btn-sm mt-1">등록하러 가기</Button>
           <Row className='mt-5'>
             <Col className=' border-end'>
               <p className='m-1 px-2 fs-14 fw-bold header-font text-center'>팔로잉</p>
