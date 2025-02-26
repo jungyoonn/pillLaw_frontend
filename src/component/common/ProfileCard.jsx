@@ -9,11 +9,11 @@ import UseAxios from '../../hooks/UseAxios';
 
 const ProfileCard = ({nickname}) => {
   const{logout} = useAuth();
-  const [follow, setFollow] = useState('');// 팔로워 수
-  const [following, setFollowing] = useState(''); // 팔로잉 수
+  const [follow, setFollow] = useState([]);// 팔로워 수
+  const [following, setFollowing] = useState([]); // 팔로잉 수
   const [receiverId, setReceiverId] = useState(0); //받은 쪽지 수
   const mno = localStorage.getItem('mno');
-  const { req, req2 } = UseAxios();
+  const { req } = UseAxios();
 
   
 
@@ -23,48 +23,27 @@ const ProfileCard = ({nickname}) => {
   };
   
   useEffect(() => {
-    // const mno = localStorage.getItem("receiverFollowId"); // 현재 로그인한 사용자의 ID
     if (!mno) return; // 로그인하지 않았으면 요청 안 함
 
     const fetchData = async () => {
       try {
-        const resp = await req('get', `follow/sender/${mno}`);
-        console.log(resp);
-        console.log("배열 여부:", Array.isArray(resp));
-        setFollow(resp.length);
-        // console.log(follows);
-        
-      } catch (error) {
-        console.error("Error fetching follow list:", error);
-      }
-    };
-    const fetchData2 = async () => {
-      try {
-        const resp2 = await req2('get', `follow/${mno}`);
-        console.log(resp2);
-        console.log("배열 여부:", Array.isArray(resp2));
-        setFollowing(resp2.length);
-        // console.log(follows);
-        
+        const resp = await req('get', `follow/count/${mno}`);
+        // console.log("--- api 응답--",resp);
+        // console.log(follow);
+        // console.log(following);
+        if (resp) {
+          setFollow(resp.follower); // 응답 값 적용
+          setFollowing(resp.following);
+        }
       } catch (error) {
         console.error("Error fetching follow list:", error);
       }
     };
     fetchData(); // async 함수 실행
-    fetchData2(); // async 함수 실행
-    
-  }, [])
-
-  // }, []);
+  }, [mno]);
 
   return (
     <>
-    {/* <div className="list-group m-4">
-      {follow.map((follow) => (
-        <a key={follow.followId}
-        href={follow.href}
-        />
-      ))} */}
       <Row>
         <Col xs lg="1" className="float-start p-2 pe-0 ms-4"><FontAwesomeIcon icon={faUser} className="fa-xl header-font" /></Col>
         <Col className="mt-2 ms-1">
