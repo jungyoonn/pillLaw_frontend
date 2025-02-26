@@ -33,6 +33,7 @@ import ChatTestList from './component/chat/layout/ChatTestList';
 import FollowersList from './component/follow/layout/FollowersList';
 import MyPageLayout from './component/member/MyPageLayout';
 import FollowingList from './component/follow/layout/FollowingList';
+import PaymentPage from './component/order/PaymentPage';
 
 
 function App() {
@@ -61,6 +62,7 @@ function App() {
             <Route path='/cart' element={<MyCart />} />
             <Route path='/order' element={<MyOrder />} />
             <Route path='/order/success' element={<OrderSuccessed />} />
+            <Route path='/order/test' element={<PaymentPage />} />
             <Route path='/order/fail' element={<OrderFailed />} />
             <Route path='/mypage' element={<MyPageLayout />} />
           </Route>
