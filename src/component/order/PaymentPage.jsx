@@ -22,7 +22,7 @@ const PaymentPage = () => {
     IMP.request_pay(
       {
         pg: 'html5_inicis',
-        pay_method: '카드',
+        pay_method: 'card',
         merchant_uid: `merchant_${new Date().getTime()}`, // 주문번호
         name: '테스트 상품', // 상품명
         amount: 1000, // 결제 금액
@@ -37,19 +37,24 @@ const PaymentPage = () => {
         if (response.success) {
           // 결제 성공 시
           const paymentData = {
-            imp_uid: response.imp_uid,
-            ono: 2, // 실제 주문 번호를 이곳에 넣어야 합니다.
+            ono: 2, // 실제 주문 번호
+            method: '카드', // 결제 방법
+            totalPrice: 1000, // 결제 금액
+            impUid: response.imp_uid, // 아임포트 고유 ID
           };
+          console.log('보내는 결제 데이터:', paymentData); // 요청 데이터 확인
+
 
           // 서버에 결제 완료 요청
           try {
-            const res = await req('POST', 'pay', paymentData, {
+            const res = await req('POST', 'pay/req', paymentData, {
               Authorization: `Bearer ${token}`, // Bearer 토큰을 헤더에 추가
+              'Content-Type': 'application/json', // 추가
             });
             if (res) {
               setMessage('결제 완료');
               // 결제 완료 후 리디렉션 등 추가 작업
-              navigate('/order-success');
+              navigate('/order/success');
             }
           } catch (error) {
             setMessage('결제 처리 중 오류가 발생했습니다.');
@@ -71,22 +76,22 @@ const PaymentPage = () => {
 
   return (
 
-  <div className='wrap'>
-  <Container style={{ paddingTop: '115.19px', height: '550px'}}>
-    <h4 className="text-center fw-bold my-5 header-font">결제 테스트</h4>
-    <div>
-      <h2>결제 테스트</h2>
-      <button onClick={handlePayment} disabled={loading}>
-        {loading ? '결제 처리 중...' : '결제 진행'}
-      </button>
-      {message && <p>{message}</p>}
+    <div className='wrap'>
+      <Container style={{ paddingTop: '115.19px', height: '550px' }}>
+        <h4 className="text-center fw-bold my-5 header-font">결제 테스트</h4>
+        <div>
+          <h2>결제 테스트</h2>
+          <button onClick={handlePayment} disabled={loading}>
+            {loading ? '결제 처리 중...' : '결제 진행'}
+          </button>
+          {message && <p>{message}</p>}
+        </div>
+
+        <div className="d-flex justify-content-center mt-3">
+        </div>
+      </Container>
     </div>
-    
-    <div className="d-flex justify-content-center mt-3">
-    </div>
-  </Container>
-  </div>
-);
+  );
 };
 
 export default PaymentPage;
