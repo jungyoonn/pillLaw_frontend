@@ -21,7 +21,7 @@ const ProductDetail = () => {
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [reviews, setReviews] = useState([]);  
   const { loading, error, req } = useAxios();
-  const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState({});
 
 
   useEffect(() => {
@@ -29,9 +29,14 @@ const ProductDetail = () => {
       req("get", `v1/product/${id}`)
         .then((response) => {
           console.log("제품 데이터:", response);
-          setProduct(response.product || null);
+          console.log(response.product);
+          setProduct(response.product);
 
-        
+          // console.log(response.product.pname);
+          // setProduct(response);
+          // console.log(JSONresponse));
+
+          
           if (response.detail) {
             setReviews(response.reviews || []);
           } else {
@@ -53,7 +58,7 @@ const ProductDetail = () => {
   if (loading){
     return <div className="text-center"><h2>로딩 중...</h2></div>;
   } 
-  if (error || !product || Object.keys(product).length === 0) {
+  if (error) {
     return <h2 className="text-center mt-5">상품을 찾을 수 없습니다.</h2>;
   }
 
@@ -71,7 +76,7 @@ const ProductDetail = () => {
   };
   
   const handleAddReview = (newReview) => {
-    req("post", "v1/review/register", newReview)
+    req("post", "v1/product/detail/review/register", newReview)
       .then(() => {
         console.log("리뷰 등록 성공");
         return req("get", `v1/review/list/${id}`);  
@@ -100,7 +105,7 @@ const ProductDetail = () => {
         <h1 className="fw-bold mb-4 text-pilllaw">상품 상세정보</h1>
         <hr className="text-pilllaw" />
         <pre>{JSON.stringify(product, null, 2)}</pre>
-        {/*  상품 이미지 및 정보 */}
+
         <Row className="mt-4">
           <Col xs={5}>
             <img className="img-fluid mx-2 pilllaw-product-image"  alt={product.pname} />
@@ -126,15 +131,14 @@ const ProductDetail = () => {
           <Col xs={5} className="mt-2">
             <ProductSummary product={product} />
           </Col>
-        </Row>
+        </Row>*
 
-        {/*  제품 상세정보, 리뷰 보기 탭 */}
         <Row className="mt-5">
           <ul className="nav nav-tabs nav-justified">
             <li className="nav-item">
               <Button 
                 variant="pilllaw" 
-                className={`nav-link text-pilllaw btn-pilllaw ${activeTab === "real-product-details" ? "active" : ""}`} 
+                className={`nav-link text-white btn-pilllaw ${activeTab === "real-product-details" ? "active" : ""}`} 
                 onClick={() => setActiveTab("real-product-details")}>
                 제품 상세정보
               </Button>
@@ -142,7 +146,7 @@ const ProductDetail = () => {
             <li className="nav-item">
               <Button
                 variant="pilllaw"
-                className={`nav-link text-pilllaw btn-pilllaw ${activeTab === "real-product-review" ? "active" : ""}`}
+                className={`nav-link text-white btn-pilllaw ${activeTab === "real-product-review" ? "active" : ""}`}
                 onClick={() => setActiveTab("real-product-review")}
               >
                 제품 리뷰({reviews ? reviews.length : "-"})
@@ -150,7 +154,6 @@ const ProductDetail = () => {
             </li>
           </ul>
 
-          {/*  제품 상세정보 탭 */}
           {activeTab === "real-product-details" && (
             <div className="tab-content mt-5 fade show active">
               {product.effect && product.effect.split(',').map((tag, index) => (
@@ -162,7 +165,6 @@ const ProductDetail = () => {
             </div>
           )}
 
-          {/* 리뷰 탭 */}
           {activeTab === "real-product-review" && (
             <div className="tab-content mt-5 mb-5 fade show active">
               <div className="pilllaw-product-score-total text-center p-4">
@@ -187,7 +189,6 @@ const ProductDetail = () => {
                     </Row>
                   </Col>
 
-                  {/* 개수 표시 */}
                   <Col xs={2} className="text-center">
                     <Row>
                       <p className="fw-bold fs-14">개수</p>
@@ -197,14 +198,13 @@ const ProductDetail = () => {
                     </Row>
                   </Col>
 
-                  {/* 차트 컨테이너 */}
                   <Col xs={6} className="d-flex justify-content-center align-items-center">
                     <div style={{ width: "100%", maxWidth: "250px", height: "auto" }}>
                       <ReviewChart ratingDistribution={ratingDistribution} activeTab={activeTab}/>
                     </div>
                   </Col>
 
-                  <ReviewForm show={showReviewModal} handleClose={() => setShowReviewModal(false)} addReview={handleAddReview} />
+                  <ReviewForm show={showReviewModal} handleClose={() => setShowReviewModal(false)} addReview={handleAddReview} productId={product.pno} />
 
                   <Col xs={2} className="justify-content-end">
                     <Button variant="pilllaw" className="fw-bold fs-14 btn-pilllaw btn" onClick={() => setShowReviewModal(true)}>

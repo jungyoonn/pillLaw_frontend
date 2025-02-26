@@ -15,9 +15,11 @@ import { Link } from "react-router-dom";
 
 const ProductSummary = ({ product }) => {
   const [selectedOption, setSelectedOption] = useState("");
-  console.log("서머리 서머리 :::::::::::::::::::::::::::::: ");
-  console.log(product);
-  if (!product) return null;
+  console.log("🧐 ProductSummary에서 받은 product:", product);
+  if (!product || Object.keys(product).length === 0) {
+    console.warn("⚠️ ProductSummary에서 product가 유효하지 않음:", product);
+    return <div>상품 정보를 불러올 수 없습니다.</div>;
+  }
 
   // const discountedPrice = product.price.rate
   // const formatPrice = (product.saleprice) => new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' }).format(product.saleprice);

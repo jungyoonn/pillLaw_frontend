@@ -1,57 +1,114 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import { Editor } from "@tinymce/tinymce-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faTimes } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
+import { useAuth } from "../../hooks/AuthContext";
 
-const ReviewForm = ({ show, handleClose, addReview }) => {
+const ReviewForm = ({ show, handleClose, addReview, productId }) => {
+  console.log("🔹 ReviewForm에 전달된 productId:", productId);
+  
+  const { mno } = useAuth();
   const [rating, setRating] = useState(5);
-  const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [images, setImages] = useState([]); // 📌 이미지 파일 배열
+  const [images, setImages] = useState([]); // 파일 리스트 (미리보기용)
+  const [uploadedFiles, setUploadedFiles] = useState([]); // S3 업로드된 파일 URL 리스트
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    console.log("productId:", productId);
+  }, [productId]);
+
+  // 🔹 이미지 파일 선택 핸들러
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
-    const newImages = [];
-
-    files.forEach((file) => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        newImages.push(reader.result); // 📌 이미지 미리보기 URL 저장
-        if (newImages.length === files.length) {
-          setImages([...images, ...newImages]);
-        }
-      };
-      reader.readAsDataURL(file);
-    });
+    setImages(files); // 선택한 파일 리스트 저장
   };
 
+  // 🔹 이미지 삭제 핸들러
   const removeImage = (index) => {
-    setImages(images.filter((_, i) => i !== index)); // 📌 선택한 이미지 삭제
+    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = () => {
-    if (!title || !content) {
-      alert("제목과 내용을 입력해주세요.");
+  // 🔹 TinyMCE 이미지 업로드 핸들러 (S3 업로드)
+  const handleImageUpload = async (blobInfo, success, failure) => {
+    try {
+      const file = blobInfo.blob();
+      const formData = new FormData();
+      formData.append("files", file);
+
+      const response = await axios.post("/api/v1/file/upload", formData
+        , {
+        headers: { "Content-Type": "multipart/form-data" }
+      }
+      );
+
+      if (response.data.length > 0) {
+        const imageUrl = response.data[0].url;
+        setUploadedFiles((prevFiles) => [...prevFiles, { url: imageUrl }]); // URL 리스트에 추가
+        success(imageUrl);
+      } else {
+        failure("이미지 업로드 실패!");
+      }
+    } catch (error) {
+      console.error("이미지 업로드 실패: ", error);
+      failure("업로드 중 오류 발생");
+    }
+  };
+
+  // 🔹 리뷰 등록 요청
+  const handleSubmitReview = async () => {
+    if (!mno) {
+      alert("로그인이 필요합니다!");
       return;
     }
+  
+    if (!content.trim()) {
+      alert("리뷰 내용을 입력해주세요.");
+      return;
+    }
+  
+    setLoading(true);
+    const formData = new FormData();
+    formData.append("pno", productId);
+    formData.append("mno", mno);
+    formData.append("content", content);
+    formData.append("rating", rating);
+    console.log("📂 FormData 확인:", formData);
 
-    const newReview = {
-      id: Date.now(),
-      title,
-      content,
-      rating,
-      date: new Date().toISOString().split("T")[0], // YYYY-MM-DD 형식
-      likes: 0,
-      images, // 📌 업로드된 이미지 포함
-    };
-
-    addReview(newReview);
-    setTitle("");
-    setContent("");
-    setImages([]);
-    handleClose(); // 모달 닫기
+  
+    // 🔹 선택한 파일 추가
+    if (images.length > 0) {
+      images.forEach((file) => {
+        formData.append("files", file);
+      });
+    }
+  
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/v1/product/detail/review/register",
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+  
+      if (response.status === 200) {
+        alert("리뷰가 성공적으로 등록되었습니다!");
+        setContent("");
+        setImages([]);
+        setUploadedFiles([]);
+        addReview(response.data);
+        handleClose();
+      }
+    } catch (error) {
+      console.error("리뷰 등록 실패: ", error);
+      alert("리뷰 등록 중 오류 발생!");
+    } finally {
+      setLoading(false);
+    }
   };
-
+  
+  
   return (
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
@@ -59,31 +116,27 @@ const ReviewForm = ({ show, handleClose, addReview }) => {
       </Modal.Header>
       <Modal.Body>
         <Form>
-          {/* 리뷰 제목 */}
-          <Form.Group controlId="reviewTitle">
-            <Form.Label>리뷰 제목</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="제목을 입력하세요"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </Form.Group>
-
           {/* 리뷰 내용 (TinyMCE 에디터) */}
           <Form.Group controlId="reviewContent" className="mt-3">
             <Form.Label>리뷰 내용</Form.Label>
             <Editor
-              apiKey="uzb7mzqvze4iw0jm2jl00qyohdciwzmoq47xt1j3pjoxmok9"
+              apiKey={process.env.REACT_APP_TINYMCE_API_KEY}
               initialValue=""
               init={{
                 resize: false,
-                height: 250,  
+                height: 250,
                 menubar: true,
-                plugins: ["advlist autolink lists link charmap print preview anchor", "searchreplace visualblocks code fullscreen", "insertdatetime media table paste code help wordcount"],
-                toolbar: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link",
+                plugins: [
+                  "advlist autolink lists link charmap print preview anchor",
+                  "searchreplace visualblocks code fullscreen",
+                  "insertdatetime media table paste code help wordcount",
+                ],
+                toolbar:
+                  "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media code",
                 branding: false,
+                statusbar: false,
                 content_style: "body { max-height: 500px; overflow-y: auto; }",
+                images_upload_handler: handleImageUpload, // 이미지 업로드 핸들러 추가
               }}
               onEditorChange={(content) => setContent(content)}
             />
@@ -117,7 +170,7 @@ const ReviewForm = ({ show, handleClose, addReview }) => {
             <Row className="mt-3">
               {images.map((img, index) => (
                 <Col xs={3} key={index} className="position-relative">
-                  <img src={img} alt={`review-${index}`} className="img-fluid rounded" />
+                  <img src={URL.createObjectURL(img)} alt={`review-${index}`} className="img-fluid rounded" />
                   <FontAwesomeIcon
                     icon={faTimes}
                     className="position-absolute top-0 end-0 text-danger"
@@ -134,8 +187,8 @@ const ReviewForm = ({ show, handleClose, addReview }) => {
         <Button variant="secondary" onClick={handleClose}>
           취소
         </Button>
-        <Button variant="primary" onClick={handleSubmit}>
-          작성 완료
+        <Button variant="primary" onClick={handleSubmitReview} disabled={loading}>
+          {loading ? "등록 중..." : "작성 완료"}
         </Button>
       </Modal.Footer>
     </Modal>

@@ -39,7 +39,6 @@ const ProductReviewList = ({ reviews, onDelete }) => {
       })
       .catch((err) => console.error("좋아요 요청 실패:", err));
   };
-
   
 
   return (

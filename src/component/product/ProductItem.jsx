@@ -6,6 +6,7 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 import useAxios from '../../hooks/UseAxios';
 
 const ProductItem = ({ product }) => {
+  console.log(product);
   const {loading, error} = useAxios();
   if(error){
     return <div><h1>Error Occured!</h1></div>;
