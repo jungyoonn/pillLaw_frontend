@@ -8402,6 +8402,11 @@ react-bootstrap@^2.10.9:
     uncontrollable "^7.2.1"
     warning "^4.0.3"
 
+react-daum-postcode@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/react-daum-postcode/-/react-daum-postcode-3.2.0.tgz#07fbbc38f4b0c48ee3c8f703eba5e4c9d82ffb2f"
+  integrity sha512-NHY8TUicZXMqykbKYT8kUo2PEU7xu1DFsdRmyWJrLEUY93Xhd3rEdoJ7vFqrvs+Grl9wIm9Byxh3bI+eZxepMQ==
+
 react-dev-utils@^12.0.1:
   version "12.0.1"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-12.0.1.tgz#ba92edb4a1f379bd46ccd6bcd4e7bc398df33e73"
