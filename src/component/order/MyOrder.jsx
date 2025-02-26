@@ -3,13 +3,19 @@ import { Container, Row, Col, Form, Table, Button, InputGroup, Modal } from "rea
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../resources/css/style.css";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from '../../hooks/AuthContext';
+import UseAxios from '../../hooks/UseAxios'; // axios 훅
 
 const MyOrder = () => {
+  const { mno, email, token } = useAuth();
+  const { req, loading, error } = UseAxios();  // useAxios 훅을 사용하여 HTTP 요청을 처리
+
   const [address, setAddress] = useState({
     postcode: "",
     roadAddress: "",
     detailAddress: "",
   });
+
   const [showModal, setShowModal] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false);
   const [recipient, setRecipient] = useState("");
@@ -18,18 +24,164 @@ const MyOrder = () => {
   const [userMembershipStatus, setUserMembershipStatus] = useState("ACTIVE");
   const [totalPrice, setTotalPrice] = useState(0);
   const [expectedPoints, setExpectedPoints] = useState(0);
-  const [deliveryMessage, setDeliveryMessage] = useState("");
+
+  const [deliveryMessage, setDeliveryMessage] = useState("선택 안함");
+  const [customMessage, setCustomMessage] = useState("");
+
   const [points, setPoints] = useState(5000);
   const [totalPayment, setTotalPayment] = useState(totalPrice);
   const [isTermsChecked, setIsTermsChecked] = useState(false);
-  const [cartItems, setCartItems] = useState([
-    { id: 1, img: "https://placehold.co/60", name: "콜린 미오 이노시톨", price: 20000, option: "30일", quantity: 1 },
-    { id: 2, img: "https://placehold.co/60", name: "철분 24mg", price: 15000, option: "60일", quantity: 1 },
-    { id: 3, img: "https://placehold.co/60", name: "종합비타민", price: 16000, option: "30일", quantity: 1 },
-    { id: 4, img: "https://placehold.co/60", name: "코큐텐", price: 19000, option: "90일", quantity: 2 },
-    { id: 5, img: "https://placehold.co/60", name: "루테인 오메가", price: 35000, option: "30일", quantity: 3 },
-    { id: 6, img: "https://placehold.co/60", name: "가르시니아", price: 25000, option: "30일", quantity: 1 }
-  ]);
+  
+  const [cartItems, setCartItems] = useState([]);
+
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      try {
+        // 장바구니 항목을 가져오기
+        const cartResponse = await req('GET', `v1/cart/${mno}/items`);
+
+        // 각 항목에 대해 상품 정보를 추가하여 상태 업데이트
+        const itemsWithProductInfo = await Promise.all(
+          cartResponse.map(async (item) => {
+            try {
+              // 상품 정보를 pno로 가져오기
+              const productResponse = await req('GET', `v1/product/${item.pno}`);
+              const product = productResponse?.product; // 상품명 가져오기
+
+              // 상품명이나 상품 정보가 없을 경우 '알수없음' 처리
+              const productName = product ? product.pname : "알수없음";
+              const productImage = "https://placehold.co/60";  // 기본 이미지
+
+              return {
+                ...item,
+                name: productName,  // 상품명
+                img: productImage,   // 이미지
+                option: item.subday === 30 ? "30일" : item.subday === 60 ? "60일" : "90일", // 옵션 설정
+              };
+            } catch (error) {
+              console.error(`상품 정보 요청 중 오류 발생 (pno: ${item.pno})`, error);
+              return {
+                ...item,
+                name: "알수없음", // 상품명
+                img: "https://placehold.co/60", // 기본 이미지
+                option: item.subday === 30 ? "30일" : item.subday === 60 ? "60일" : "90일",
+              };
+            }
+          })
+        );
+
+        // 상태 업데이트
+        setCartItems(itemsWithProductInfo);
+      } catch (error) {
+        console.error("Error fetching cart items", error);
+      }
+    };
+
+    fetchCartItems();
+  }, [mno]); // mno가 변경될 때마다 실행
+
+
+
+  const handleOrder = async () => {
+    if (!mno) {
+      alert("로그인 후 주문이 가능합니다.");
+      return;
+    }
+
+    const orderData = {
+      mno, // 로그인된 사용자의 mno
+      name: recipient,
+      tel: phone,
+      request: deliveryMessage,
+      totalAmount: totalPayment,
+      usingPoint: points,
+    };
+
+    try {
+      // 📌 주문 요청 → ono 응답받음
+      const ono = await req('POST', 'v1/order/', orderData);
+      console.log('✅ 주문 성공, ono:', ono);
+  
+      if (ono) {
+        alert('주문이 완료되었습니다. 결제를 진행합니다.');
+        handlePayment(ono, totalPayment); // ono를 넘겨서 결제 진행
+      } else {
+        throw new Error('주문 번호(ono)를 받아올 수 없습니다.');
+      }
+    } catch (err) {
+      console.error('❌ 주문 실패:', err);
+      alert('주문 저장에 실패했습니다. 다시 시도해주세요.');
+    }
+  };
+  
+
+  const handlePayment = (ono, amount) => {
+    const { IMP } = window;
+    IMP.init("imp24587612");
+
+    IMP.request_pay(
+      {
+        pg: "html5_inicis",
+        pay_method: "card",
+        merchant_uid: `order_${ono}`, // 📌 ono 사용
+        name: "테스트 상품",
+        amount: amount,
+        buyer_email: email,
+        buyer_name: recipient,
+        buyer_tel: phone,
+      },
+      async (response) => {
+        if (response.success) {
+          console.log("✅ 결제 성공, imp_uid:", response.imp_uid);
+
+          try {
+            // 📌 1️⃣ 결제 정보 저장 (결제 요청)
+            const payResponse = await req("POST", "pay/req", {
+              ono,
+              method: "카드",
+              totalPrice: amount,
+              impUid: response.imp_uid,
+            });
+
+            console.log("🔹 결제 정보 저장 응답:", payResponse);
+
+            if (!payResponse || !payResponse.no) {
+              alert("❌ 결제 정보 저장 실패");
+              navigate("/order/fail");
+              return;
+            }
+
+            // 📌 2️⃣ 결제 검증 요청 (IAMPORT 결제 확인)
+            const paymentResponse = await req("POST", "pay/complete", {
+              ono,
+              imp_uid: response.imp_uid,
+              method: "카드",
+            });
+
+            console.log("🔹 결제 검증 응답:", paymentResponse);
+
+            // 📌 3️⃣ 검증 성공 시, 결제 완료 처리
+            if (!paymentResponse || paymentResponse.status !== "완료") {
+              alert("❌ 결제 완료 처리 실패. 고객센터에 문의하세요.");
+              navigate("/order/fail");
+              return;
+            }
+
+            // 📌 4️⃣ 최종 결제 성공 처리
+            alert("🎉 결제가 완료되었습니다!");
+            navigate("/order/success");
+          } catch (error) {
+            alert(`❌ 결제 확인 요청 중 오류 발생: ${error.message}`);
+            navigate("/order/fail");
+          }
+        } else {
+          alert(`❌ 결제 실패: ${response.error_msg}`);
+          navigate("/order/fail");
+        }
+      }
+    );
+  };
+
 
   const goToCart = () => {
     navigate("/cart"); // Navigating to the cart page
@@ -94,9 +246,7 @@ const MyOrder = () => {
   };
 
 
-  const handleDeliveryMessageChange = (event) => {
-    setDeliveryMessage(event.target.value);
-  };
+
 
   useEffect(() => {
     let total = 0;
@@ -187,6 +337,10 @@ const MyOrder = () => {
     setShowTermsModal(false);
   };
 
+  const handleDeliveryMessageChange = (e) => {
+    const message = e.target.value;
+    setDeliveryMessage(message);
+  };
 
   // 배송지 입력 체크
   const isAddressValid = recipient && address.postcode && address.roadAddress && address.detailAddress && phone;
@@ -243,24 +397,13 @@ const MyOrder = () => {
                   value={deliveryMessage}
                   onChange={handleDeliveryMessageChange}
                 >
-                  <option value="선택안함">선택 안함</option>
-                  <option value="경비실">경비실에 맡겨주세요</option>
-                  <option value="집앞">집 앞에 놔 두세요</option>
-                  <option value="택배함">택배함에 맡겨주세요</option>
-                  <option value="직접배송">직접 수령할게요</option>
-                  <option value="배송전 연락">배송 전 연락해주세요</option>
-                  <option value="직접입력">직접 입력</option>
+                  <option value="선택 안함">선택 안함</option>
+                  <option value="경비실에 맡겨주세요">경비실에 맡겨주세요</option>
+                  <option value="집 앞에 놔 두세요">집 앞에 놔 두세요</option>
+                  <option value="택배함에 맡겨주세요">택배함에 맡겨주세요</option>
+                  <option value="직접 수령할게요">직접 수령할게요</option>
+                  <option value="배송 전 연락해주세요">배송 전 연락해주세요</option>
                 </Form.Select>
-
-                {/* Conditionally show the textarea for custom message if "직접입력" is selected */}
-                {deliveryMessage === "직접입력" && (
-                  <Form.Control
-                    as="textarea"
-                    id="customMessage"
-                    className="mt-2"
-                    placeholder="직접 입력해 주세요"
-                  />
-                )}
               </Form.Group>
             </Form>
           </Col>
@@ -326,7 +469,7 @@ const MyOrder = () => {
         <div className="d-flex justify-content-center">
           <div className="d-flex align-items-center">
             <Button variant="secondary" onClick={goToCart} className="me-3">장바구니로 돌아가기</Button>
-            <Button className="btn-pilllaw" disabled={!isOrderValid}>결제하기</Button>
+            <Button onClick={handleOrder} className="btn-pilllaw" disabled={!isOrderValid}>결제하기</Button>
           </div>
         </div>
 
