@@ -8,11 +8,11 @@ import AddressApi from '../../common/AddressApi';  // 주소 API 컴포넌트 �
 
 const ModifyInfo = ({ activeKey }) => {
   const [login, setLogin] = useState(true);
-  const [social, setSocial] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [member, setMember] = useState({});
+  const [social, setSocial] = useState({});
   const [name, setName] = useState('');
   const [nickname, setNickname] = useState('');
   const [showAddressModal, setShowAddressModal] = useState(false);  // 주소 모달 상태 추가
@@ -55,8 +55,6 @@ const ModifyInfo = ({ activeKey }) => {
               });
             }
             
-            // setSocial(resp.member?.socialDto);
-            console.log(social);
             return;
           }
         }
@@ -112,29 +110,47 @@ const ModifyInfo = ({ activeKey }) => {
     }
 
     try {
-      const memberInfo = {
-        name,
-        nickname,
-        address: address.address,
-        addressDetail: address.addressDetail,
-        zipCode: address.zipCode
-      };
-
-      const socialInfo = {
-        nickname,
-        address: address.address,
-        addressDetail: address.addressDetail,
-        zipCode: address.zipCode
+      const finalData = {
+        memberInfo : {
+          name,
+          nickname,
+          address: address.address,
+          addressDetail: address.addressDetail,
+          zipCode: address.zipCode
+        },
+        socialInfo: {
+          nickname,
+          address: address.address,
+          addressDetail: address.addressDetail,
+          zipCode: address.zipCode
+        },
+        addressInfo: {
+          address: address.address,
+          addressDetail: address.addressDetail,
+          zipCode: address.zipCode
+        }
       }
+
+      // const memberInfo = {
+      //   name,
+      //   nickname,
+      //   address: address.address,
+      //   addressDetail: address.addressDetail,
+      //   zipCode: address.zipCode
+      // };
+
+      // const socialInfo = {
+      //   nickname,
+      //   address: address.address,
+      //   addressDetail: address.addressDetail,
+      //   zipCode: address.zipCode
+      // }
 
       // 비밀번호가 입력된 경우에만 추가
-      if (password) {
-        memberInfo.password = password;
-      }
+      // if (password) {
+      //   memberInfo.password = password;
+      // }
 
-      console.log(memberInfo);
-      console.log(socialInfo);
-      
       const storedMno = localStorage.getItem("mno");
       // const response = await req('put', `/member/mypage/update/${storedMno}`, memberInfo);
       
