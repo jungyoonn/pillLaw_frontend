@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../hooks/AuthContext';
+import UseAxios from '../../hooks/UseAxios'; // axios 훅
 
 const OrderSuccessed = () => {
   const [orderData, setOrderData] = useState({
