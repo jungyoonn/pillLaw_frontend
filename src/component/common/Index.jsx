@@ -40,12 +40,12 @@ const Index = () => {
           console.log(resp)
 
           // 소셜 체크 추가
-          if (resp && resp.nickname) {
-            setNickname(resp.nickname);
+          if (resp &&  resp.nickname !== '') {
+            setNickname(resp.nickname || resp.socialProvider + "_USER");
             return;
           }
 
-          setNickname(resp.socialProvider + "_USER");
+          // setNickname(resp.socialProvider + "_USER");
         }
       } catch (error) {
         console.error('사용자 정보 로드 실패:', error);
