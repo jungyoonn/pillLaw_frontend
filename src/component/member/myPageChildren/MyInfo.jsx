@@ -3,12 +3,12 @@ import profile from '../../../resources/image/user-image.png'
 import { Col, Form, Modal, Row } from 'react-bootstrap';
 import Button from '../../common/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCoins } from "@fortawesome/free-solid-svg-icons";
+import { faCoins, faGear } from "@fortawesome/free-solid-svg-icons";
 import UseAxios from '../../../hooks/UseAxios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../../resources/image/pilllaw_favicon.png';
 
-const MyInfo = ({ activeKey }) => {
+const MyInfo = ({ activeKey, setActiveKey }) => {
   const [login, setLogin] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [member, setMember] = useState({});
@@ -54,20 +54,20 @@ const MyInfo = ({ activeKey }) => {
   return (
     <>
       <Row>
-        <Col xs="2" />
+        <Col xs="1" />
         <Col xs="2" lg="2" className='text-center'>
           <img src={profile} alt='프로필 사진' width={160} />
-          {member ? 
-            <Button variant='pillllaw' className="btn btn-pilllaw mt-3">PILL LAW 구독</Button> : 
-            <p className='fw-bold text-pilllaw fs-12'>소셜 회원은 구독 서비스 이용이 불가능합니다.</p>
+          {member.password ? 
+            <Button variant='pillllaw' className="btn btn-pilllaw btn-sm mt-3">PILL LAW 구독</Button> : 
+            <p className='fw-bold header-font fs-12 mt-3'>소셜 회원은 구독 서비스 이용이 불가능합니다.</p>
           }
           <p className='fs-14 fw-bold text-pilllaw mt-2'>
             <FontAwesomeIcon icon={faCoins} className='text-pilllaw-secondary mx-1' />
             포인트 : 1500P
           </p>
         </Col>
-        <Col xs="1" />
-        <Col xs="4">
+        <Col xs="2" />
+        <Col xs="5">
           <p className='m-1 fs-14 fw-bold header-font'>이메일</p>
           <Form.Control
             type="text"
@@ -98,6 +98,26 @@ const MyInfo = ({ activeKey }) => {
               />
             </Col>
           </Row>
+          <p className='m-1 mt-3 fs-14 fw-bold header-font'>기본 배송지</p>
+          <Form.Control
+            type="text"
+            placeholder="등록된 배송지가 없습니다."
+            className='bg-pilllaw-form fs-14 fw-bold'
+            disabled
+            readOnly
+          />
+          <Button variant='pillllaw' className="btn btn-pilllaw btn-sm mt-1">등록하러 가기</Button>
+          <Row className='mt-5'>
+            <Col className=' border-end'>
+              <p className='m-1 px-2 fs-14 fw-bold header-font text-center'>팔로우</p>
+              <p className='m-1 mt-3 px-2 fs-14 fw-bold text-pilllaw text-center'>15명</p>
+            </Col>
+            <Col>
+              <p className='m-1 px-2 fs-14 fw-bold header-font text-center'>팔로워</p>
+              <p className='m-1 mt-3 px-2 fs-14 fw-bold text-pilllaw text-center'>20명</p>
+            </Col>
+          </Row>
+          <Link onClick={(e) => { e.preventDefault(); setActiveKey('edit-info'); }}><FontAwesomeIcon icon={faGear} className="fa-2xl header-font float-end mt-5 pt-5" /></Link>
         </Col>
       </Row>
       <Modal
