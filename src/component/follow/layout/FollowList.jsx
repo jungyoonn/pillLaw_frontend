@@ -82,30 +82,20 @@ const FollowList = () => {
           href={follow.href}
           className="list-group-item"
         > */}
-          {/* <img
-            src="../../resources/followImage/사본 -freepik__adjust__7192.png"
-            alt="프로필"
-            style={{ marginRight: "8px" }}
-            /> */}
-          {/* {follow.sender.nickname}
-        </a>
-      ))} */}
 
-    {follows.map((follow) => (
-      <a key={follow.followId} href="#" className="list-group-item">
-        {/* <img
-          src="../../resources/followImage/profile.png"
-          alt="프로필"
-          style={{ marginRight: "8px" }}
-        /> */}
-        {follow.sender.mno} {/* 맞팔된 상대방 mno 표시 */}
-      </a>
-    ))}
-      
-      </div>
+        {follows.map((follow) => (
+          <a key={follow.followId} href="#" className="list-group-item">
+            <img
+              src="../../resources/followImage/사본 -freepik__adjust__7192.png"
+              alt="프로필"
+              style={{ marginRight: "8px" }}
+            />
+            {follow.sender.nickname} {/* 맞팔된 상대방 mno 표시 */}
+          </a>
+        ))}
+        </div>
       </div>
     </div>
-    
   );
 };
 

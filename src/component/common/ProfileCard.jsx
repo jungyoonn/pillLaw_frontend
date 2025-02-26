@@ -11,7 +11,7 @@ const ProfileCard = ({nickname}) => {
   const{logout} = useAuth();
   const [follow, setFollow] = useState([]);// 팔로워 수
   const [following, setFollowing] = useState([]); // 팔로잉 수
-  const [receiverId, setReceiverId] = useState(0); //받은 쪽지 수
+  const [receiverId, setReceiverId] = useState(''); //받은 쪽지 수
   const mno = localStorage.getItem('mno');
   const { req } = UseAxios();
 
@@ -27,18 +27,20 @@ const ProfileCard = ({nickname}) => {
 
     const fetchData = async () => {
       try {
-        const resp = await req('get', `follow/count/${mno}`);
-        // console.log("--- api 응답--",resp);
-        // console.log(follow);
-        // console.log(following);
-        if (resp) {
-          setFollow(resp.follower); // 응답 값 적용
-          setFollowing(resp.following);
-        }
+        const respFollw = await req('get', `follow/count/${mno}`);
+        const respLetter = await req('get', `letter/${mno}`);
+        
+        console.log(respLetter);
+       
+          setFollow(respFollw.follower); // 응답 값 적용
+          setFollowing(respFollw.following);
+          setReceiverId(respLetter.length); 
+
       } catch (error) {
         console.error("Error fetching follow list:", error);
       }
     };
+    
     fetchData(); // async 함수 실행
   }, [mno]);
 
