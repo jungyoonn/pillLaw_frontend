@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import UseAxios from '../../../hooks/UseAxios';
 import { Col, Form, Modal, Row } from 'react-bootstrap';
 import Button from '../../common/Button';
+import ToastMsg from '../../common/ToastMsg';
 import logo from '../../../resources/image/pilllaw_favicon.png';
 import AddressApi from '../../common/AddressApi';  // 주소 API 컴포넌트 추가
 
@@ -24,6 +25,7 @@ const ModifyInfo = ({ activeKey }) => {
   const [pwErr, setPwErr] = useState('');
   const [roadAddressError, setRoadAddressError] = useState(false);
   const [detailAddressError, setDetailAddressError] = useState(false);
+  const [hasAddress, setHasAddress] = useState(false);
   const [address, setAddress] = useState({
     addrno: '',
     recipient: '',
@@ -142,6 +144,7 @@ const ModifyInfo = ({ activeKey }) => {
       postalCode: addressData.zipCode,
       roadAddress: addressData.address
     });
+    setHasAddress(true);
   };
 
   // 주소 관련 필드 변경 핸들러
@@ -164,6 +167,7 @@ const ModifyInfo = ({ activeKey }) => {
       ...address,
       [name]: type === 'checkbox' ? checked : value
     });
+    setHasAddress(true);
   };
 
   // 이메일 변경 핸들러
@@ -362,17 +366,20 @@ const ModifyInfo = ({ activeKey }) => {
         }
       }
       
-      // 주소 정보는 공통으로 추가
-      updateData.addressDto = {
-        addrno: address.addrno,
-        recipient: address.recipient,
-        tel: address.tel ? address.tel.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3') : null,
-        postalCode: address.postalCode,
-        roadAddress: address.roadAddress,
-        detailAddress: address.detailAddress,
-        defaultAddr: true,
-        mno: storedMno
-      };
+      // 주소 정보
+      if(hasAddress) {
+        updateData.addressDto = {
+          addrno: address.addrno,
+          recipient: address.recipient,
+          tel: address.tel ? address.tel.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3') : null,
+          postalCode: address.postalCode,
+          roadAddress: address.roadAddress,
+          detailAddress: address.detailAddress,
+          defaultAddr: true,
+          mno: storedMno
+        };
+      }
+
 
       console.log("전송될 데이터:", JSON.stringify(updateData, null, 2));
       
@@ -384,7 +391,7 @@ const ModifyInfo = ({ activeKey }) => {
         // alert('회원 정보가 성공적으로 수정되었습니다.');
         // navigate('/mypage');
         setPwErr(response.msg);
-        return;
+        return <ToastMsg title="수정 완료!" msg="정보 수정이 완료되었습니다." state={true} nav="/mypage" />;
       }
     } catch (error) {
       console.error('회원 정보 수정 실패:', error);
