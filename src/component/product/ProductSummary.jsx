@@ -17,8 +17,6 @@ import UseAxios from '../../hooks/UseAxios'; // axios 훅
 
 
 const ProductSummary = ({ product }) => {
-  const [toastMessage, setToastMessage] = useState('');  // 표시할 메시지
-  const [toastState, setToastState] = useState(false);  // Toast의 표시 여부
   const { mno } = useAuth();
   const { req } = UseAxios();
   const [selectedOption, setSelectedOption] = useState("30");
@@ -169,10 +167,10 @@ const ProductSummary = ({ product }) => {
         <Col xs={2}></Col>
         <Col className="d-flex justify-content-between">
           <Button variant="pilllaw" onClick={handleAddToCart}>
-            장바구니 담기
+          <FontAwesomeIcon icon={faCartShopping} /> 장바구니에 담기
           </Button>
           <Button variant="pilllaw" onClick={goToCart}>
-            <FontAwesomeIcon icon={faCartShopping} /> &nbsp; 장바구니 이동
+            <FontAwesomeIcon icon={faShare} size="xl" />&nbsp; 장바구니로 가기
           </Button>
         </Col>
         <Col xs={2}></Col>
