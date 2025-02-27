@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Container, Row, Col, Form, Table, Button, InputGroup, Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../resources/css/style.css";
@@ -6,12 +6,12 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from '../../hooks/AuthContext';
 import UseAxios from '../../hooks/UseAxios'; // axios 훅
 
+
 const MyOrder = () => {
   const { mno, email, token } = useAuth();
   const { req, loading, error } = UseAxios();  // useAxios 훅을 사용하여 HTTP 요청을 처리
   const [address, setAddress] = useState({ postcode: "", roadAddress: "", detailAddress: "", });
   const [savedAddresses, setSavedAddresses] = useState([]);
-
   const [showModal, setShowModal] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false);
   const [recipient, setRecipient] = useState("");
@@ -26,6 +26,7 @@ const MyOrder = () => {
   const [totalPayment, setTotalPayment] = useState(totalPrice);
   const [isTermsChecked, setIsTermsChecked] = useState(false);
   const [cartItems, setCartItems] = useState([]);
+
 
   useEffect(() => {
     if (!mno) return;
@@ -96,9 +97,7 @@ const MyOrder = () => {
     fetchTotalPoints();
     fetchCartItems();
     fetchAddresses();
-  }, [mno]); // mno가 변경될 때마다 실행
-
-
+  }, [mno,req]); // mno가 변경될 때마다 실행
 
   const handleOrder = async () => {
     if (!mno) {
