@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link, useNavigate } from 'react-router-dom';
 import MyInfo from './myPageChildren/MyInfo';
 import OrderList from './myPageChildren/OrderList';
-
+import PointList from './myPageChildren/PointList';
 import ModifyInfo from './myPageChildren/ModifyInfo';
 import FollowApp from '../follow/test/FollowApp';
 // import FollowList from '../follow/layout/FollowList';
@@ -29,7 +29,9 @@ const MyPageLayout = () => {
       case 'followapp':
         return <FollowApp activeKey={activeKey} />
       case 'orders':
-        return <OrderList memberId={memberId} />;  // 주문 내역을 보여주는 컴포넌트
+        return <OrderList memberId={memberId} />;  
+      case 'points':
+        return <PointList memberId={memberId} />;  
       default:
         return <div>선택된 메뉴가 없습니다.</div>;
     }
@@ -68,7 +70,7 @@ const MyPageLayout = () => {
             <Nav.Link eventKey="edit-info">내 정보 수정</Nav.Link>
             <br />
             <Nav.Link eventKey="orders">주문내역 조회</Nav.Link>  {/* 주문내역 추가 */}
-            <Nav.Link eventKey="link-2">포인트 사용 이력</Nav.Link>
+            <Nav.Link eventKey="points">포인트 사용 이력</Nav.Link>
             <Nav.Link eventKey="link-2">구독 내역</Nav.Link>
             <Nav.Link eventKey="link-2">즐겨찾기 상품</Nav.Link>
             <Nav.Link eventKey="link-2">내 후기 모아보기</Nav.Link>
