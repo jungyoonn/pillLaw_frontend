@@ -36,6 +36,7 @@ import FollowingList from './component/follow/layout/FollowingList';
 import PaymentPage from './component/order/PaymentPage';
 import FollwSenderPage from './component/follow/layout/FollowSenderPage';
 import FollowIsBack from './component/follow/layout/FollowIsBack';
+import FollowApp from './component/follow/test/FollowApp';
 
 
 function App() {
@@ -55,6 +56,7 @@ function App() {
             <Route path='/followlist' element={<FollowList/> }/>
             <Route path='/followerslist' element={<FollowersList/> }/>
             <Route path='/followinglist' element={<FollowingList/> }/>
+            <Route path='/followapp' element={<FollowApp/> }/>
             <Route path='/chatroomList' element={<ChatRoomList/> }/>
             <Route path='/followsenderpage' element={<FollwSenderPage/>}/>
             <Route path='/followisback' element={<FollowIsBack/>}/>

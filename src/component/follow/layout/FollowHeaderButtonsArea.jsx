@@ -1,33 +1,59 @@
 import React from "react";
-import { Container } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Container, Nav } from "react-bootstrap";
+import { useSearchParams, useNavigate } from "react-router-dom";
 
-const FollowHeaderButtonsArea = () => {
+// 헤더 네비게이션 컴포넌트
+const FollowHeaderButtons = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  
+  // 기본 탭은 'followers'로 설정
+  const tabType = searchParams.get("tab") || "followers";
+  
+  // 탭 변경 핸들러
+  const handleTabChange = (tab) => {
+    // 쿼리 파라미터로 탭 변경
+    setSearchParams({ tab: tab });
+  };
+
+  // 전체 경로로 이동하는 경우
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
+
   return (
-  <div className="wrap">
-    <Container style={{paddingTop: '115.19px'}} >
-    <div className="row">
-      <div className="btn-group">
-        <button type="button" className="btn btn-pilllaw">
-          <Link to="/followList" className="text-decoration-none text-secondary">
-            맞팔로우
-          </Link>
-        </button>
-        <button type="button" className="btn btn-pilllaw">
-          <Link to="/followersList" className="text-decoration-none text-secondary">
-            팔로워
-          </Link>
-        </button>
-        <button type="button" className="btn btn-pilllaw">
-          <Link to="/followingList" className="text-decoration-none text-secondary">
-            팔로잉
-          </Link>
-        </button>
-      </div>
-    </div>
-    </Container>
-  </div>
+      <Container style={{ paddingTop: '115.19px' }}>
+        <Nav fill variant="tabs" defaultActiveKey={tabType}>
+          <Nav.Item>
+            <Nav.Link 
+              onClick={() => handleTabChange("follow")} 
+              active={tabType === "follow"}
+              className="btn btn-pilllaw"
+            >
+              맞팔로우
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link 
+              onClick={() => handleTabChange("followers")} 
+              active={tabType === "followers"}
+              className="btn btn-pilllaw"
+            >
+              팔로워
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link 
+              onClick={() => handleTabChange("following")} 
+              active={tabType === "following"}
+              className="btn btn-pilllaw"
+            >
+              팔로잉
+            </Nav.Link>
+          </Nav.Item>
+        </Nav>
+      </Container>
   );
 };
 
-export default FollowHeaderButtonsArea;
+export default FollowHeaderButtons;

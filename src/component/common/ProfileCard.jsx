@@ -65,7 +65,7 @@ const ProfileCard = ({nickname}) => {
       </Row>
       <Row className="row mt-4 d-flex justify-content-center">
         <Col>
-          <p className="fs-14 fw-bold text-center ms-2"><Link to={"/followinglist"} className="text-pilllaw" >팔로잉 {following}명</Link></p>
+          <p className="fs-14 fw-bold text-center ms-2"><Link to={"/followapp"} className="text-pilllaw" >팔로잉 {following}명</Link></p>
         </Col>
         <Col>
           <p className="fs-14 fw-bold text-center me-2"><Link to={"/followerslist"} className="text-pilllaw">팔로워 {follow} 명</Link></p>

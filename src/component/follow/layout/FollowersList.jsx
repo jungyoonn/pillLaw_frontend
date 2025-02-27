@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import FollowHeaderButtonsArea from "./FollowHeaderButtonsArea";
-import UseAxios from '../../../hooks/UseAxios';
+import { useEffect, useState } from "react";
+import { Container, ListGroup } from "react-bootstrap";
+import UseAxios from "../../../hooks/UseAxios";
 import { Link } from "react-router-dom";
 
+// 팔로워 목록 컴포넌트
 const FollowersList = () => {
   const { req } = UseAxios();
   const [follows, setFollows] = useState([]);
   const mno = localStorage.getItem('mno');
-
-  useEffect(() => {
+useEffect(() => {
     if (!mno) return; // mno가 없으면 실행하지 않음
 
     const fetchData = async () => {
@@ -23,31 +23,30 @@ const FollowersList = () => {
         console.error("Error fetching follow list:", error);
       }
     };
-
     fetchData();
   }, [mno]); // mno가 변경될 때 다시 실행
-
   return (
-    <div className="container main-content">
-      <FollowHeaderButtonsArea />
-      <div className="list-group m-4">
-        {follows.map((follow) => (
-          <Link
-            key={follow.sender.mno}  // sender.mno를 키로 설정
-            to={`/followsenderpage/${follow.sender.mno}`}  // sender.mno 사용
-            className="list-group-item"
-          >
-            <img
-              src="../../resources/followImage/사본 -freepik__adjust__7192.png"
-              alt="프로필"
-              style={{ marginRight: "8px" }}
-            />
-            {follow.sender.nickname}  {/* sender.nickname 사용 */}
-          </Link>
-        ))}
+    <Container className="mt-3">
+      {/* 여기에 팔로워 목록 내용 추가 */}
+      <div className="container main-content"> 
+      <div className="follow-item">
+        <div className="user-profile">
+          <ListGroup variant="flush">
+            {follows.map((follow) => (
+              <Link
+              key={follow.sender.mno}  // sender.mno를 키로 설정
+              to={`/followsenderpage/${follow.sender.mno}`}  // sender.mno 사용
+              className="list-group-item"
+            >
+              {follow.sender.nickname}  {/* sender.nickname 사용 */}
+            </Link>
+          ))}
+          </ListGroup>
+        </div>
+        {/* <button className="btn btn-primary">팔로우</button> */}
       </div>
     </div>
+    </Container>
   );
 };
-
 export default FollowersList;
