@@ -6,9 +6,12 @@ import { Col, Container, Form, Row, Spinner } from 'react-bootstrap';
 import Button from '../common/Button';
 import MemberHeader from './MemberHeader';
 import UseAxios from '../../hooks/UseAxios';
+import { useLocation } from 'react-router-dom';
 
 const SignEmail = () => {
-  const [email, setEmail] = useState('');
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const [email, setEmail] = useState(params.get('email'));
   const [emailError, setEmailError] = useState('');
   const [emailSent, setEmailSent] = useState(false);
   const [message, setMessage] = useState('인증메일 보내기');
