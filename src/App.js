@@ -35,6 +35,7 @@ import MyPageLayout from './component/member/MyPageLayout';
 import FollowingList from './component/follow/layout/FollowingList';
 import PaymentPage from './component/order/PaymentPage';
 import FollwSenderPage from './component/follow/layout/FollowSenderPage';
+import FollowIsBack from './component/follow/layout/FollowIsBack';
 
 
 function App() {
@@ -55,6 +56,8 @@ function App() {
             <Route path='/followerslist' element={<FollowersList/> }/>
             <Route path='/followinglist' element={<FollowingList/> }/>
             <Route path='/chatroomList' element={<ChatRoomList/> }/>
+            <Route path='/followsenderpage' element={<FollwSenderPage/>}/>
+            <Route path='/followisback' element={<FollowIsBack/>}/>
             <Route path='/chattestlist' element={<ChatTestList/> }/>
             {/* <Route path='/userprofile' element={<UserProfile />}/> */}
             <Route path='/sendletterpage' element={<SendLetterPage />}/>
@@ -66,7 +69,6 @@ function App() {
             <Route path='/order/test' element={<PaymentPage />} />
             <Route path='/order/fail' element={<OrderFailed />} />
             <Route path='/mypage' element={<MyPageLayout />} />
-            <Route path='/followsenderpage' element={<FollwSenderPage/>}/>
           </Route>
 
           <Route element={<SignLayout />}>

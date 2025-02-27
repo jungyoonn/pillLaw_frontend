@@ -68,7 +68,8 @@ const MyPageLayout = () => {
               <br />
               <Nav.Link eventKey="link-2">보낸 쪽지</Nav.Link>
               <Nav.Link eventKey="link-2">받은 쪽지</Nav.Link>
-              <Nav.Link eventKey="follow">팔로우 / 팔로워</Nav.Link>
+              <Nav.Link eventKey="follow"  >팔로우 / 팔로워</Nav.Link>
+              
               <br />
               <Nav.Link eventKey="link-2">로그아웃</Nav.Link>
               <Nav.Link eventKey="link-2">회원 탈퇴</Nav.Link>
