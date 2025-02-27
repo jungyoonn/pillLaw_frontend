@@ -76,7 +76,7 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/signup/form" element={<SignupForm />} />
             <Route path="/verify/email" element={<SignEmail />} />
-            <Route path='/verify/email/verify' element={<VerifyEmail />} />
+            <Route path='/mypage/email/verify' element={<VerifyEmail />} />
             <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
           </Route>
   {/* 
