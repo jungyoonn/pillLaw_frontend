@@ -11,17 +11,22 @@ const UseAxios = (baseUrl = BASE_URL) => {
   const {token} = useAuth();
 
   const req = useCallback(
-    async (method, endpoint, body = null, addHeaders = {}) => {
+    async (method, endpoint, body = null, addHeaders = {}, isMultipart = false) => {
       setLoading(true);
       setError(null);
       try {
         const headers = endpoint === 'signin' 
         ? { 'Content-Type': 'application/json', ...addHeaders }
-        : { 
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-            ...addHeaders
-          };
+        : isMultipart 
+          ? { 
+              'Authorization': `Bearer ${token}`,
+              ...addHeaders
+            }
+          : { 
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+              ...addHeaders
+            };
 
         const resp = await axios({
           url: `${baseUrl}${endpoint}`,
