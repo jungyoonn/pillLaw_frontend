@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import profile from '../../../resources/image/user-image.png'
-import { Col, Form, Modal, Row } from 'react-bootstrap';
+import { Col, Modal, Row } from 'react-bootstrap';
 import Button from '../../common/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCoins, faGear } from "@fortawesome/free-solid-svg-icons";
+import { faCoins, faGear, faCheckCircle, faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import UseAxios from '../../../hooks/UseAxios';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../../resources/image/pilllaw_favicon.png';
@@ -13,6 +13,7 @@ const MyInfo = ({ activeKey, setActiveKey }) => {
   const [showModal, setShowModal] = useState(false);
   const [member, setMember] = useState({});
   const [address, setAddress] = useState(null);
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
   const {req} = UseAxios("http://localhost:8080/api");
   const navigate = useNavigate();
 
@@ -35,6 +36,11 @@ const MyInfo = ({ activeKey, setActiveKey }) => {
 
           if (resp) {
             setMember(resp);
+
+            // 이메일 인증 상태 확인
+            if (resp.memberDto && resp.memberDto.status) {
+              setIsEmailVerified(resp.memberDto.status.includes('VERIFIED'));
+            }
             
             // 주소 정보가 있을 경우 설정
             if (resp.addressDto) {
@@ -82,6 +88,12 @@ const MyInfo = ({ activeKey, setActiveKey }) => {
     return formattedAddress || "등록된 배송지가 없습니다.";
   };
 
+  const handleEmailVerification = (e) => {
+    e.preventDefault();
+    const email = member.memberDto.email
+    navigate(`/verify/email?email=${email}`);
+  };
+
   return (
     <>
       <Row>
@@ -109,15 +121,33 @@ const MyInfo = ({ activeKey, setActiveKey }) => {
         </Col>
         <Col xs="2" />
         <Col xs="5">
-          <p className='m-1 fs-14 fw-bold header-font'>이메일</p>
-          <p className='m-1 fs-14 fw-bold mt-2'>{member.memberDto?.email || 'USER' + localStorage.getItem("mno")}</p>
-          {/* <Form.Control
-            type="text"
-            value={member.memberDto?.email || 'USER' + localStorage.getItem("mno")}
-            className='bg-pilllaw-form fs-14 fw-bold'
-            disabled
-            readOnly
-          /> */}
+        <div className="d-flex justify-content-between align-items-start">
+          <div>
+            <p className='m-1 fs-14 fw-bold header-font'>이메일</p>
+            <p className='m-1 fs-14 fw-bold mt-2'>
+              {member.memberDto?.email || 'USER' + localStorage.getItem("mno")}
+              {member.memberDto && (
+                <span className={`fs-12 ms-2 ${isEmailVerified ? 'text-success' : 'text-secondary'}`}>
+                  <FontAwesomeIcon 
+                    icon={isEmailVerified ? faCheckCircle : faExclamationCircle} 
+                    className="me-1" 
+                  />
+                  {isEmailVerified ? '인증됨' : '인증되지 않음'}
+                </span>
+              )}
+            </p>
+          </div>
+          {member.memberDto && !isEmailVerified && (
+            <Button 
+              variant='pilllaw' 
+              className="mt-2 btn btn-secondary btn-sm"
+              onClick={handleEmailVerification}
+            >
+              인증하기
+            </Button>
+          )}
+        </div>
+
           <p className='m-1 mt-3 fs-14 fw-bold header-font'>전화번호</p>
           <p className='m-1 fs-14 fw-bold mt-2'>{member.memberDto?.tel || '등록된 전화번호가 없습니다.'}</p>
           {/* <Form.Control
