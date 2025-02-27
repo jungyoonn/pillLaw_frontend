@@ -2,65 +2,75 @@ import React, { useState, useRef, useEffect } from "react";
 import { Container, Modal } from "react-bootstrap";
 import UseAxios from '../../../hooks/UseAxios';
 
-const SenderLetterPage = () => {
+const LetterListLayOutTest = () => {
   const [showModal, setShowModal] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [selectedRecipient, setSelectedRecipient] = useState("");
-  const [sendLetterContent, setSendLetterContent] = useState("");
+  const [receiverId, setReceiverId] = useState("");
+  const [content, setContent] = useState("");
   const [showToast, setShowToast] = useState(false);
-  const [mutualFollows, setMutualFollows] = useState([]);
+  const [isFollowBack, setIsFollowBack] = useState([]);
+  const [sentAt, setSentAt] = useState(null);
+  const [readAt, setReadAt] = useState(null);
   const dropdownRef = useRef(null);
+  const mno = localStorage.getItem('mno');
   const { req } = UseAxios('');
 
   useEffect(() => {
     const mno = localStorage.getItem("senderFollowId");
     if (!mno) return;
 
-    const fetchMutualFollows = async () => {
+    const fetchIsBackFollows = async () => {
       try {
-        const response = await req('get', `/api/follow/mutual/${mno}`);
+        const response = await req('get', `/api/follow/${mno}/${mno}`);
         if (response.data) {
-          setMutualFollows(response.data);
+          setIsFollowBack(response.data);
         }
       } catch (error) {
         console.error("상호 팔로우 목록 가져오기 실패:", error);
       }
     };
 
-    fetchMutualFollows();
+    fetchIsBackFollows();
   }, []);
 
-  const handleRecipientSelect = (user) => {
-    setSelectedRecipient(user);
+  const handleRecipientSelect = (mno) => {
+    setReceiverId(mno);
     setShowDropdown(false);
   };
 
   const handleSend = async () => {
-    if (!selectedRecipient || sendLetterContent.trim() === "") {
+    if (!receiverId || content.trim() === "") {
       alert("받는 사람과 쪽지 내용을 모두 입력해주세요");
       return;
     }
 
     try {
-      const mno = localStorage.getItem("senderFollowId");
-      if (!mno) return;
+      const senderId = localStorage.getItem("senderFollowId");
+      if (!senderId) return;
 
-      await req('post', '/api/letter/send', {
-        senderId: mno,
-        recipientNickname: selectedRecipient,
-        content: sendLetterContent
+      const response = await req ('post', '/api/letter/send', {
+        senderId: senderId,
+        receiverId: receiverId,
+        content: content
       });
+      if (response.data) {
+        setSentAt(response.data.sentAt);
+        setReadAt(response.data.readAt);
+      }
 
       setShowToast(true);
     } catch (error) {
       console.error("쪽지 전송 실패:", error);
     }
   };
+  const formatDateTime = (dateTime) => {
+    return dateTime ? new Date(dateTime).toLocaleString() : "확인되지 않음";
+  };
 
   const handleCloseModal = () => {
     setShowModal(false);
-    setSelectedRecipient("");
-    setSendLetterContent("");
+    setReceiverId("");
+    setContent("");
   };
 
   const handleToastConfirm = () => {
@@ -83,19 +93,19 @@ const SenderLetterPage = () => {
         </Modal.Header>
         <Modal.Body>
           <div className="mb-3 position-relative" ref={dropdownRef}>
-            <label className="form-label fw-bold">받는 사람:</label>
+            <label className="form-label fw-bold">받는 사람:{receiverId} </label>
             <input
               type="text"
               className="form-control"
               placeholder="받는 사람 선택"
-              value={selectedRecipient}
+              value={receiverId}
               readOnly
               onClick={() => setShowDropdown(!showDropdown)}
             />
             {showDropdown && (
               <div className="list-group mt-1 custom-scrollbar" 
                 style={{ position: "absolute", zIndex: 1050, width: "100%", border:"1px solid", borderRadius:"5px", maxHeight: "200px", overflowY:"auto"}}>
-                {mutualFollows.map((user, index) => (
+                {isFollowBack.map((user, index) => (
                   <button
                     key={index}
                     className="list-group-item list-group-item-action"
@@ -114,8 +124,8 @@ const SenderLetterPage = () => {
               className="form-control"
               rows="5"
               placeholder="쪽지 내용을 입력해주세요"
-              value={sendLetterContent}
-              onChange={(e) => setSendLetterContent(e.target.value)}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
             ></textarea>
           </div>
         </Modal.Body>
@@ -143,7 +153,9 @@ const SenderLetterPage = () => {
           }}
         >
           <div className="bg-white p-4 rounded shadow" style={{ minWidth: "300px", textAlign: "center" }}>
-            <p className="mb-3">쪽지가 {selectedRecipient}님에게 전송되었습니다.</p>
+            <p className="mb-3">쪽지가 {receiverId}님에게 전송되었습니다.</p>
+            <p>보낸 시간: {formatDateTime(sentAt)}</p>
+            <p>읽은 시간: {formatDateTime(readAt)}</p>
             <button type="button" className="btn btn-pilllaw" onClick={handleToastConfirm}>
               확인
             </button>
@@ -154,4 +166,4 @@ const SenderLetterPage = () => {
   );
 };
 
-export default SenderLetterPage;
+export default LetterListLayOutTest;

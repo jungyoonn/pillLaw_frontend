@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Container, Modal, Button } from "react-bootstrap";
 import UseAxios from '../../hooks/UseAxios';
+import LetterListLayOutTest from "./layout/LetterListLayOutTest";
 
 
-const SendLetterPage = () => {
+const LetterReplyTest = () => {
   const [showModal, setShowModal] = useState(false); // 모달 상태
   const [showDropdown, setShowDropdown] = useState(false); // 드롭다운 상태
   const [selectedRecipient, setSelectedRecipient] = useState(""); // 선택된 받는 사람
@@ -169,4 +170,4 @@ const SendLetterPage = () => {
   );
 };
 
-export default SendLetterPage;
+export default LetterListLayOutTest;

@@ -37,6 +37,8 @@ import PaymentPage from './component/order/PaymentPage';
 import FollwSenderPage from './component/follow/layout/FollowSenderPage';
 import FollowIsBack from './component/follow/layout/FollowIsBack';
 import FollowApp from './component/follow/test/FollowApp';
+import LetterListLayOutTest from './component/letter/layout/LetterListLayOutTest';
+// import LetterSenderListTest from './component/letter/layout/LetterSenderListTest';
 
 
 function App() {
@@ -62,7 +64,8 @@ function App() {
             <Route path='/followisback' element={<FollowIsBack/>}/>
             <Route path='/chattestlist' element={<ChatTestList/> }/>
             {/* <Route path='/userprofile' element={<UserProfile />}/> */}
-            <Route path='/sendletterpage' element={<SendLetterPage />}/>
+            <Route path='/letterlistlayouttest' element={<LetterListLayOutTest />}/>
+            {/* <Route path='/letterlisttest' element={<LetterSenderListTest />}/> */}
             <Route path='/senderletterpage' element={<SendLetterPage />}/>
             <Route path='/sendletter33' element={<SendLetterPage33 />}/>
             <Route path='/cart' element={<MyCart />} />
