@@ -9,12 +9,8 @@ import UseAxios from '../../hooks/UseAxios'; // axios 훅
 const MyOrder = () => {
   const { mno, email, token } = useAuth();
   const { req, loading, error } = UseAxios();  // useAxios 훅을 사용하여 HTTP 요청을 처리
-
-  const [address, setAddress] = useState({
-    postcode: "",
-    roadAddress: "",
-    detailAddress: "",
-  });
+  const [address, setAddress] = useState({ postcode: "", roadAddress: "", detailAddress: "", });
+  const [savedAddresses, setSavedAddresses] = useState([]);
 
   const [showModal, setShowModal] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false);
@@ -23,18 +19,27 @@ const MyOrder = () => {
   const navigate = useNavigate();
   const [userMembershipStatus, setUserMembershipStatus] = useState("ACTIVE");
   const [totalPrice, setTotalPrice] = useState(0);
+  const [totalPoints, setTotalPoints] = useState(0); // 포인트 상태 추가
   const [expectedPoints, setExpectedPoints] = useState(0);
-
   const [deliveryMessage, setDeliveryMessage] = useState("선택 안함");
-  const [customMessage, setCustomMessage] = useState("");
-
-  const [points, setPoints] = useState(5000);
+  const [points, setPoints] = useState(0);
   const [totalPayment, setTotalPayment] = useState(totalPrice);
   const [isTermsChecked, setIsTermsChecked] = useState(false);
-  
   const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
+    if (!mno) return;
+
+    // ✅ 포인트 조회 함수
+    const fetchTotalPoints = async () => {
+      try {
+        const pointsResponse = await req("GET", `v1/point/${mno}/total`);
+        setTotalPoints(pointsResponse); // 포인트 상태 업데이트
+      } catch (error) {
+        console.error("❌ 포인트 불러오기 실패:", error);
+      }
+    };
+
     const fetchCartItems = async () => {
       try {
         // 장바구니 항목을 가져오기
@@ -73,11 +78,24 @@ const MyOrder = () => {
         // 상태 업데이트
         setCartItems(itemsWithProductInfo);
       } catch (error) {
-        console.error("Error fetching cart items", error);
+        console.error("❌ 장바구니 불러오기 실패:", error);
       }
     };
 
+    // ✅ 주소 조회 함수
+    const fetchAddresses = async () => {
+      try {
+        const addressResponse = await req("GET", `v1/address/${mno}`);
+        setSavedAddresses(addressResponse); // 주소 상태 업데이트
+        console.log("✅ 주소 불러오기 성공:", addressResponse);
+      } catch (error) {
+        console.error("❌ 주소 불러오기 실패:", error);
+      }
+    };
+
+    fetchTotalPoints();
     fetchCartItems();
+    fetchAddresses();
   }, [mno]); // mno가 변경될 때마다 실행
 
 
@@ -96,26 +114,54 @@ const MyOrder = () => {
       totalAmount: totalPayment,
       usingPoint: points,
     };
-
     try {
-      // 📌 주문 요청 → ono 응답받음
+      // 2️⃣ 주문 요청 → ono 응답받음
+      console.log('🟡 주문 요청 중...');
       const ono = await req('POST', 'v1/order/', orderData);
       console.log('✅ 주문 성공, ono:', ono);
-  
-      if (ono) {
-        alert('주문이 완료되었습니다. 결제를 진행합니다.');
-        handlePayment(ono, totalPayment); // ono를 넘겨서 결제 진행
-      } else {
+
+      if (!ono) {
         throw new Error('주문 번호(ono)를 받아올 수 없습니다.');
       }
+
+      // 3️⃣ 주소 데이터 생성 (AddressDto 기반)
+      const addressData = {
+        mno,
+        recipient,
+        tel: phone,
+        postalCode: address.postcode,
+        roadAddress: address.roadAddress,
+        detailAddress: address.detailAddress,
+        defaultAddr: false,
+      };
+
+      // 4️⃣ 주소 정보 저장 요청
+      console.log('🟡 주소 저장 중...');
+      const addrno = await req('POST', 'v1/address/', addressData);
+      console.log('✅ 주소 저장 완료, addrno:', addrno);
+
+      // 서버에서 중복 주소가 있으면 addrno가 null이므로 그 경우에만 건너뜀
+      if (addrno) {
+        console.log('✅ 주소 저장 완료, addrno:', addrno);
+      } else {
+        console.log('중복된 주소이므로 주소 저장을 건너뜁니다.');
+      }
+
+      // 5️⃣ 결제 진행
+      handlePayment(ono, totalPayment, points);
+
+
     } catch (err) {
-      console.error('❌ 주문 실패:', err);
-      alert('주문 저장에 실패했습니다. 다시 시도해주세요.');
+      console.error('❌ 주문 처리 중 오류 발생:', err);
+      // 중복 주소로 인한 실패는 알리지 않음
+      if (err.message !== '주소 저장에 실패했습니다.') {
+        alert('주문 또는 주소 저장에 실패했습니다. 다시 시도해주세요.');
+      }
     }
   };
-  
 
-  const handlePayment = (ono, amount) => {
+
+  const handlePayment = (ono, amount, usedPoints, addrno) => {
     const { IMP } = window;
     IMP.init("imp24587612");
 
@@ -124,7 +170,7 @@ const MyOrder = () => {
         pg: "html5_inicis",
         pay_method: "card",
         merchant_uid: `order_${ono}`, // 📌 ono 사용
-        name: "테스트 상품",
+        name: "PILL LAW(필로우)",
         amount: amount,
         buyer_email: email,
         buyer_name: recipient,
@@ -166,9 +212,29 @@ const MyOrder = () => {
               navigate("/order/fail");
               return;
             }
+            // 📌 4️⃣ 결제 성공 후 포인트 차감
+            if (usedPoints > 0) {
+              await req("POST", `v1/point/${mno}/use?pointAmount=${usedPoints}`);
+              setTotalPoints((prev) => prev - usedPoints); // 프론트엔드에서도 차감
+              setPoints(0); // 입력 필드 초기화
+            }
 
+            // 📌 5️⃣ 배송 정보 생성 요청
+          const deliveryResponse = await req("POST", "v1/delivery/create", {
+            ono,
+            addrno,
+            trackingNumber: null,
+          });
+
+          console.log("🔹 배송 정보 생성 응답:", deliveryResponse);
+
+          if (!deliveryResponse || !deliveryResponse.data) {
+            alert("❌ 배송 정보 생성 실패");
+            navigate("/order/fail");
+            return;
+          }
             // 📌 4️⃣ 최종 결제 성공 처리
-            alert("🎉 결제가 완료되었습니다!");
+            // alert("🎉 결제가 완료되었습니다!");
             navigate("/order/success");
           } catch (error) {
             alert(`❌ 결제 확인 요청 중 오류 발생: ${error.message}`);
@@ -182,9 +248,8 @@ const MyOrder = () => {
     );
   };
 
-
   const goToCart = () => {
-    navigate("/cart"); // Navigating to the cart page
+    navigate("/cart");
   };
 
   const handlePhoneChange = (e) => {
@@ -245,9 +310,6 @@ const MyOrder = () => {
     }).open();
   };
 
-
-
-
   useEffect(() => {
     let total = 0;
     cartItems.forEach(item => {
@@ -259,36 +321,6 @@ const MyOrder = () => {
     let pointsRate = userMembershipStatus === "ACTIVE" ? 0.04 : 0.02;
     setExpectedPoints(Math.floor(total * pointsRate));
   }, [cartItems, userMembershipStatus]);
-
-
-
-  const savedAddresses = [
-    {
-      id: 1,
-      recipient: "홍길동",
-      postcode: "12345",
-      roadAddress: "서울특별시 강남구 테헤란로 123",
-      detailAddress: "101호",
-      phone: "010-1234-5678",
-    },
-    {
-      id: 2,
-      recipient: "김철수",
-      postcode: "67890",
-      roadAddress: "부산광역시 해운대구 해변로 456",
-      detailAddress: "202호",
-      phone: "010-5678-1234",
-    },
-    {
-      id: 3,
-      recipient: "이영희",
-      postcode: "54321",
-      roadAddress: "대전광역시 서구 둔산로 789",
-      detailAddress: "303호",
-      phone: "010-8765-4321",
-    },
-  ];
-
 
   // 포인트 input
   const handlePointsChange = (event) => {
@@ -308,7 +340,8 @@ const MyOrder = () => {
     enteredPoints = parseInt(enteredPoints, 10);
 
     // 숫자 범위 제한
-    if (enteredPoints > 5000) enteredPoints = 5000;
+    const maxUsablePoints = Math.min(totalPoints, totalPrice);
+    if (enteredPoints > maxUsablePoints) enteredPoints = maxUsablePoints;
     if (enteredPoints < 0) enteredPoints = 0;
 
     setPoints(enteredPoints);
@@ -316,19 +349,19 @@ const MyOrder = () => {
 
   // 포인트 적용
   const applyPoints = () => {
-    const finalPoints = Math.min(points, 5000);
-    setTotalPayment(totalPrice - finalPoints);
+    const maxUsablePoints = Math.min(points, totalPoints, totalPrice);
+    setTotalPayment(totalPrice - maxUsablePoints);
   };
 
   // 배송지 선택 시 폼에 자동 입력
   const handleSelectAddress = (selected) => {
     setRecipient(selected.recipient);
     setAddress({
-      postcode: selected.postcode,
+      postcode: selected.postalCode,
       roadAddress: selected.roadAddress,
       detailAddress: selected.detailAddress,
     });
-    setPhone(selected.phone);
+    setPhone(selected.tel);
     setShowModal(false); // 모달 닫기
   };
 
@@ -359,9 +392,7 @@ const MyOrder = () => {
 
         <div className="d-flex align-items-center justify-content-between mt-5">
           <h5><strong>배송지</strong></h5>
-          <Button className="btn-pilllaw" onClick={() => setShowModal(true)}>
-            배송지 불러오기
-          </Button>
+          <Button className="btn-pilllaw" onClick={() => setShowModal(true)}>배송지 불러오기</Button>
         </div>
         <hr />
         <Row>
@@ -384,19 +415,12 @@ const MyOrder = () => {
 
               <Form.Group className="mb-3">
                 <Form.Label>휴대전화</Form.Label>
-                <Form.Control type="text" placeholder="하이픈(-) 없이 숫자만 입력하세요" value={phone} onChange={(e) => {
-                  setPhone(e.target.value);
-                  handlePhoneChange(e);
-                }} required />
+                <Form.Control type="text" placeholder="하이픈(-) 없이 숫자만 입력하세요" value={phone} onChange={(e) => { setPhone(e.target.value); handlePhoneChange(e); }} required />
 
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label htmlFor="deliveryMessage">배송 메세지</Form.Label>
-                <Form.Select
-                  id="deliveryMessage"
-                  value={deliveryMessage}
-                  onChange={handleDeliveryMessageChange}
-                >
+                <Form.Select id="deliveryMessage" value={deliveryMessage} onChange={handleDeliveryMessageChange}>
                   <option value="선택 안함">선택 안함</option>
                   <option value="경비실에 맡겨주세요">경비실에 맡겨주세요</option>
                   <option value="집 앞에 놔 두세요">집 앞에 놔 두세요</option>
@@ -443,7 +467,7 @@ const MyOrder = () => {
         <div>
           <Form.Group className="mb-3">
             <Form.Label className="fw-bold">사용 포인트</Form.Label>{" "}
-            <small>(보유 포인트: 5000P)</small>
+            <small>(보유 포인트: {totalPoints.toLocaleString()}P)</small>
             <div className="d-flex align-items-center" style={{ gap: "1rem" }}>
               <Form.Control type="number" value={points} onChange={handlePointsChange} placeholder="포인트 입력" style={{ width: "12.5%" }} step="100" min="0" />
               <Button onClick={applyPoints} className="btn-pilllaw">적용</Button>
@@ -454,18 +478,12 @@ const MyOrder = () => {
             총 결제금액: {totalPayment.toLocaleString()}원
           </p>
           <Form.Group controlId="termsCheckbox" className="mb-3">
-            <Form.Check
-              type="checkbox"
-              label={<span onClick={() => setShowTermsModal(true)} style={{ cursor: 'pointer', textDecoration: 'underline' }}>전자금융거래 이용약관에 동의합니다</span>}
+            <Form.Check type="checkbox" label={<span onClick={() => setShowTermsModal(true)} style={{ cursor: 'pointer', textDecoration: 'underline' }}>전자금융거래 이용약관에 동의합니다</span>}
               checked={isTermsChecked}
               onChange={(e) => setIsTermsChecked(e.target.checked)}
             />
           </Form.Group>
         </div>
-
-
-
-
         <div className="d-flex justify-content-center">
           <div className="d-flex align-items-center">
             <Button variant="secondary" onClick={goToCart} className="me-3">장바구니로 돌아가기</Button>
@@ -481,8 +499,8 @@ const MyOrder = () => {
             {savedAddresses.map((addr) => (
               <div key={addr.id} className="border p-3 mb-2">
                 <p><strong>받는사람:</strong> {addr.recipient}</p>
-                <p><strong>주소:</strong> [{addr.postcode}] {addr.roadAddress}, {addr.detailAddress}</p>
-                <p><strong>휴대전화:</strong> {addr.phone}</p>
+                <p><strong>주소:</strong> [{addr.postalCode}] {addr.roadAddress}, {addr.detailAddress}</p>
+                <p><strong>휴대전화:</strong> {addr.tel}</p>
                 <Button className="btn-pilllaw" onClick={() => handleSelectAddress(addr)}>선택</Button>
               </div>
             ))}
