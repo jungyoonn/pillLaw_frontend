@@ -21,9 +21,6 @@ const ProductSummary = ({ product }) => {
     return <div>상품 정보를 불러올 수 없습니다.</div>;
   }
 
-  // const discountedPrice = product.price.rate
-  // const formatPrice = (product.saleprice) => new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' }).format(product.saleprice);
-
   return (
     <>
       <Row>
@@ -92,9 +89,6 @@ const ProductSummary = ({ product }) => {
             <option className="text-secondary" disabled>
               (필수)옵션 선택
             </option>
-            {/* {discountedPrice.toLocaleString()}원 */}
-            {/* {(discountedPrice * 2).toLocaleString()}원 */}
-            {/* {(discountedPrice * 3).toLocaleString()}원 */}
             <option className="fs-12">30일 &nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;&nbsp;</option>
             <option className="fs-12">60일 &nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;&nbsp; </option>
             <option className="fs-12">90일 &nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;&nbsp; </option>
