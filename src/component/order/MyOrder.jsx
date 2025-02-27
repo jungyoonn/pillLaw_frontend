@@ -148,7 +148,7 @@ const MyOrder = () => {
       }
 
       // 5️⃣ 결제 진행
-      handlePayment(ono, totalPayment, points);
+      handlePayment(ono, totalPayment, points, addrno);
 
 
     } catch (err) {
@@ -228,14 +228,23 @@ const MyOrder = () => {
 
           console.log("🔹 배송 정보 생성 응답:", deliveryResponse);
 
-          if (!deliveryResponse || !deliveryResponse.data) {
+          if (!deliveryResponse || !deliveryResponse.dno) {
             alert("❌ 배송 정보 생성 실패");
             navigate("/order/fail");
             return;
           }
             // 📌 4️⃣ 최종 결제 성공 처리
             // alert("🎉 결제가 완료되었습니다!");
-            navigate("/order/success");
+            navigate("/order/success", {
+              state: {
+                receiver: recipient,
+                phone: phone,
+                address: `${address.roadAddress} ${address.detailAddress}`,
+                message: deliveryMessage,
+                amount: totalPayment
+              }
+            });
+
           } catch (error) {
             alert(`❌ 결제 확인 요청 중 오류 발생: ${error.message}`);
             navigate("/order/fail");

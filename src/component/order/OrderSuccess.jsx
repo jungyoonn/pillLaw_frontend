@@ -3,20 +3,16 @@ import { Button, Card, Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/AuthContext';
 import UseAxios from '../../hooks/UseAxios'; // axios 훅
+import { useLocation } from 'react-router-dom';
 
 const OrderSuccessed = () => {
-  const [orderData, setOrderData] = useState({
-    receiver: '권미은',
-    phone: '010-4149-2769',
-    address: '서울특별시 구로구 182-13 대륭포스트타워 2차 2층 더조은컴퓨터학원',
-    message: '문 앞에 놓아주세요',
-    amount: '94,000원'
-  });
+  const location = useLocation();
+  const { receiver, phone, address, message, amount } = location.state || {};
 
   const navigate = useNavigate();
-    const goToIndex = () => {
-      navigate('/');
-    };
+  const goToIndex = () => {
+    navigate('/');
+  };
 
   return (
     <div className='wrap'>
@@ -36,27 +32,27 @@ const OrderSuccessed = () => {
             
             <Row className="mb-1">
               <Col xs={3} className="fw-bold">받는사람</Col>
-              <Col xs={9}>{orderData.receiver}</Col>
+              <Col xs={9}>{receiver}</Col>
             </Row>
             
             <Row className="mb-1">
               <Col xs={3} className="fw-bold">휴대전화</Col>
-              <Col xs={9}>{orderData.phone}</Col>
+              <Col xs={9}>{phone}</Col>
             </Row>
             
             <Row className="mb-1">
               <Col xs={3} className="fw-bold">주소</Col>
-              <Col xs={9}>{orderData.address}</Col>
+              <Col xs={9}>{address}</Col>
             </Row>
             
             <Row className="mb-1">
               <Col xs={3} className="fw-bold">배송 메세지</Col>
-              <Col xs={9}>{orderData.message}</Col>
+              <Col xs={9}>{message}</Col>
             </Row>
             
             <Row className="mb-1">
               <Col xs={3} className="fw-bold">결제 금액</Col>
-              <Col xs={9}>{orderData.amount}</Col>
+              <Col xs={9}>{amount}원</Col>
             </Row>
             
           </Card>
