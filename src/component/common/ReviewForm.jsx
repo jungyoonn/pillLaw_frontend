@@ -1,52 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import { Editor } from "@tinymce/tinymce-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faTimes } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
 import { useAuth } from "../../hooks/AuthContext";
+import useAxios from '../../hooks/UseAxios';
 
 const ReviewForm = ({ show, handleClose, addReview, productId }) => {
-  console.log("🔹 ReviewForm에 전달된 productId:", productId);
+  // console.log("🔹 ReviewForm에 전달된 productId:", productId);
   
   const { mno } = useAuth();
   const [rating, setRating] = useState(5);
   const [content, setContent] = useState("");
   const [images, setImages] = useState([]); // 파일 리스트 (미리보기용)
   const [uploadedFiles, setUploadedFiles] = useState([]); // S3 업로드된 파일 URL 리스트
-  const [loading, setLoading] = useState(false);
+  const {loading, req } = useAxios();
 
-  useEffect(() => {
-    console.log("productId:", productId);
-  }, [productId]);
 
-  // 🔹 이미지 파일 선택 핸들러
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
     setImages(files); // 선택한 파일 리스트 저장
   };
 
-  // 🔹 이미지 삭제 핸들러
   const removeImage = (index) => {
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
   };
 
-  // 🔹 TinyMCE 이미지 업로드 핸들러 (S3 업로드)
   const handleImageUpload = async (blobInfo, success, failure) => {
     try {
       const file = blobInfo.blob();
       const formData = new FormData();
       formData.append("files", file);
 
-      const response = await axios.post("/api/v1/file/upload", formData
-        , {
-        headers: { "Content-Type": "multipart/form-data" }
-      }
-      );
+      const response = await req("post","v1/file/upload", formData, {'Content-Type' : 'multipart/form-data'}, true);
 
       if (response.data.length > 0) {
         const imageUrl = response.data[0].url;
-        setUploadedFiles((prevFiles) => [...prevFiles, { url: imageUrl }]); // URL 리스트에 추가
+        setUploadedFiles((prevFiles) => [...prevFiles, { url: imageUrl }]);
         success(imageUrl);
       } else {
         failure("이미지 업로드 실패!");
@@ -57,58 +47,68 @@ const ReviewForm = ({ show, handleClose, addReview, productId }) => {
     }
   };
 
-  // 🔹 리뷰 등록 요청
-  const handleSubmitReview = async () => {
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+    console.log("콘텐트 ::::: ", content);
     if (!mno) {
       alert("로그인이 필요합니다!");
       return;
     }
-  
     if (!content.trim()) {
       alert("리뷰 내용을 입력해주세요.");
       return;
     }
-  
-    setLoading(true);
     const formData = new FormData();
+    console.log("FormData 업로드 이전 확인:", formData);
     formData.append("pno", productId);
     formData.append("mno", mno);
     formData.append("content", content);
     formData.append("rating", rating);
-    console.log("📂 FormData 확인:", formData);
-
-  
-    // 🔹 선택한 파일 추가
-    if (images.length > 0) {
-      images.forEach((file) => {
-        formData.append("files", file);
-      });
+    console.log("FormData 업로드 이후 확인:", formData);
+    for (let pair of formData.entries()) {
+      console.log("FormData Key:", pair[0], "Value:", pair[1]);
     }
-  
+
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/v1/product/detail/review/register",
-        formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
-  
-      if (response.status === 200) {
+      const response = await req("post", "v1/product/detail/review/register", formData, {}, true);
+      console.log("api 으응다압 :::: " , response);
+      if(response){
+        console.log("리뷰 등록");
+        const reviewId = response.reviewId;
+        console.log(reviewId);
+
+        if (images.length > 0) {
+          await uploadReviewImages(images, reviewId);
+          setImages([]);
+        }
+
         alert("리뷰가 성공적으로 등록되었습니다!");
         setContent("");
-        setImages([]);
-        setUploadedFiles([]);
-        addReview(response.data);
+
+        addReview(response);
         handleClose();
-      }
-    } catch (error) {
+      }else {
+        alert("리뷰 등록 실패");
+      } 
+    }catch(error){
+      alert("리뷰 등록 오류 발생");
       console.error("리뷰 등록 실패: ", error);
-      alert("리뷰 등록 중 오류 발생!");
-    } finally {
-      setLoading(false);
     }
   };
-  
-  
+
+  const uploadReviewImages = async (files, reviewId) => {
+    try{
+      const formData = new FormData();
+      files.forEach((file) => formData.append("files", file));
+      formData.append("productReviewId", reviewId.toString());
+
+      const response = await req("post", "v1/file/upload", formData, {}, true);
+      console.log("업로드 :: 성공 :: ", response);
+    }catch(error){
+      console.log("업로드 :: 실패 ::", error);
+    }
+  };
+
   return (
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>

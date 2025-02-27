@@ -16,20 +16,17 @@ const ProductList = () => {
   const [forceUpdate, setForceUpdate] = useState(false);
 
 
-  useEffect(() => {
-    console.log("상품 데이터:", data);
-  }, [data]);
-
   useEffect(()=>{
     req('get', 'v1/product/list');
   },[req]);
+
   if(error){
     return <div><h1>Error Occured!</h1></div>;
   }
   if(loading){
     <Container className="text-center" style={{ paddingTop: "115.19px" }}>
-      <h1 className="fw-bold my-5">상품 리스트</h1>
-      <Spinner animation="border" variant="info" />
+      <h1 className="fw-bold my-5">전체 상품</h1>
+      <Spinner className="text-center" animation="border" variant="info" />
       <p className="mt-2 text-secondary">상품을 불러오는 중...</p>
     </Container>
   }
@@ -58,10 +55,20 @@ const ProductList = () => {
     });
   };
 
+  // const calculateRatingDistribution = (reviews) => {
+  //   const distribution = [0, 0, 0, 0, 0]; 
+  //   reviews.forEach((review) => {
+  //     if (review.rating >= 1 && review.rating <= 5) {
+  //       distribution[review.rating - 1] += 1;
+  //     }
+  //   });
+  //   return distribution;
+  // };
+
   return (
     <div className="wrap">
       <Container className="text-center" style={{ paddingTop: "115.19px" }}>
-        <h1 className="fw-bold my-5">상품 리스트</h1>
+        <h1 className="fw-bold my-5">전체 상품</h1>
         <Row>
         {/* 컴포넌트화 예정! */}
           <Navbar bg="light" data-bs-theme="light">
@@ -104,7 +111,8 @@ const ProductList = () => {
           {loading ? (
             <Spinner animation="border" variant="info" className="mt-3" />
           ) : filteredData.length > 0 ? (
-            filteredData.map(p => <ProductItem className="mt-3" key={p.product.pno} product={p.product} />)
+            filteredData.map(p => <ProductItem className="mt-3" key={p.product.pno} product={p.product}  />) 
+            // calculRating={calculateRatingDistribution(p.rating)}
           ) : (
             <h3>선택한 카테고리에 해당하는 상품이 없습니다.</h3>
           )}

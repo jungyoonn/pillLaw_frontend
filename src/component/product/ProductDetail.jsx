@@ -4,9 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import "../../resources/css/style.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faStar,
-} from "@fortawesome/free-solid-svg-icons";
+import {  faStar } from "@fortawesome/free-solid-svg-icons";
 import { Col, Container, Row } from "react-bootstrap";
 import Button from '../common/Button';
 import ReviewForm from '../common/ReviewForm'
@@ -23,37 +21,27 @@ const ProductDetail = () => {
   const { loading, error, req } = useAxios();
   const [product, setProduct] = useState({});
 
-
   useEffect(() => {
     if (id) {
       req("get", `v1/product/${id}`)
         .then((response) => {
           console.log("제품 데이터:", response);
-          console.log(response.product);
           setProduct(response.product);
-
-          // console.log(response.product.pname);
-          // setProduct(response);
-          // console.log(JSONresponse));
-
-          
-          if (response.detail) {
-            setReviews(response.reviews || []);
-          } else {
-            console.warn("제품 상세 정보가 없습니다.");
-            setReviews([]); 
-          }
-        })
-        .catch((err) => {
+        }).catch((err) => {
           console.error("제품 데이터 로드 에러:", err);
           setProduct(null); 
         });
+
+      req("get", `v1/product/detail/review/list/${id}`)
+        .then((response) => {
+          console.log("리뷰 : ", response)
+          setReviews(response);
+        }).catch((err)=>{
+          console.error("리뷰 로드 에러 :: ", err);
+          setReviews([]);
+        });
     }
-  }, [id, req]);
-
-
-  
-  
+  }, [id]);
   
   if (loading){
     return <div className="text-center"><h2>로딩 중...</h2></div>;
@@ -61,7 +49,6 @@ const ProductDetail = () => {
   if (error) {
     return <h2 className="text-center mt-5">상품을 찾을 수 없습니다.</h2>;
   }
-
 
   const handleDeleteReview = (prno) => {
     req("delete", `v1/review/${prno}`)
@@ -77,14 +64,17 @@ const ProductDetail = () => {
   
   const handleAddReview = (newReview) => {
     req("post", "v1/product/detail/review/register", newReview)
-      .then(() => {
-        console.log("리뷰 등록 성공");
-        return req("get", `v1/review/list/${id}`);  
-      })
-      .then((response) => {
-        setReviews(response || []);
-      })
-      .catch((err) => console.error("리뷰 등록 실패:", err));
+    .then((response)=>{
+      console.log("리뷰 등록 성공");
+      setReviews((prevReviews) => [response, ...prevReviews]);
+      return req("get", `v1/product/detail/review/list/${id}`);
+    })
+    .then((response) => {
+      if(response && response.length > 0 ){
+        setReviews(response);
+      }
+    })
+    .catch((err) => console.error("리뷰 등록 실패", err));
   };
   
   const calculateRatingDistribution = (reviews) => {
@@ -108,12 +98,12 @@ const ProductDetail = () => {
 
         <Row className="mt-4">
           <Col xs={5}>
-            <img className="img-fluid mx-2 pilllaw-product-image"  alt={product.pname} />
+            <img className="img-fluid mx-2 pilllaw-product-image" src={product.imageUrl} alt={product.pname} />
           </Col>
 
           <Col xs={2} className="mt-4">
-          {product.thumbnails && product.thumbnails.length > 0 ? (
-            product.thumbnails.map((img, index) => (
+          {product.Urls && product.Urls.length > 0 ? (
+            product.Urls.map((img, index) => (
               <Row key={index} className="align-middle my-2">
                 <img
                   className="img-fluid mx-auto float-end w-75 pilllaw-product-image"
@@ -213,11 +203,9 @@ const ProductDetail = () => {
                   </Col>
                 </Row>
               </div>
-
               <Row className="mt-5">
-              <ProductReviewList reviews={reviews} onDelete={handleDeleteReview} />
+               <ProductReviewList reviews={reviews} onDelete={handleDeleteReview} />
               </Row>
-
             </div>
           )}
         </Row>
