@@ -39,6 +39,13 @@ const ModifyInfo = ({ activeKey }) => {
     defaultAddr: false,
     mno: ''
   });
+  const [showToast, setShowToast] = useState(false);
+  const [toastMsg, setToastMsg] = useState({
+    title: "",
+    msg: "",
+    state: false,
+    nav: ""
+  });
 
   // 유효성 검증 상태
   const [emailError, setEmailError] = useState(false);
@@ -416,15 +423,28 @@ const ModifyInfo = ({ activeKey }) => {
       console.log("응답")
       console.log(response);
       
-      if (!response.ok) {
-        // alert('회원 정보가 성공적으로 수정되었습니다.');
-        // navigate('/mypage');
+      if (response.ok) {
+        // 성공 토스트 메시지 표시
+        setToastMsg({
+          title: "수정 완료!",
+          msg: "정보 수정이 완료되었습니다.",
+          state: true,
+          nav: "/mypage"
+        });
+        setShowToast(true);
+      } else {
         setPwErr(response.msg);
-        return <ToastMsg title="수정 완료!" msg="정보 수정이 완료되었습니다." state={true} nav="/mypage" />;
       }
     } catch (error) {
       console.error('회원 정보 수정 실패:', error);
-      alert('회원 정보 수정에 실패했습니다.');
+      // 실패 토스트 메시지 표시
+      setToastMsg({
+        title: "수정 실패",
+        msg: "회원 정보 수정에 실패했습니다.",
+        state: true,
+        nav: ""
+      });
+      setShowToast(true);
     }
   };
 
@@ -660,6 +680,15 @@ const ModifyInfo = ({ activeKey }) => {
         onClose={() => setShowAddressModal(false)}
         onComplete={handleAddressComplete}
       />
+
+      {showToast && (
+        <ToastMsg 
+          title={toastMsg.title}
+          msg={toastMsg.msg}
+          state={toastMsg.state}
+          nav={toastMsg.nav}
+        />
+      )}
     </>
   );
 }
