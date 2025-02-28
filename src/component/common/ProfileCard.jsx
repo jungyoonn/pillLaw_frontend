@@ -11,7 +11,7 @@ const ProfileCard = ({nickname}) => {
   const{logout} = useAuth();
   const [follow, setFollow] = useState([]);// 팔로워 수
   const [following, setFollowing] = useState([]); // 팔로잉 수
-  const [receiverId, setReceiverId] = useState(''); //받은 쪽지 수
+  const [receiverId, setReceiverId] = useState([]); //받은 쪽지 수
   const mno = localStorage.getItem('mno');
   const { req } = UseAxios();
 
@@ -28,7 +28,7 @@ const ProfileCard = ({nickname}) => {
     const fetchData = async () => {
       try {
         const respFollw = await req('get', `follow/count/${mno}`);
-        const respLetter = await req('get', `letter/${mno}`);
+        const respLetter = await req('get', `letter/received/${mno}`);
         
         console.log(respLetter);
        
@@ -57,7 +57,7 @@ const ProfileCard = ({nickname}) => {
       <Row className="card-body p-0 mt-2">
         <Col xs lg="7">
           <div className="px-2 ms-4 mb-0 fs-14"><FontAwesomeIcon icon={faCoins} className="fw-bold header-font me-1" />&nbsp;포인트 1500p</div>
-          <div className="px-2 ms-4 mt-0 fs-14"><FontAwesomeIcon icon={faPaperPlane} className="fw-bold header-font me-1" />&nbsp;쪽지{receiverId}개</div>
+          <div className="px-2 ms-4 mt-0 fs-14"><FontAwesomeIcon icon={faPaperPlane} className="fw-bold header-font me-1" />&nbsp;쪽지{receiverId.length}개</div>
         </Col>
         <Col className="mt-2">
           <Button variant='pilllaw' className="btn btn-pilllaw fs-14" onClick={handleClick} >로그아웃</Button>
