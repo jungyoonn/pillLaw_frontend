@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Col, Container, Nav, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faHouse } from "@fortawesome/free-solid-svg-icons";
 import '../../resources/css/style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import MyInfo from './myPageChildren/MyInfo';
 import OrderList from './myPageChildren/OrderList';
 import PointList from './myPageChildren/PointList';
@@ -16,7 +16,21 @@ const MyPageLayout = () => {
   const navigate = useNavigate();
   const [activeKey, setActiveKey] = useState("myinfo");
   const memberId = localStorage.getItem("mno");  // 로그인된 회원번호 가져오기
+  const [searchParams, setSearchParams] = useSearchParams();
 
+  // URL에서 tab 파라미터 읽어와 activeKey 설정
+  useEffect(() => {
+    const tabParam = searchParams.get('tab');
+    if (tabParam) {
+      setActiveKey(tabParam);
+    }
+  }, [searchParams]);
+
+  // activeKey 변경 시 URL 쿼리 파라미터 업데이트
+  const handleTabChange = (selectedKey) => {
+    setActiveKey(selectedKey);
+    setSearchParams({ tab: selectedKey });
+  };
 
   // 현재 activeKey에 따라 다른 컴포넌트 렌더링
   const renderContent = () => {
@@ -63,7 +77,8 @@ const MyPageLayout = () => {
         <Col xs="1" lg="2" className='text-center'>
           <Nav
             activeKey={activeKey}
-            onSelect={(selectedKey) => setActiveKey(selectedKey)}
+            // onSelect={(selectedKey) => setActiveKey(selectedKey)}
+            onSelect={handleTabChange}
             className="flex-column text-pilllaw custom-nav"
             variant="tabs">
             <Nav.Link eventKey="myinfo">내 정보</Nav.Link>
@@ -75,8 +90,7 @@ const MyPageLayout = () => {
             <Nav.Link eventKey="link-2">즐겨찾기 상품</Nav.Link>
             <Nav.Link eventKey="link-2">내 후기 모아보기</Nav.Link>
             <br />
-            <Nav.Link eventKey="link-2">보낸 쪽지</Nav.Link>
-            <Nav.Link eventKey="link-2">받은 쪽지</Nav.Link>
+            <Nav.Link eventKey="link-2">쪽지함</Nav.Link>
             <Nav.Link eventKey="followapp">팔로우 / 팔로워</Nav.Link>
             <br />
             <Nav.Link eventKey="link-2">로그아웃</Nav.Link>
