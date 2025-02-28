@@ -18,7 +18,7 @@ const ProductList = () => {
 
   useEffect(()=>{
     req('get', 'v1/product/list');
-    console.log("req :::::  {}" , req);
+    console.log("req ::::: 로 받은 것 들" , data);
   },[req]);
 
   if(error){
@@ -56,15 +56,7 @@ const ProductList = () => {
     });
   };
 
-  // const calculateRatingDistribution = (reviews) => {
-  //   const distribution = [0, 0, 0, 0, 0]; 
-  //   reviews.forEach((review) => {
-  //     if (review.rating >= 1 && review.rating <= 5) {
-  //       distribution[review.rating - 1] += 1;
-  //     }
-  //   });
-  //   return distribution;
-  // };
+
 
   return (
     <div className="wrap">
@@ -112,8 +104,7 @@ const ProductList = () => {
           {loading ? (
             <Spinner animation="border" variant="info" className="mt-3" />
           ) : filteredData.length > 0 ? (
-            filteredData.map(p => <ProductItem className="mt-3" key={p.product.pno} product={p.product}  />) 
-            // calculRating={calculateRatingDistribution(p.rating)}
+            filteredData.map(p => <ProductItem className="mt-3" key={p.product.pno} product={p.product} reviews={p.reviews}/>) 
           ) : (
             <h3>선택한 카테고리에 해당하는 상품이 없습니다.</h3>
           )}

@@ -5,13 +5,21 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import useAxios from '../../hooks/UseAxios';
 
-const ProductItem = ({ product }) => {
+const ProductItem = ({ product, reviews }) => {
   const {loading, error} = useAxios();
 
   useEffect(()=>{
     console.log("ProductItem에서 받은 Product :::: ", product);
+    console.log("ProductItem에서 받은 Product :::: ", reviews);
+  }, [product, reviews]);
 
-  }, [product]);
+  const calculateAverageRating = (reviews) => {
+    if (!reviews || reviews.length === 0) return 0; // 리뷰가 없으면 0 반환
+    const totalRating = reviews.reduce((sum, review) => sum + (review.rating || 0), 0);
+    return (totalRating / reviews.length).toFixed(1); // 소수점 한 자리까지 반올림
+  };
+  
+  const averageRating = calculateAverageRating(reviews);
 
   if(error){
     return <div><h1>Error Occured!</h1></div>;
@@ -24,7 +32,7 @@ const ProductItem = ({ product }) => {
   return (
     <Col xs={6} sm={4} lg={3} xl={2} className="mt-2 mb-4">
     <Link to={`/product/detail/${product.pno}`} className="text-decoration-none text-black">
-      <img className="img-fluid mx-2" src={product.imageUrl} alt={product.pname} />
+      <img className="img-fluid mx-2" style={{height:200}} src={product.imageUrl} alt={product.pname} />
       <p className="m-0 mt-1 fs-14 fw-bold">{product.pname}</p>
     </Link>
       <p className="m-0 fs-14 mt-2">
@@ -32,9 +40,9 @@ const ProductItem = ({ product }) => {
       </p>
       <p className="m-0 fs-12 fw-bold">
         <FontAwesomeIcon icon={faStar} style={{ color: "#FFD43B" }} /> 
-        {product.rating}{" "}
+        {averageRating}
         <span className="fs-11 text-secondary">
-          {/* ({reviewArray.length}) */}
+          ({reviews.length})
         </span>
       </p>
     </Col>

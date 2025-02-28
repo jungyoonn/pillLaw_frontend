@@ -20,6 +20,7 @@ const ProductDetail = () => {
   const [reviews, setReviews] = useState([]);  
   const { loading, error, req } = useAxios();
   const [product, setProduct] = useState({});
+  const [selectedImage, setSelectedImage] = useState("");
 
   useEffect(() => {
     if (id) {
@@ -27,6 +28,7 @@ const ProductDetail = () => {
         .then((response) => {
           console.log("제품 데이터:", response);
           setProduct(response.product);
+          setSelectedImage(response.product.imageUrl);
         }).catch((err) => {
           console.error("제품 데이터 로드 에러:", err);
           setProduct(null); 
@@ -99,21 +101,23 @@ const ProductDetail = () => {
         <Row className="mt-4">
           <Col xs={5}>
             <img
-              src={product.imageUrl}
+              src={selectedImage}
               alt="상품 이미지 없음"
               onError={(e) => e.target.src = "https://via.placeholder.com/500"}
+              style={{width: 500, height:500}}
             />
           </Col>
 
           <Col xs={2} className="mt-4">
-          {product.imageUrls && product.imgaeUrls.length > 0 ? (
-            product.imgageUrls.map((imgUrl, index) => (
+          {product.imageUrlList && product.imageUrlList.length > 0 ? (
+            product.imageUrlList.map((img, index) => (
               <Row key={index} className="align-middle my-2">
                 <img
                   className="img-fluid mx-auto float-end w-75 pilllaw-product-image"
-                  src={imgUrl}
+                  src={img}
                   alt={`thumbnail-${index}`}
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: "pointer"}}
+                  onClick={() => setSelectedImage(img)}
                 />
               </Row>
             ))
@@ -125,7 +129,7 @@ const ProductDetail = () => {
           <Col xs={5} className="mt-2">
             <ProductSummary product={product} />
           </Col>
-        </Row>*
+        </Row>
 
         <Row className="mt-5">
           <ul className="nav nav-tabs nav-justified">
