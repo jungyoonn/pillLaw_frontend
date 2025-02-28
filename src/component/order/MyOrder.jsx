@@ -97,7 +97,7 @@ const MyOrder = () => {
     fetchTotalPoints();
     fetchCartItems();
     fetchAddresses();
-  }, [mno,req]); // mno가 변경될 때마다 실행
+  }, [mno, req]); // mno가 변경될 때마다 실행
 
   const handleOrder = async () => {
     if (!mno) {
@@ -219,19 +219,19 @@ const MyOrder = () => {
             }
 
             // 📌 5️⃣ 배송 정보 생성 요청
-          const deliveryResponse = await req("POST", "v1/delivery/create", {
-            ono,
-            addrno,
-            trackingNumber: null,
-          });
+            const deliveryResponse = await req("POST", "v1/delivery/create", {
+              ono,
+              addrno,
+              trackingNumber: null,
+            });
 
-          console.log("🔹 배송 정보 생성 응답:", deliveryResponse);
+            console.log("🔹 배송 정보 생성 응답:", deliveryResponse);
 
-          if (!deliveryResponse || !deliveryResponse.dno) {
-            alert("❌ 배송 정보 생성 실패");
-            navigate("/order/fail");
-            return;
-          }
+            if (!deliveryResponse || !deliveryResponse.dno) {
+              alert("❌ 배송 정보 생성 실패");
+              navigate("/order/fail");
+              return;
+            }
             // 📌 4️⃣ 최종 결제 성공 처리
             // alert("🎉 결제가 완료되었습니다!");
             navigate("/order/success", {
@@ -240,7 +240,9 @@ const MyOrder = () => {
                 phone: phone,
                 address: `${address.roadAddress} ${address.detailAddress}`,
                 message: deliveryMessage,
-                amount: totalPayment
+                amount: totalPayment,
+                usedPoints: points, // 사용한 포인트 추가
+                ono
               }
             });
 
@@ -327,8 +329,8 @@ const MyOrder = () => {
     setTotalPrice(total);
 
     let pointsRate = userMembershipStatus === "ACTIVE" ? 0.04 : 0.02;
-    setExpectedPoints(Math.floor(total * pointsRate));
-  }, [cartItems, userMembershipStatus]);
+    setExpectedPoints(Math.floor(totalPayment * pointsRate));
+  }, [cartItems, userMembershipStatus, totalPayment]);
 
   // 포인트 input
   const handlePointsChange = (event) => {
@@ -501,17 +503,26 @@ const MyOrder = () => {
 
         <Modal show={showModal} onHide={() => setShowModal(false)} style={{ color: "black" }}>
           <Modal.Header closeButton>
-            <Modal.Title><strong>배송지 선택</strong></Modal.Title>
+            <Modal.Title>
+              <h5 className="card-title fw-bold text-center header-font">배송지 선택</h5>
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            {savedAddresses.map((addr) => (
-              <div key={addr.id} className="border p-3 mb-2">
-                <p><strong>받는사람:</strong> {addr.recipient}</p>
-                <p><strong>주소:</strong> [{addr.postalCode}] {addr.roadAddress}, {addr.detailAddress}</p>
-                <p><strong>휴대전화:</strong> {addr.tel}</p>
-                <Button className="btn-pilllaw" onClick={() => handleSelectAddress(addr)}>선택</Button>
+            {savedAddresses.length > 0 ? (
+              savedAddresses.map((addr) => (
+                <div key={addr.id} className="border p-3 mb-2">
+                  <p><strong>받는사람:</strong> {addr.recipient}</p>
+                  <p><strong>주소:</strong> [{addr.postalCode}] {addr.roadAddress}, {addr.detailAddress}</p>
+                  <p><strong>휴대전화:</strong> {addr.tel}</p>
+                  <Button className="btn-pilllaw" onClick={() => handleSelectAddress(addr)}>선택</Button>
+                </div>
+              ))
+            ) : (
+              <div>
+                <div className="text-center"><p className="text-muted">저장된 배송지가 없습니다.</p></div>
+                <div className="text-end"><Button className="btn-pilllaw" onClick={() => setShowModal(false)}>확인</Button></div>
               </div>
-            ))}
+            )}
           </Modal.Body>
         </Modal>
 

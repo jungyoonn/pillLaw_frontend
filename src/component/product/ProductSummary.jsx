@@ -170,7 +170,7 @@ const ProductSummary = ({ product }) => {
           <FontAwesomeIcon icon={faCartShopping} productImage={product.imageUrl}/> 장바구니에 담기
           </Button>
           <Button variant="pilllaw" onClick={goToCart}>
-            <FontAwesomeIcon icon={faShare} size="xl" />&nbsp; 장바구니로 가기
+            <FontAwesomeIcon icon={faShare}/>&nbsp; 장바구니로 가기
           </Button>
         </Col>
         <Col xs={2}></Col>
