@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Container, ListGroup } from "react-bootstrap";
 import UseAxios from "../../../hooks/UseAxios";
 import { Link } from "react-router-dom";
+import profile from '../../../resources/image/user-image.png'
 
 // 팔로워 목록 컴포넌트
 const FollowersList = () => {
@@ -26,7 +27,7 @@ useEffect(() => {
     fetchData();
   }, [mno]); // mno가 변경될 때 다시 실행
   return (
-    <Container className="mt-3">
+    <Container>
       {/* 여기에 팔로워 목록 내용 추가 */}
       <div className="container main-content"> 
       <div className="follow-item">
@@ -36,8 +37,9 @@ useEffect(() => {
               <Link
               key={follow.sender.mno}  // sender.mno를 키로 설정
               to={`/followsenderpage/${follow.sender.mno}`}  // sender.mno 사용
-              className="list-group-item"
+              className="list-group-bg list-group-item fs-14 fw-bold"
             >
+              <img src={profile} className="mx-2" alt='프로필 사진' width={25} />
               {follow.sender.nickname}  {/* sender.nickname 사용 */}
             </Link>
           ))}

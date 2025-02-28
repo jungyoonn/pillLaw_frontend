@@ -5,6 +5,7 @@ import UseAxios from '../../../hooks/UseAxios';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import { Container, ListGroup } from "react-bootstrap";
+import profile from '../../../resources/image/user-image.png'
 
 
 const FollowList = () => {
@@ -30,7 +31,7 @@ const FollowList = () => {
     fetchData(); // async 함수 실행    
   }, [])
   return (
-    <Container className="mt-3">
+    <Container>
       <div className="wrap">
 
       {/* <FollowHeaderButtonsArea /> */}
@@ -40,9 +41,12 @@ const FollowList = () => {
 
       <ListGroup variant="flush">
         {follows.map((follow) => (
-          <Link key={follow.followId} to="#" className="list-group-item">
-            {follow.sender.nickname} {/* 맞팔된 상대방 mno 표시 */}
-          </Link>
+          <>
+            <Link key={follow.followId} to="#" className="list-group-bg list-group-item fs-14 fw-bold">
+              <img src={profile} className="mx-2" alt='프로필 사진' width={25} />
+              {follow.sender.nickname} {/* 맞팔된 상대방 mno 표시 */}
+            </Link>
+          </>
         ))}
         </ListGroup>
       </div>

@@ -13,18 +13,7 @@ const LetterReplyTest = () => {
   const [mutualFollows] = useState([]);
   const dropdownRef = useRef(null);
   const { req } = UseAxios('');
-  // const mutualFollows = [
-  //   "치킨",
-  //   "피자",
-  //   "딸기모찌",
-  //   "재즈맨",
-  //   "쿠키",
-  //   "초코쿠키",
-  //   "딸기쿠키",
-  //   "파인애플",
-  // ];
-  
-  
+
 
   // 드롭다운 외부 클릭 시 닫기
   useEffect(() => {

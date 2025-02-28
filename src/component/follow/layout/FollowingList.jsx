@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import UseAxios from '../../../hooks/UseAxios';
 import { Container, ListGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import profile from '../../../resources/image/user-image.png'
 
 const FollowingList = () => {
   const {req} = UseAxios();
@@ -41,8 +42,9 @@ const FollowingList = () => {
             <Link
               key={follow.followId}  // sender.mno를 키로 설정
               to={follow.href}  // sender.mno 사용
-              className="list-group-item"
+              className="list-group-bg list-group-item fs-14 fw-bold"
             >
+              <img src={profile} className="mx-2" alt='프로필 사진' width={25} />
               {follow.receiver.nickname}  {/* sender.nickname 사용 */}
             </Link>
           ))}

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { Container, ListGroup } from "react-bootstrap";
+import { Container, ListGroup, Badge } from "react-bootstrap";
 import UseAxios from "../../../hooks/UseAxios";
 import { Link } from "react-router-dom";
+import LetterHeader from "./LetterHeaderTest";
 
-// 보낸 쪽지 목록 컴포넌트
-const LetterSenderListTest = () => {
+// 받은 쪽지 목록 컴포넌트
+const LetterReceivedListTest = () => {
   const { req } = UseAxios();
   const [letters, setLetters] = useState([]);
   const mno = localStorage.getItem('mno');
@@ -14,17 +15,17 @@ const LetterSenderListTest = () => {
 
     const fetchLetters = async () => {
       try {
-        const resp = await req('get', `/api/letter/sent/${mno}`);
+        const resp = await req('get', `/api/letter/received/${mno}`);
         if (Array.isArray(resp)) {
           // 삭제되지 않은 쪽지만 표시
-          const filteredLetters = resp.filter(letter => !letter.deletedBySender);
+          const filteredLetters = resp.filter(letter => !letter.deletedByReceiver);
           setLetters(filteredLetters);
         } else {
-          console.error("보낸 쪽지 API 응답이 배열이 아닙니다:", resp);
+          console.error("받은 쪽지 API 응답이 배열이 아닙니다:", resp);
           setLetters([]);
         }
       } catch (error) {
-        console.error("보낸 쪽지 데이터 가져오기 오류:", error);
+        console.error("받은 쪽지 데이터 가져오기 오류:", error);
         setLetters([]);
       }
     };
@@ -48,7 +49,7 @@ const LetterSenderListTest = () => {
   // 쪽지 삭제 함수
   const handleDeleteLetter = async (letterId) => {
     try {
-      await req('put', `/api/letter/delete/sender/${letterId}`);
+      await req('put', `/api/letter/delete/receiver/${letterId}`);
       
       // 삭제 후 목록 갱신
       setLetters(prev => prev.filter(letter => letter.letterId !== letterId));
@@ -60,19 +61,21 @@ const LetterSenderListTest = () => {
 
   return (
     <Container className="mt-3">
-      <h2 className="mb-4">보낸 쪽지함</h2>
+      <LetterHeader />
+      <h4 className="mb-4 text-center p-5" >받은 쪽지함</h4>
       
       <div className="letter-list">
-        <ListGroup>
+        <ListGroup variant="flush">
           {letters.length > 0 ? (
             letters.map((letter) => (
               <ListGroup.Item 
-                key={`send-${letter.letterId}`}
-                className="d-flex justify-content-between align-items-start"
+                key={`received-${letter.letterId}`}
+                className={`d-flex justify-content-between align-items-start ${!letter.readAt ? 'bg-light' : ''}`}
               >
                 <div className="ms-2 me-auto">
                   <div className="fw-bold">
-                    받는 사람: {letter.receiverId}
+                    보낸 사람: {letter.senderId}
+                    {!letter.readAt && <Badge bg="info" className="ms-2">New</Badge>}
                   </div>
                   <p className="mb-1 text-truncate" style={{ maxWidth: '500px' }}>
                     {letter.content}
@@ -103,7 +106,7 @@ const LetterSenderListTest = () => {
             ))
           ) : (
             <div className="text-center p-5">
-              <p>보낸 쪽지가 없습니다.</p>
+              <p>받은 쪽지가 없습니다.</p>
             </div>
           )}
         </ListGroup>
@@ -112,4 +115,4 @@ const LetterSenderListTest = () => {
   );
 };
 
-export default LetterSenderListTest;
+export default LetterReceivedListTest;

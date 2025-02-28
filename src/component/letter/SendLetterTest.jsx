@@ -15,7 +15,7 @@ const SendLetter = () => {
   const dropdownRef = useRef(null);
   const [showToast, setShowToast] = useState(false);
 
-  const mutualFollows = [
+  const isFllowBack = [
     "치킨",
     "피자",
     "딸기모찌",
@@ -118,7 +118,7 @@ const SendLetter = () => {
       </div> */}
         {showDropdown && (
             <div className="list-group mt-1" style={{ position: "absolute", zIndex: 1000, width: "100%" }}>
-              {mutualFollows.map((user, index) => (
+              {isFllowBack.map((user, index) => (
                 <button
                   key={index}
                   className="list-group-item list-group-item-action"
