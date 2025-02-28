@@ -1,54 +1,126 @@
 import { useEffect, useState } from "react";
-import { Container, ListGroup } from "react-bootstrap";
+import { Container, ListGroup, Button } from "react-bootstrap";
 import UseAxios from "../../../hooks/UseAxios";
 import { Link } from "react-router-dom";
-import profile from '../../../resources/image/user-image.png'
+import profile from '../../../resources/image/user-image.png';
 
 // 팔로워 목록 컴포넌트
 const FollowersList = () => {
   const { req } = UseAxios();
   const [follows, setFollows] = useState([]);
+  const [followBackList, setFollowBackList] = useState([]);
   const mno = localStorage.getItem('mno');
-useEffect(() => {
-    if (!mno) return; // mno가 없으면 실행하지 않음
+  
+  // 데이터 새로고침 함수
+  const refreshData = async () => {
+    if (!mno) return;
 
-    const fetchData = async () => {
-      try {
-        const resp = await req('get', `follow/${mno}`);
-        if (Array.isArray(resp)) {
-          setFollows(resp);
-        } else {
-          console.error("API 응답이 배열이 아닙니다:", resp);
+    try {
+      // 팔로워 목록 가져오기 (나를 팔로우하는 사람들)
+      const resp = await req('get', `follow/${mno}`);
+      
+      if (Array.isArray(resp)) {
+        // 중복 제거 (필요한 경우)
+        const uniqueFollows = resp.filter((follow, index, self) => 
+          index === self.findIndex(f => f.sender.mno === follow.sender.mno)
+        );
+        
+        setFollows(uniqueFollows);
+        
+        // 맞팔 목록 가져오기 
+        const followBackResp = await req('get', `follow/followBack/${mno}`);
+        if (Array.isArray(followBackResp)) {
+          // 맞팔 목록의 sender.mno 값들만 추출
+          const followBackIds = followBackResp.map(follow => follow.sender.mno);
+          setFollowBackList(followBackIds);
         }
-      } catch (error) {
-        console.error("Error fetching follow list:", error);
+      } else {
+        console.error("API 응답이 배열이 아닙니다:", resp);
       }
-    };
-    fetchData();
-  }, [mno]); // mno가 변경될 때 다시 실행
+    } catch (error) {
+      console.error("Error fetching follow list:", error);
+    }
+  };
+  
+  useEffect(() => {
+    refreshData();
+  }, [mno, req]);
+
+  // 팔로우 상태 변경 함수 (GET 메서드로 변경)
+ // 팔로우 상태 변경 함수 (기존 API 활용)
+const handleToggleFollow = async (receiverMno) => {
+  try {
+    // 현재 맞팔 상태 확인
+    const isAlreadyFollowing = followBackList.includes(receiverMno);
+    
+    if (isAlreadyFollowing) {
+      // 이미 팔로우 중이면 언팔로우 (삭제)
+      await req('delete', `follow/${mno}/${receiverMno}`);
+    } else {
+      // 팔로우하지 않았으면 팔로우 추가
+      await req('post', `follow/add`, {
+        receiverMno: receiverMno,
+        senderMno: mno
+      });
+    }
+    
+    // 데이터 새로고침
+    setTimeout(refreshData, 300); // 서버 응답 후 새로고침을 위해 약간의 지연 추가
+  } catch (error) {
+    console.error("팔로우 상태 변경 오류:", error);
+  }
+};
+
+  // 맞팔 여부 확인
+  const isFollowBack = (senderMno) => {
+    return followBackList.includes(senderMno);
+  };
+
   return (
     <Container>
-      {/* 여기에 팔로워 목록 내용 추가 */}
-      <div className="container main-content"> 
-      <div className="follow-item">
-        <div className="user-profile">
-          <ListGroup variant="flush">
-            {follows.map((follow) => (
-              <Link
-              key={follow.sender.mno}  // sender.mno를 키로 설정
-              to={`/followsenderpage/${follow.sender.mno}`}  // sender.mno 사용
-              className="list-group-bg list-group-item fs-14 fw-bold"
-            >
-              <img src={profile} className="mx-2" alt='프로필 사진' width={25} />
-              {follow.sender.nickname}  {/* sender.nickname 사용 */}
-            </Link>
-          ))}
-          </ListGroup>
+      <div className="container main-content">
+        <div className="follow-item">
+          <div className="user-profile">
+            <ListGroup variant="flush">
+              {follows.map((follow, index) => (
+                <ListGroup.Item 
+                  key={`follower-${follow.sender.mno}-${index}`} // 인덱스 추가하여 고유한 키 생성
+                  className="d-flex justify-content-between align-items-center list-group-bg fs-14 fw-bold"
+                >
+                  <Link
+                    to={`/followsenderpage/${follow.sender.mno}`}
+                    className="d-flex align-items-center text-decoration-none text-dark"
+                  >
+                    <img src={profile} className="mx-2" alt='프로필 사진' width={25} />
+                    <span>{follow.sender.nickname}</span>
+                  </Link>
+                  
+                  {/* 맞팔 상태에 따른 버튼 */}
+                  {isFollowBack(follow.sender.mno) ? (
+                    <Button 
+                      variant="success" 
+                      size="sm"
+                      onClick={() => handleToggleFollow(follow.sender.mno)}
+                    >
+                      맞팔로우
+                    </Button>
+                  ) : (
+                    <Button 
+                      variant="primary" 
+                      size="sm"
+                      onClick={() => handleToggleFollow(follow.sender.mno)}
+                    >
+                      팔로우 하기
+                    </Button>
+                  )}
+                </ListGroup.Item>
+              ))}
+            </ListGroup>
+          </div>
         </div>
-        {/* <button className="btn btn-primary">팔로우</button> */}
       </div>
-    </div>
     </Container>
   );
 };
+
 export default FollowersList;

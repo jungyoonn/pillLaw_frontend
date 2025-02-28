@@ -11,7 +11,7 @@ const ProfileCard = ({nickname}) => {
   const{logout} = useAuth();
   const [follow, setFollow] = useState([]);// 팔로워 수
   const [following, setFollowing] = useState([]); // 팔로잉 수
-  const [receiverId, setReceiverId] = useState(''); //받은 쪽지 수
+  const [receiverId, setReceiverId] = useState([]); //받은 쪽지 수
   const mno = localStorage.getItem('mno');
   const { req } = UseAxios();
 
@@ -28,7 +28,7 @@ const ProfileCard = ({nickname}) => {
     const fetchData = async () => {
       try {
         const respFollw = await req('get', `follow/count/${mno}`);
-        const respLetter = await req('get', `letter/${mno}`);
+        const respLetter = await req('get', `letter/received/${mno}`);
         
         console.log(respLetter);
        

@@ -11,6 +11,7 @@ import PointList from './myPageChildren/PointList';
 import ModifyInfo from './myPageChildren/ModifyInfo';
 import FollowApp from '../follow/test/FollowApp';
 import LetterReceivedListTest from '../letter/test/LetterReceivedListTest';
+import Logout from './myPageChildren/Logout';
 
 const MyPageLayout = () => {
   const navigate = useNavigate();
@@ -48,6 +49,8 @@ const MyPageLayout = () => {
         return <PointList memberId={memberId} />;  
       case 'letterreceivedlist':
         return <LetterReceivedListTest activeKey={activeKey}/>;  
+      case 'logout':
+        return <Logout activeKey={activeKey} />
       default:
         return <div>선택된 메뉴가 없습니다.</div>;
     }
@@ -97,7 +100,7 @@ const MyPageLayout = () => {
             <Nav.Link eventKey="letterreceivedlist">쪽지함</Nav.Link>
             <Nav.Link eventKey="followapp">팔로우 / 팔로워</Nav.Link>
             <br />
-            <Nav.Link eventKey="link-2">로그아웃</Nav.Link>
+            <Nav.Link eventKey="logout">로그아웃</Nav.Link>
             <Nav.Link eventKey="link-2">회원 탈퇴</Nav.Link>
           </Nav>
         </Col>
