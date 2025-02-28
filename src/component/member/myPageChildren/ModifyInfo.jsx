@@ -429,7 +429,7 @@ const ModifyInfo = ({ activeKey }) => {
           title: "수정 완료!",
           msg: "정보 수정이 완료되었습니다.",
           state: true,
-          nav: "/mypage"
+          nav: "/mypage?tab=myinfo"
         });
         setShowToast(true);
       } else {
