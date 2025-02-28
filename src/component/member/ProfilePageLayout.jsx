@@ -21,11 +21,13 @@ const ProfilePageLayout = () => {
   useEffect(() => {
     console.log(id);
     const mno = id;
+    const mymno = localStorage.getItem('mno');
 
     const loadUser = async () => {
       try {
         if(mno) {
-          const resp = await req('get', `member/userpage/${mno}`);
+          const resp = await req('get', `member/userpage/${mno}/${mymno}`);
+          console.log(resp);
           
           if(resp) {
             setUser(resp);
@@ -43,7 +45,7 @@ const ProfilePageLayout = () => {
     if (tabParam) {
       setActiveKey(tabParam);
     }
-  }, [searchParams]);
+  }, [searchParams, req]);
 
   // activeKey 변경 시 URL 쿼리 파라미터 업데이트
   const handleTabChange = (selectedKey) => {
@@ -56,7 +58,7 @@ const ProfilePageLayout = () => {
     console.log('renderContent called, activeKey:', activeKey);
     switch (activeKey) {
       case "info":
-        return <UserInfo activeKey={activeKey} setActiveKey={handleTabChange} user={user} />;
+        return <UserInfo activeKey={activeKey} setActiveKey={handleTabChange} />;
       case "likes" :
         return <FavoriteProducts activeKey={activeKey} setActiveKey={handleTabChange} />;
       case "reviews" :
