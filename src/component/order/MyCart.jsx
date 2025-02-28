@@ -4,11 +4,14 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios'; // Axios 추가
 import { useAuth } from '../../hooks/AuthContext';
 import UseAxios from '../../hooks/UseAxios'; // axios 훅
+import logo from '../../resources/image/pilllaw_favicon.png';
+
 
 const MyCart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const [currentItemId, setCurrentItemId] = useState(null);
   const [currentOption, setCurrentOption] = useState('30일'); // 모달 기본값
   const navigate = useNavigate();
@@ -17,6 +20,12 @@ const MyCart = () => {
   const { mno, email, token } = useAuth();
 
   useEffect(() => {
+
+    if (!mno) {
+      setShowLoginModal(true);
+      return;
+    }
+
     const getOption = (subday) => {
       if (subday === 30) return "30일";
       if (subday === 60) return "60일";
@@ -74,6 +83,13 @@ const MyCart = () => {
 
     fetchCartItems();
   }, [mno]); // mno가 변경될 때마다 실행
+
+
+
+  const handleCloseAndRedirect = () => {
+    setShowModal(false);
+    navigate('/');
+  };
 
 
   const updateCart = () => {
@@ -197,26 +213,26 @@ const MyCart = () => {
           <span className="text-secondary mx-5">2. 주문서 작성</span>
           <span className="text-secondary">3. 결제 완료</span>
         </h4>
-        <Table className="text-center align-middle mt-5" responsive>
-          <thead>
-            <tr>
-              <th><input type="checkbox" onChange={handleSelectAll} checked={selectedItems.length === cartItems.length && cartItems.length > 0} /></th>
-              <th width="10%"></th>
-              <th width="50%">상품명</th>
-              <th width="10%">구독기간</th>
-              <th width="10%">가격</th>
-              <th width="10%">수량</th>
-              <th width="10%">합계</th>
-            </tr>
+        <Table className="text-center align-middle mt-5 table-custom-bg" responsive>
+          <thead style={{ backgroundColor: "#F8F9FA" }}>            <tr>
+            <th><input type="checkbox" onChange={handleSelectAll} checked={selectedItems.length === cartItems.length && cartItems.length > 0} /></th>
+            <th width="10%"></th>
+            <th width="50%">상품명</th>
+            <th width="10%">구독기간</th>
+            <th width="10%">가격</th>
+            <th width="10%">수량</th>
+            <th width="10%">합계</th>
+          </tr>
           </thead>
-          <tbody>
+          <tbody style={{ backgroundColor: "#F8F9FA" }}>
+
             {cartItems.length === 0 ? (
               <tr><td colSpan="7" className="text-center py-4 fw-bold text-muted">상품을 담아주세요</td></tr>
             ) : (
               cartItems.map(item => (
                 <tr key={item.cino}>
                   <td>
-                    <input type="checkbox" checked={selectedItems.includes(item.cino)} onChange={() => handleSelectItem(item.cino)}/>
+                    <input type="checkbox" checked={selectedItems.includes(item.cino)} onChange={() => handleSelectItem(item.cino)} />
                   </td>
                   <td><img src={item.img} alt={item.name} className="img-fluid" /></td>
                   <td>{item.name}</td>
@@ -225,7 +241,15 @@ const MyCart = () => {
                   </td>
                   <td>{(item.price * (item.option === '60일' ? 2 : item.option === '90일' ? 3 : 1)).toLocaleString()}원</td>
                   <td>
-                    <Form.Control className="text-center" type="number" value={item.quantity} min="1" onChange={(e) => handleQuantityChange(item.cino, e.target.value)}/>
+                    {/* <Form.Control className="text-center" type="number" value={item.quantity} min="1" onChange={(e) => handleQuantityChange(item.cino, e.target.value)} /> */}
+                    <Form.Control
+                      className="text-center"
+                      type="number"
+                      value={item.quantity}
+                      min="1"
+                      onChange={(e) => handleQuantityChange(item.cino, e.target.value)}
+                      style={{ backgroundColor: "#F8F9FA" }}
+                    />
                   </td>
                   <td>{(item.price * (item.option === "60일" ? 2 : item.option === "90일" ? 3 : 1) * item.quantity).toLocaleString()}원</td>
                 </tr>
@@ -251,11 +275,13 @@ const MyCart = () => {
         {/* 옵션 변경 모달 */}
         <Modal show={showModal} onHide={() => setShowModal(false)}>
           <Modal.Header closeButton>
-            <Modal.Title>옵션 변경</Modal.Title>
+            <Modal.Title>
+              <h5 className="card-title fw-bold text-center header-font">구독기간 선택</h5>
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form.Group controlId="newOption">
-              <Form.Label>옵션 선택</Form.Label>
+
               <Form.Control as="select" value={currentOption} onChange={(e) => setCurrentOption(e.target.value)}  >
                 <option value="30일">30일</option>
                 <option value="60일">60일</option>
@@ -269,6 +295,28 @@ const MyCart = () => {
           <Modal.Footer>
             <Button variant="secondary" onClick={() => setShowModal(false)}>취소</Button>
             <Button className='btn-pilllaw' onClick={handleSaveOption}>저장</Button>
+          </Modal.Footer>
+        </Modal>
+
+        {/* 로그인 필요 모달 */}
+        <Modal
+          show={showLoginModal}
+          backdrop="static"
+          keyboard={false}
+          centered
+          className='bg-pilllaw-modal'
+        >
+          <Modal.Header className='bg-pilllaw-form'>
+            <Modal.Title className='fw-bold header-font'>
+              <img src={logo} alt='로고' width={30} className='me-3' />
+              PILL LAW
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body className='fw-bold text-pilllaw bg-pilllaw-form'>로그인이 필요한 서비스입니다.</Modal.Body>
+          <Modal.Footer className='bg-pilllaw-form'>
+            <Button variant="pilllaw" onClick={handleCloseAndRedirect}>
+              확인
+            </Button>
           </Modal.Footer>
         </Modal>
       </Container>

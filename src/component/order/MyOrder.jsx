@@ -5,7 +5,7 @@ import "../../resources/css/style.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from '../../hooks/AuthContext';
 import UseAxios from '../../hooks/UseAxios'; // axios 훅
-
+import logo from '../../resources/image/pilllaw_favicon.png';
 
 const MyOrder = () => {
   const { mno, email, token } = useAuth();
@@ -17,6 +17,7 @@ const MyOrder = () => {
   const [recipient, setRecipient] = useState("");
   const [phone, setPhone] = useState("");
   const navigate = useNavigate();
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const [userMembershipStatus, setUserMembershipStatus] = useState("ACTIVE");
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalPoints, setTotalPoints] = useState(0); // 포인트 상태 추가
@@ -29,7 +30,11 @@ const MyOrder = () => {
 
 
   useEffect(() => {
-    if (!mno) return;
+    if (!mno) {
+      setShowLoginModal(true);
+      return;
+    }
+
 
     // ✅ 포인트 조회 함수
     const fetchTotalPoints = async () => {
@@ -45,6 +50,11 @@ const MyOrder = () => {
       try {
         // 장바구니 항목을 가져오기
         const cartResponse = await req('GET', `v1/cart/${mno}/items`);
+
+        if (cartResponse.length === 0) {
+          navigate('/cart'); // 장바구니 항목이 없다면 /cart로 이동
+          return;
+        }
 
         // 각 항목에 대해 상품 정보를 추가하여 상태 업데이트
         const itemsWithProductInfo = await Promise.all(
@@ -97,13 +107,19 @@ const MyOrder = () => {
     fetchTotalPoints();
     fetchCartItems();
     fetchAddresses();
-  }, [mno, req]); // mno가 변경될 때마다 실행
+  }, [mno, req, navigate]); // mno가 변경될 때마다 실행
+
+
+
+  const handleCloseAndRedirect = () => {
+    setShowLoginModal(false);
+    navigate('/');
+  };
+
+
+
 
   const handleOrder = async () => {
-    if (!mno) {
-      alert("로그인 후 주문이 가능합니다.");
-      return;
-    }
 
     const orderData = {
       mno, // 로그인된 사용자의 mno
@@ -192,6 +208,7 @@ const MyOrder = () => {
 
             if (!payResponse || !payResponse.no) {
               alert("❌ 결제 정보 저장 실패");
+              sessionStorage.setItem('paymentStatus', 'fail');
               navigate("/order/fail");
               return;
             }
@@ -208,6 +225,7 @@ const MyOrder = () => {
             // 📌 3️⃣ 검증 성공 시, 결제 완료 처리
             if (!paymentResponse || paymentResponse.status !== "완료") {
               alert("❌ 결제 완료 처리 실패. 고객센터에 문의하세요.");
+              sessionStorage.setItem('paymentStatus', 'fail');
               navigate("/order/fail");
               return;
             }
@@ -229,11 +247,13 @@ const MyOrder = () => {
 
             if (!deliveryResponse || !deliveryResponse.dno) {
               alert("❌ 배송 정보 생성 실패");
+              sessionStorage.setItem('paymentStatus', 'fail');
               navigate("/order/fail");
               return;
             }
             // 📌 4️⃣ 최종 결제 성공 처리
             // alert("🎉 결제가 완료되었습니다!");
+            sessionStorage.setItem('paymentStatus', 'success');
             navigate("/order/success", {
               state: {
                 receiver: recipient,
@@ -248,10 +268,12 @@ const MyOrder = () => {
 
           } catch (error) {
             alert(`❌ 결제 확인 요청 중 오류 발생: ${error.message}`);
+            sessionStorage.setItem('paymentStatus', 'fail');
             navigate("/order/fail");
           }
         } else {
           alert(`❌ 결제 실패: ${response.error_msg}`);
+          sessionStorage.setItem('paymentStatus', 'fail');
           navigate("/order/fail");
         }
       }
@@ -446,9 +468,9 @@ const MyOrder = () => {
 
         <h5 className="mt-5"><strong>주문 상품</strong></h5>
         <hr />
-        <Table responsive className="text-center align-middle">
-          <thead className="table-light">
-            <tr>
+        <Table responsive className="text-center align-middle table-custom-bg">
+        <thead style={{ backgroundColor: "#F8F9FA" }}>           
+           <tr>
               <th></th>
               <th>상품명(구독기간)</th>
               <th>가격</th>
@@ -456,7 +478,7 @@ const MyOrder = () => {
               <th>합계</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody style={{ backgroundColor: "#F8F9FA" }}>
             {cartItems.map((item) => (
               <tr key={item.id}>
                 <td><img src={item.img} alt={item.name} className="img-fluid" /></td>
@@ -500,6 +522,29 @@ const MyOrder = () => {
             <Button onClick={handleOrder} className="btn-pilllaw" disabled={!isOrderValid}>결제하기</Button>
           </div>
         </div>
+
+
+        {/* 로그인 필요 모달 */}
+        <Modal
+          show={showLoginModal}
+          backdrop="static"
+          keyboard={false}
+          centered
+          className='bg-pilllaw-modal'
+        >
+          <Modal.Header className='bg-pilllaw-form'>
+            <Modal.Title className='fw-bold header-font'>
+              <img src={logo} alt='로고' width={30} className='me-3' />
+              PILL LAW
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body className='fw-bold text-pilllaw bg-pilllaw-form'>로그인이 필요한 서비스입니다.</Modal.Body>
+          <Modal.Footer className='bg-pilllaw-form'>
+            <Button variant="pilllaw" onClick={handleCloseAndRedirect}>
+              확인
+            </Button>
+          </Modal.Footer>
+        </Modal>
 
         <Modal show={showModal} onHide={() => setShowModal(false)} style={{ color: "black" }}>
           <Modal.Header closeButton>
