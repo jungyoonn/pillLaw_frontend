@@ -12,6 +12,7 @@ const ToastMsg = ({title, msg, state, nav}) => {
   const navigate = useNavigate();
 
   const handleOnClick = () => {
+    setShow(false);
     navigate(nav);
   }
 
