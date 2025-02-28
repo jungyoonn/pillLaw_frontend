@@ -94,14 +94,14 @@ const MyPageLayout = () => {
             <Nav.Link eventKey="orders">주문내역 조회</Nav.Link>  {/* 주문내역 추가 */}
             <Nav.Link eventKey="points">포인트 사용 이력</Nav.Link>
             <Nav.Link eventKey="link-2">구독 내역</Nav.Link>
-            <Nav.Link eventKey="link-2">즐겨찾기 상품</Nav.Link>
-            <Nav.Link eventKey="link-2">내 후기 모아보기</Nav.Link>
+            <Nav.Link eventKey="likes">즐겨찾기 상품</Nav.Link>
+            <Nav.Link eventKey="reviews">내 후기 모아보기</Nav.Link>
             <br />
             <Nav.Link eventKey="letterreceivedlist">쪽지함</Nav.Link>
             <Nav.Link eventKey="followapp">팔로우 / 팔로워</Nav.Link>
             <br />
             <Nav.Link eventKey="logout">로그아웃</Nav.Link>
-            <Nav.Link eventKey="link-2">회원 탈퇴</Nav.Link>
+            <Nav.Link eventKey="quit">회원 탈퇴</Nav.Link>
           </Nav>
         </Col>
         <Col>
