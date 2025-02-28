@@ -9,7 +9,7 @@ import { Col, Row } from "react-bootstrap";
 
 const FollowApp = () => {
   const [searchParams] = useSearchParams();
-  const tabType = searchParams.get("tab") || "followers";
+  const tabType = searchParams.get("type") || "followers";
 
   return (
     <Row>

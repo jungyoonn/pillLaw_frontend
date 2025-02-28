@@ -7,13 +7,20 @@ const FollowHeaderButtons = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   
-  // 기본 탭은 'followers'로 설정
-  const tabType = searchParams.get("tab") || "followers";
+  // 현재 마이페이지 탭 유지
+  const currentTab = searchParams.get("tab") || "followapp";
   
-  // 탭 변경 핸들러
-  const handleTabChange = (tab) => {
-    // 쿼리 파라미터로 탭 변경
-    setSearchParams({ tab: tab });
+  // 기본 팔로우 타입은 'followers'로 설정
+  const tabType = searchParams.get("tabType") || "followers";
+  
+  // 팔로우 타입 변경 핸들러
+  const handleTabChange = (type) => {
+    // 기존 쿼리 파라미터 유지하면서 tabType 변경
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set("type", type);
+    
+    // 쿼리 파라미터 업데이트
+    setSearchParams(newParams);
   };
 
   // 전체 경로로 이동하는 경우
@@ -28,7 +35,7 @@ const FollowHeaderButtons = () => {
             <Nav.Link 
               onClick={() => handleTabChange("follow")} 
               active={tabType === "follow"}
-              className="btn btn-pilllaw"
+              className={tabType === "follow" ? "btn btn-pilllaw active" : "btn btn-pilllaw"}
             >
               맞팔로우
             </Nav.Link>
@@ -37,7 +44,7 @@ const FollowHeaderButtons = () => {
             <Nav.Link 
               onClick={() => handleTabChange("followers")} 
               active={tabType === "followers"}
-              className="btn btn-pilllaw"
+              className={tabType === "followers" ? "btn btn-pilllaw active" : "btn btn-pilllaw"}
             >
               팔로워
             </Nav.Link>
@@ -46,7 +53,7 @@ const FollowHeaderButtons = () => {
             <Nav.Link 
               onClick={() => handleTabChange("following")} 
               active={tabType === "following"}
-              className="btn btn-pilllaw"
+              className={tabType === "following" ? "btn btn-pilllaw active" : "btn btn-pilllaw"}
             >
               팔로잉
             </Nav.Link>
