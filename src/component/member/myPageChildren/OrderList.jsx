@@ -108,8 +108,8 @@ const OrderList = ({ memberId }) => {
 
     return (
         <div>
-            <Table className="text-center align-middle mt-1 table-md" responsive >
-                <thead>
+            <Table className="text-center align-middle mt-1 table-md table-custom-bg" responsive>
+                <thead style={{ backgroundColor: "#F8F9FA" }}>
                     <tr>
                         <th className="fw-bold fs-14 header-font">주문일자</th> {/* 글씨체 두껍게 변경 */}
                         <th className="fw-bold fs-14 header-font">수령인</th>
@@ -120,7 +120,7 @@ const OrderList = ({ memberId }) => {
                         <th className="fw-bold fs-14 header-font"></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody style={{ backgroundColor: "#F8F9FA" }}>
                     {orders.length > 0 ? (
                         orders.slice(0, visibleCount).map((order) => (
                             <tr key={order.ono}>
@@ -137,7 +137,7 @@ const OrderList = ({ memberId }) => {
                         ))
                     ) : (
                         <tr>
-                            <td colSpan="6" className="text-center fs-14 text-secondary">주문 내역이 없습니다.</td>
+                            <td colSpan="7" className="text-center fs-14 text-secondary">주문 내역이 없습니다.</td>
                         </tr>
                     )}
                 </tbody>

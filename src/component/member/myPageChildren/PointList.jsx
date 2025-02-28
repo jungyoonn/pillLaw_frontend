@@ -42,24 +42,32 @@ const PointHistory = ({ memberId }) => {
     return (
         <div>
             <p className='mt-3 mb-2 fw-bold header-font'>고객님의 총 보유 포인트는 {totalPoints.toLocaleString()}P 입니다.</p>
-            <Table className="text-center align-middle mt-1 table-md" responsive>
-                <tbody>
+            <Table className="text-center align-middle mt-1 table-md table-custom-bg" responsive>
+                <thead>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                </thead>
+                <tbody style={{ backgroundColor: "#F8F9FA" }}>
                     {pointHistory.length > 0 ? (
                         pointHistory.slice(0, visibleCount).map((point) => (
                             <tr key={point.pono}>
-                                <td className="fw-bold fs-14" style={{ width: '120px' }}> 
+                                <td className="fw-bold fs-14" style={{ width: '120px' }}>
                                     <Button variant={point.status === "EARNED" ? "secondary" : point.status === "USED" ? "outline-secondary" : "secondary"} className="btn-sm" disabled>
                                         {point.status === "EARNED" ? "적립" : point.status === "USED" ? "사용" : point.status}
                                     </Button>
                                 </td>
-                                <td className="fw-bold fs-14" style={{ width: '180px'}}>{point.point > 0 ? `+${point.point.toLocaleString()}` : point.point.toLocaleString()}P</td>
+                                <td className="fw-bold fs-14" style={{ width: '180px' }}>{point.point > 0 ? `+${point.point.toLocaleString()}` : point.point.toLocaleString()}P</td>
 
                                 <td className="fw-bold fs-14 text-end text-muted ">{formatDateTime(point.regdate)}</td>
                             </tr>
                         ))
                     ) : (
                         <tr>
-                            <td colSpan="4" className="text-center fs-14 text-secondary">포인트 내역이 없습니다.</td>
+                            <td colSpan="3" className="text-center fs-14 text-secondary">포인트 내역이 없습니다.</td>
                         </tr>
                     )}
                 </tbody>

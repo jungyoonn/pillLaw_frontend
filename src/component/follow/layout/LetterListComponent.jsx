@@ -105,6 +105,7 @@ const LetterListComponent = () => {
       alert("삭제할 쪽지를 선택해주세요.");
       return;
     }
+    
 
     try {
       // 각 선택된 쪽지에 대해 삭제 요청

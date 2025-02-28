@@ -376,6 +376,20 @@ body {
   background-color: var(--background-color) !important;
 }
 
+/* 테이블배경색 변경 */
+.table-custom-bg {
+  background-color: #F8F9FA !important;
+}
+
+.table-custom-bg thead,
+.table-custom-bg tbody,
+.table-custom-bg tr,
+.table-custom-bg th,
+.table-custom-bg td {
+  background-color: #F8F9FA !important;
+}
+
+
 .custom-follow {
   border: none !important;
 }

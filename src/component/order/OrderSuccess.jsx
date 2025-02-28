@@ -9,30 +9,34 @@ const OrderSuccessed = () => {
   const { req } = UseAxios(); // 'req' 함수 가져오기
   const location = useLocation();
   const { mno } = useAuth(); // mno 가져오기
-  const { receiver, phone, address, message, amount, usedPoints, ono } = location.state || {};
+  const { receiver, phone, address, message, amount=0, usedPoints=0, ono } = location.state || {};
   const navigate = useNavigate();
-  const [isRequestSent, setIsRequestSent] = useState(false); 
+  const [isRequestSent, setIsRequestSent] = useState(false);
 
   const goToIndex = () => {
     navigate('/');
   };
 
   useEffect(() => {
-  if (mno && ono && !isRequestSent) {  // isRequestSent가 false일 때만 실행
-    moveCartItemsToOrder(mno, ono);
-  }
-}, [mno, ono, isRequestSent]);  // isRequestSent를 의존성 배열에 추가
+    const paymentStatus = sessionStorage.getItem('paymentStatus');
+    if (paymentStatus !== 'success') {
+      navigate('/cart');
+    } else if (mno && ono && !isRequestSent) {  // isRequestSent가 false일 때만 실행
+      moveCartItemsToOrder(mno, ono);
+    }
+  }, [mno, ono, isRequestSent, navigate]);
 
-const moveCartItemsToOrder = async (mno, ono) => {
-  try {
-    const response = await req('POST', 'v1/order/move', { mno, ono });
-    console.log("Order Items 이동 성공:", response.data);
-    setIsRequestSent(true);  //작업완료
-  } catch (error) {
-    console.error("Order Items 이동 실패:", error.response?.data || error.message);
-  } finally {
-    console.log('작업 완료');  }
-};
+  const moveCartItemsToOrder = async (mno, ono) => {
+    try {
+      const response = await req('POST', 'v1/order/move', { mno, ono });
+      console.log("Order Items 이동 성공:", response.data);
+      setIsRequestSent(true);  //작업완료
+    } catch (error) {
+      console.error("Order Items 이동 실패:", error.response?.data || error.message);
+    } finally {
+      console.log('작업 완료');
+    }
+  };
 
   return (
     <div className='wrap'>
