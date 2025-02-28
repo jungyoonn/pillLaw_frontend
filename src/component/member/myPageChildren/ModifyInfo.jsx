@@ -26,6 +26,9 @@ const ModifyInfo = ({ activeKey }) => {
   const [roadAddressError, setRoadAddressError] = useState(false);
   const [detailAddressError, setDetailAddressError] = useState(false);
   const [hasAddress, setHasAddress] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [newPasswordMismatchError, setNewPasswordMismatchError] = useState(false);
   const [address, setAddress] = useState({
     addrno: '',
     recipient: '',
@@ -194,6 +197,24 @@ const ModifyInfo = ({ activeKey }) => {
     setConfirmPassword(value);
     setPasswordMismatchError(password !== value);
   };
+
+  // 새 비밀번호 처리
+  const handleNewPasswordChange = (e) => {
+    const value = e.target.value;
+    setNewPassword(value);
+    setPasswordError(value.trim() !== '' && !passwordRegex.test(value));
+    
+    if (confirmNewPassword.trim() !== '') {
+      setNewPasswordMismatchError(confirmNewPassword !== value);
+    }
+  };
+
+  // 새 비밀번호 확인 처리
+  const handleConfirmNewPasswordChange = (e) => {
+    const value = e.target.value;
+    setConfirmNewPassword(value);
+    setNewPasswordMismatchError(newPassword !== value);
+  };
   
   // 이름 변경 핸들러
   const handleNameChange = (e) => {
@@ -310,6 +331,13 @@ const ModifyInfo = ({ activeKey }) => {
         return;
       }
 
+      // 새 비밀번호를 입력했다면 확인도 필요
+      if (newPassword.trim() !== '' && (newPassword !== confirmNewPassword)) {
+        setNewPasswordMismatchError(true);
+        // setPwErr('새 비밀번호가 일치하지 않습니다.');
+        return;
+      }
+
       if (!validateForm()) {
         console.log("정규식 조건 부합 x")
         return;
@@ -354,16 +382,17 @@ const ModifyInfo = ({ activeKey }) => {
             accounts,
             status,
           },
-          confirmPassword
+          confirmPassword,
+          newPassword: newPassword || ''
         };
         
-        // 비밀번호가 입력된 경우에만 추가
-        if (password && password.trim() !== '') {
-          updateData.memberDto.password = password;
-          console.log("비밀번호 설정됨:", password);
-        } else {
-          console.log("비밀번호 설정 안됨: 빈 값이거나 undefined");
-        }
+        // // 비밀번호가 입력된 경우에만 추가
+        // if (password && password.trim() !== '') {
+        //   updateData.memberDto.password = password;
+        //   console.log("비밀번호 설정됨:", password);
+        // } else {
+        //   console.log("비밀번호 설정 안됨: 빈 값이거나 undefined");
+        // }
       }
       
       // 주소 정보
@@ -405,6 +434,7 @@ const ModifyInfo = ({ activeKey }) => {
         <Col xs="1" />
         <Col xs="4">
           <p className='m-1 fs-14 fw-bold header-font'>이메일</p>
+          {!!member.memberDto && <p className='m-1 fs-11 fw-bold text-secondary'>이미 인증된 이메일을 수정할 경우 재인증이 필요할 수 있습니다.</p>}
           <Form.Control
             type="text"
             value={email}
@@ -420,20 +450,7 @@ const ModifyInfo = ({ activeKey }) => {
               '소셜 로그인 사용자는 이메일을 설정할 수 없습니다.'}
           </p>
           
-          <p className='m-1 mt-3 fs-14 fw-bold header-font'>비밀번호</p>
-          <Form.Control
-            type="password"
-            placeholder="**********"
-            className={`bg-pilllaw-form fs-14 fw-bold ${passwordError ? 'border-danger' : ''}`}
-            value={password}
-            onChange={handlePasswordChange}
-            disabled={!!member.socialDto} // 소셜 로그인 시 비활성화
-          />
-          {passwordError && 
-            <p className="fs-12 fw-bold text-danger">비밀번호가 올바르지 않습니다. (영어 대소문자, 숫자 조합 8자 이상)</p>
-          }
-          
-          <p className='m-1 mt-3 fs-14 fw-bold header-font'>비밀번호 확인</p>
+          <p className='m-1 mt-3 fs-14 fw-bold header-font'>비밀번호 {!!member.memberDto && <span className='text-danger fs-11'>&nbsp; * 필수 입력</span>}</p>
           <Form.Control
             type="password"
             className={`bg-pilllaw-form fs-14 fw-bold`}
@@ -442,6 +459,33 @@ const ModifyInfo = ({ activeKey }) => {
             disabled={!!member.socialDto} // 소셜 로그인 시 비활성화
           />
           {!!pwErr && member.memberDto && <p className='text-danger fs-12 fw-bold'>{pwErr}</p>}
+          
+          <p className='m-1 mt-3 fs-14 fw-bold header-font'>새 비밀번호</p>
+          <Form.Control
+            type="password"
+            className={`bg-pilllaw-form fs-14 fw-bold ${passwordError ? 'border-danger' : ''}`}
+            value={newPassword}
+            onChange={handleNewPasswordChange}
+            disabled={!!member.socialDto} // 소셜 로그인 시 비활성화
+            placeholder=""
+          />
+          {passwordError && 
+            <p className="fs-12 fw-bold text-danger">비밀번호는 영어 대소문자, 숫자 조합 8자 이상이어야 합니다.</p>
+          }
+
+          <p className='m-1 mt-3 fs-14 fw-bold header-font'>새 비밀번호 확인</p>
+          <Form.Control
+            type="password"
+            className={`bg-pilllaw-form fs-14 fw-bold ${newPasswordMismatchError ? 'border-danger' : ''}`}
+            value={confirmNewPassword}
+            onChange={handleConfirmNewPasswordChange}
+            disabled={!!member.socialDto} // 소셜 로그인 시 비활성화
+            placeholder=""
+          />
+          {newPasswordMismatchError && 
+            <p className="fs-12 fw-bold text-danger">새 비밀번호가 일치하지 않습니다.</p>
+          }
+
           <p className='fs-12 text-secondary fw-bold'>
             {!!member.socialDto && 
               '소셜 로그인 사용자는 비밀번호를 변경할 수 없습니다.'}
