@@ -9,7 +9,7 @@ const ProductItem = ({ product }) => {
   const {loading, error} = useAxios();
 
   useEffect(()=>{
-    console.log(product);
+    console.log("ProductItem에서 받은 Product :::: ", product);
 
   }, [product]);
 

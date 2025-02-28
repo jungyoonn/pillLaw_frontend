@@ -18,6 +18,7 @@ const ProductList = () => {
 
   useEffect(()=>{
     req('get', 'v1/product/list');
+    console.log("req :::::  {}" , req);
   },[req]);
 
   if(error){

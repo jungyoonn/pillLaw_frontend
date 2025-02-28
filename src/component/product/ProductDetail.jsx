@@ -98,16 +98,20 @@ const ProductDetail = () => {
 
         <Row className="mt-4">
           <Col xs={5}>
-            <img className="img-fluid mx-2 pilllaw-product-image" src={product.imageUrl} alt={product.pname} />
+            <img
+              src={product.imageUrl}
+              alt="상품 이미지 없음"
+              onError={(e) => e.target.src = "https://via.placeholder.com/500"}
+            />
           </Col>
 
           <Col xs={2} className="mt-4">
-          {product.Urls && product.Urls.length > 0 ? (
-            product.Urls.map((img, index) => (
+          {product.imageUrls && product.imgaeUrls.length > 0 ? (
+            product.imgageUrls.map((imgUrl, index) => (
               <Row key={index} className="align-middle my-2">
                 <img
                   className="img-fluid mx-auto float-end w-75 pilllaw-product-image"
-                  src={img}
+                  src={imgUrl}
                   alt={`thumbnail-${index}`}
                   style={{ cursor: "pointer" }}
                 />
