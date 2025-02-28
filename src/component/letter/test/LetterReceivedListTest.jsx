@@ -1,16 +1,15 @@
-// LetterListComponent.jsx 수정
 import React, { useEffect, useState } from "react";
 import { Container, ListGroup, Nav, Badge, Button } from "react-bootstrap";
 import UseAxios from "../../../hooks/UseAxios";
 import { Link, useSearchParams } from "react-router-dom";
-import profile from '../../../resources/image/user-image.png'; // 프로필 이미지 경로 확인
 
-const LetterViewComponent = () => {
+const LetterListComponent = () => {
   const { req } = UseAxios();
   const [searchParams, setSearchParams] = useSearchParams();
   const [receivedLetters, setReceivedLetters] = useState([]);
   const [sentLetters, setSentLetters] = useState([]);
   const [selectedLetters, setSelectedLetters] = useState([]);
+  const [nicknames, setNicknames] = useState({}); // 닉네임 캐시 추가
   const mno = localStorage.getItem('mno');
   
   // 기본 탭은 'received'로 설정
@@ -20,6 +19,22 @@ const LetterViewComponent = () => {
   const handleTabChange = (tab) => {
     setSearchParams({ tab: tab });
     setSelectedLetters([]); // 탭 변경 시 선택 초기화
+  };
+
+  // 닉네임 가져오기 함수
+  const fetchNickname = async (userId) => {
+    try {
+      const response = await req('get', `member/nickname/${userId}`);
+      return response.nickname || `사용자${userId}`;
+    } catch (error) {
+      console.error(`사용자 ${userId}의 닉네임을 가져올 수 없습니다:`, error);
+      return `사용자${userId}`;
+    }
+  };
+
+  // 사용자 ID에 대한 닉네임 표시
+  const displayNickname = (userId) => {
+    return nicknames[userId] || userId;
   };
 
   // 데이터 로드
@@ -33,6 +48,21 @@ const LetterViewComponent = () => {
           const resp = await req('get', `letter/received/${mno}`);
           if (Array.isArray(resp)) {
             setReceivedLetters(resp);
+            
+            // 보낸 사람들의 닉네임 가져오기
+            const uniqueSenderIds = [...new Set(resp.map(letter => letter.senderId))];
+            const nicknamePromises = uniqueSenderIds.map(async (senderId) => {
+              const nickname = await fetchNickname(senderId);
+              return { id: senderId, nickname };
+            });
+            
+            const nicknameResults = await Promise.all(nicknamePromises);
+            const newNicknames = {};
+            nicknameResults.forEach(result => {
+              newNicknames[result.id] = result.nickname;
+            });
+            
+            setNicknames(prev => ({ ...prev, ...newNicknames }));
           } else {
             console.error("받은 쪽지 API 응답이 배열이 아닙니다:", resp);
             setReceivedLetters([]);
@@ -41,6 +71,21 @@ const LetterViewComponent = () => {
           const resp = await req('get', `letter/sent/${mno}`);
           if (Array.isArray(resp)) {
             setSentLetters(resp);
+            
+            // 받는 사람들의 닉네임 가져오기
+            const uniqueReceiverIds = [...new Set(resp.map(letter => letter.receiverId))];
+            const nicknamePromises = uniqueReceiverIds.map(async (receiverId) => {
+              const nickname = await fetchNickname(receiverId);
+              return { id: receiverId, nickname };
+            });
+            
+            const nicknameResults = await Promise.all(nicknamePromises);
+            const newNicknames = {};
+            nicknameResults.forEach(result => {
+              newNicknames[result.id] = result.nickname;
+            });
+            
+            setNicknames(prev => ({ ...prev, ...newNicknames }));
           } else {
             console.error("보낸 쪽지 API 응답이 배열이 아닙니다:", resp);
             setSentLetters([]);
@@ -196,8 +241,7 @@ const LetterViewComponent = () => {
                     </div>
                     <div className="ms-2 me-auto flex-grow-1">
                       <div className="fw-bold">
-                        <img src={profile} className="mx-2" alt='프로필 사진' width={25} />
-                        사용자 {letter.senderId} {/* 임시로 ID만 표시 */}
+                        보낸 사람: {displayNickname(letter.senderId)}
                         {!letter.readAt && <Badge bg="info" className="ms-2">New</Badge>}
                       </div>
                       <p className="mb-1 text-truncate" style={{ maxWidth: '500px' }}>
@@ -255,8 +299,7 @@ const LetterViewComponent = () => {
                     </div>
                     <div className="ms-2 me-auto flex-grow-1">
                       <div className="fw-bold">
-                        <img src={profile} className="mx-2" alt='프로필 사진' width={25} />
-                        사용자 {letter.receiverId} {/* 임시로 ID만 표시 */}
+                        받는 사람: {displayNickname(letter.receiverId)}
                       </div>
                       <p className="mb-1 text-truncate" style={{ maxWidth: '500px' }}>
                         {letter.content}
@@ -298,4 +341,4 @@ const LetterViewComponent = () => {
   );
 };
 
-export default LetterViewComponent;
+export default LetterListComponent;

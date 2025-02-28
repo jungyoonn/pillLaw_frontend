@@ -10,7 +10,7 @@ import OrderList from './myPageChildren/OrderList';
 import PointList from './myPageChildren/PointList';
 import ModifyInfo from './myPageChildren/ModifyInfo';
 import FollowApp from '../follow/test/FollowApp';
-import LetterReceivedListTest from '../letter/layout/LetterReceivedListTest';
+import LetterReceivedListTest from '../letter/test/LetterReceivedListTest';
 
 const MyPageLayout = () => {
   const navigate = useNavigate();
