@@ -40,8 +40,7 @@ import FollowApp from './component/follow/test/FollowApp';
 import LetterListLayOutTest from './component/letter/layout/LetterListLayOutTest';
 import LetterSenderListTest from './component/letter/layout/LetterSenderListTest';
 import LetterReceivedListTest from './component/letter/layout/LetterReceivedListTest';
-import LetterHeader from './component/letter/layout/LetterHeaderTest';
-import LetterHeaderTest from './component/letter/layout/LetterHeaderTest';
+import LetterHeader from './component/letter/layout/LetterHeader';
 import LetterListComponent from './component/follow/layout/LetterListComponent';
 import LetterViewComponent from './component/letter/layout/LetterViewComponent';
 
@@ -73,7 +72,7 @@ function App() {
             <Route path='/letterlistlayouttest' element={<LetterListLayOutTest />}/>
             <Route path='/letterlisttest' element={<LetterSenderListTest />}/>
             <Route path='/letterreceivedlisttest' element={<LetterReceivedListTest />}/>
-            <Route path='/letterheadertest' element={<LetterHeaderTest />}/>
+            <Route path='/letterheader' element={<LetterHeader />}/>
             <Route path='/letterlistcomponent' element={<LetterListComponent />}/>
             <Route path='/letterviewcomponent' element={<LetterViewComponent />}/>
 

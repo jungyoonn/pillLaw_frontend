@@ -14,7 +14,7 @@ const LetterSenderListTest = () => {
 
     const fetchLetters = async () => {
       try {
-        const resp = await req('get', `/api/letter/sent/${mno}`);
+        const resp = await req('get', `/api/letter/send/${mno}`);
         if (Array.isArray(resp)) {
           // 삭제되지 않은 쪽지만 표시
           const filteredLetters = resp.filter(letter => !letter.deletedBySender);
@@ -63,7 +63,7 @@ const LetterSenderListTest = () => {
       <h2 className="mb-4">보낸 쪽지함</h2>
       
       <div className="letter-list">
-        <ListGroup>
+        <ListGroup variant="flush">
           {letters.length > 0 ? (
             letters.map((letter) => (
               <ListGroup.Item 

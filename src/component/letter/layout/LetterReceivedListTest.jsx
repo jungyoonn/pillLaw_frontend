@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Container, ListGroup, Badge } from "react-bootstrap";
 import UseAxios from "../../../hooks/UseAxios";
 import { Link } from "react-router-dom";
-import LetterHeader from "./LetterHeaderTest";
+import LetterHeader from "./LetterHeader";
 
 // 받은 쪽지 목록 컴포넌트
 const LetterReceivedListTest = () => {
@@ -65,7 +65,7 @@ const LetterReceivedListTest = () => {
       <h4 className="mb-4 text-center p-5" >받은 쪽지함</h4>
       
       <div className="letter-list">
-        <ListGroup variant="flush">
+        <ListGroup>
           {letters.length > 0 ? (
             letters.map((letter) => (
               <ListGroup.Item 

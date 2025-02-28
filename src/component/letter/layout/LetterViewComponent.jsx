@@ -1,35 +1,58 @@
+// LetterListComponent.jsx 수정
 import React, { useEffect, useState } from "react";
-import { Container, Card, Button } from "react-bootstrap";
-import { useParams, useNavigate } from "react-router-dom";
+import { Container, ListGroup, Nav, Badge, Button } from "react-bootstrap";
 import UseAxios from "../../../hooks/UseAxios";
+import { Link, useSearchParams } from "react-router-dom";
+import profile from '../../../resources/image/user-image.png'; // 프로필 이미지 경로 확인
 
-const LetterViewComponent = () => {
+const LetterListComponent = () => {
   const { req } = UseAxios();
-  const { letterId } = useParams();
-  const navigate = useNavigate();
-  const [letter, setLetter] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [receivedLetters, setReceivedLetters] = useState([]);
+  const [sentLetters, setSentLetters] = useState([]);
+  const [selectedLetters, setSelectedLetters] = useState([]);
   const mno = localStorage.getItem('mno');
+  
+  // 기본 탭은 'received'로 설정
+  const tabType = searchParams.get("tab") || "received";
+  
+  // 탭 변경 핸들러
+  const handleTabChange = (tab) => {
+    setSearchParams({ tab: tab });
+    setSelectedLetters([]); // 탭 변경 시 선택 초기화
+  };
 
+  // 데이터 로드
   useEffect(() => {
-    const fetchLetter = async () => {
+    if (!mno) return;
+
+    const fetchData = async () => {
       try {
-        setLoading(true);
-        const resp = await req('get', `letter/${letterId}`);
-        setLetter(resp);
+        // 현재 탭에 따라 필요한 데이터만 로드
+        if (tabType === "received") {
+          const resp = await req('get', `letter/received/${mno}`);
+          if (Array.isArray(resp)) {
+            setReceivedLetters(resp);
+          } else {
+            console.error("받은 쪽지 API 응답이 배열이 아닙니다:", resp);
+            setReceivedLetters([]);
+          }
+        } else if (tabType === "sent") {
+          const resp = await req('get', `letter/sent/${mno}`);
+          if (Array.isArray(resp)) {
+            setSentLetters(resp);
+          } else {
+            console.error("보낸 쪽지 API 응답이 배열이 아닙니다:", resp);
+            setSentLetters([]);
+          }
+        }
       } catch (error) {
-        console.error("쪽지 상세 정보 가져오기 오류:", error);
-        setError("쪽지를 불러오는 중 오류가 발생했습니다.");
-      } finally {
-        setLoading(false);
+        console.error("쪽지 데이터 가져오기 오류:", error);
       }
     };
 
-    if (letterId) {
-      fetchLetter();
-    }
-  }, [req, letterId]);
+    fetchData();
+  }, [mno, req, tabType]);
 
   // 날짜 형식 변환 함수
   const formatDate = (dateString) => {
@@ -44,102 +67,235 @@ const LetterViewComponent = () => {
     });
   };
 
-  // 삭제 처리
-  const handleDelete = async () => {
+  // 쪽지 선택 처리
+  const handleSelectLetter = (letterId) => {
+    setSelectedLetters(prev => {
+      if (prev.includes(letterId)) {
+        return prev.filter(id => id !== letterId);
+      } else {
+        return [...prev, letterId];
+      }
+    });
+  };
+
+  // 단일 쪽지 삭제
+  const handleDeleteLetter = async (letterId) => {
     try {
-      // 받은 쪽지인지 보낸 쪽지인지 확인
-      const isSentByMe = letter.senderId === parseInt(mno);
-      const endpoint = isSentByMe 
+      const endpoint = tabType === "sent" 
         ? `letter/delete/sender/${letterId}`
         : `letter/delete/receiver/${letterId}`;
-
+      
       await req('put', endpoint);
-      alert("쪽지가 삭제되었습니다.");
-      navigate("/letter?tab=" + (isSentByMe ? "sent" : "received"));
+      
+      // 삭제 후 목록에서 제거
+      if (tabType === "sent") {
+        setSentLetters(prev => prev.filter(letter => letter.letterId !== letterId));
+      } else {
+        setReceivedLetters(prev => prev.filter(letter => letter.letterId !== letterId));
+      }
     } catch (error) {
       console.error("쪽지 삭제 오류:", error);
       alert("쪽지 삭제에 실패했습니다.");
     }
   };
 
-  // 답장 작성 화면으로 이동
-  const handleReply = () => {
-    // 받은 쪽지일 경우만 답장 가능
-    if (letter.receiverId === parseInt(mno)) {
-      navigate(`/letter/compose?to=${letter.senderId}`);
+  // 선택된 쪽지 일괄 삭제
+  const handleDeleteSelected = async () => {
+    if (selectedLetters.length === 0) {
+      alert("삭제할 쪽지를 선택해주세요.");
+      return;
+    }
+
+    try {
+      // 각 선택된 쪽지에 대해 삭제 요청
+      const deletePromises = selectedLetters.map(letterId => {
+        const endpoint = tabType === "sent" 
+          ? `letter/delete/sender/${letterId}`
+          : `letter/delete/receiver/${letterId}`;
+        return req('put', endpoint);
+      });
+
+      await Promise.all(deletePromises);
+      
+      // 삭제 후 목록에서 제거
+      if (tabType === "sent") {
+        setSentLetters(prev => prev.filter(letter => !selectedLetters.includes(letter.letterId)));
+      } else {
+        setReceivedLetters(prev => prev.filter(letter => !selectedLetters.includes(letter.letterId)));
+      }
+      
+      // 선택 초기화
+      setSelectedLetters([]);
+      
+      alert("선택한 쪽지가 삭제되었습니다.");
+    } catch (error) {
+      console.error("쪽지 일괄 삭제 오류:", error);
+      alert("쪽지 삭제에 실패했습니다.");
     }
   };
 
-  // 목록으로 돌아가기
-  const handleGoBack = () => {
-    const isSentByMe = letter.senderId === parseInt(mno);
-    navigate("/letter?tab=" + (isSentByMe ? "sent" : "received"));
-  };
-
-  if (loading) {
-    return (
-      <Container className="mt-5 text-center">
-        <p>쪽지를 불러오는 중...</p>
-      </Container>
-    );
-  }
-
-  if (error || !letter) {
-    return (
-      <Container className="mt-5 text-center">
-        <p className="text-danger">{error || "쪽지를 찾을 수 없습니다."}</p>
-        <Button variant="secondary" onClick={() => navigate("/letter")}>
-          쪽지함으로 돌아가기
-        </Button>
-      </Container>
-    );
-  }
-
-  const isSentByMe = letter.senderId === parseInt(mno);
+  // 읽지 않은 쪽지 개수
+  const unreadCount = receivedLetters.filter(letter => !letter.readAt).length;
 
   return (
-    <Container className="mt-5">
-      <Card>
-        <Card.Header className="d-flex justify-content-between align-items-center">
-          <h5 className="mb-0">쪽지 상세 보기</h5>
-          <Button variant="secondary" size="sm" onClick={handleGoBack}>
-            목록으로
-          </Button>
-        </Card.Header>
-        <Card.Body>
-          <div className="mb-3">
-            <strong>{isSentByMe ? "받는 사람" : "보낸 사람"}:</strong> {isSentByMe ? letter.receiverId : letter.senderId}
-          </div>
-          
-          <div className="mb-3">
-            <strong>보낸 시간:</strong> {formatDate(letter.sentAt)}
-          </div>
-          
-          {letter.readAt && (
-            <div className="mb-3">
-              <strong>읽은 시간:</strong> {formatDate(letter.readAt)}
+    <div className="wrap">
+      <Container style={{ paddingTop: '115.19px' }}>
+        <Nav fill variant="tabs" defaultActiveKey={tabType}>
+          <Nav.Item>
+            <Nav.Link 
+              onClick={() => handleTabChange("received")} 
+              active={tabType === "received"}
+              className="btn btn-pilllaw"
+            >
+              받은 쪽지
+              {unreadCount > 0 && (
+                <Badge bg="danger" className="ms-2">
+                  {unreadCount}
+                </Badge>
+              )}
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link 
+              onClick={() => handleTabChange("sent")} 
+              active={tabType === "sent"}
+              className="btn btn-pilllaw"
+            >
+              보낸 쪽지
+            </Nav.Link>
+          </Nav.Item>
+        </Nav>
+      
+        <Container className="mt-3">
+          {/* 선택 삭제 버튼 */}
+          {selectedLetters.length > 0 && (
+            <div className="mb-3 text-end">
+              <Button variant="danger" onClick={handleDeleteSelected}>
+                선택 삭제 ({selectedLetters.length})
+              </Button>
             </div>
           )}
-          
-          <hr />
-          
-          <div className="letter-content p-3 bg-light rounded">
-            {letter.content}
-          </div>
-        </Card.Body>
-        <Card.Footer className="d-flex justify-content-end">
-          {!isSentByMe && (
-            <Button variant="primary" className="me-2" onClick={handleReply}>
-              답장
-            </Button>
+
+          {/* 받은 쪽지 목록 */}
+          {tabType === "received" && (
+            <ListGroup>
+              {receivedLetters.length > 0 ? (
+                receivedLetters.map((letter) => (
+                  <ListGroup.Item 
+                    key={`received-${letter.letterId}`}
+                    className={`d-flex justify-content-between align-items-start ${!letter.readAt ? 'bg-light' : ''}`}
+                  >
+                    <div className="form-check me-2">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        id={`check-${letter.letterId}`}
+                        checked={selectedLetters.includes(letter.letterId)}
+                        onChange={() => handleSelectLetter(letter.letterId)}
+                      />
+                    </div>
+                    <div className="ms-2 me-auto flex-grow-1">
+                      <div className="fw-bold">
+                        <img src={profile} className="mx-2" alt='프로필 사진' width={25} />
+                        사용자 {letter.senderId} {/* 임시로 ID만 표시 */}
+                        {!letter.readAt && <Badge bg="info" className="ms-2">New</Badge>}
+                      </div>
+                      <p className="mb-1 text-truncate" style={{ maxWidth: '500px' }}>
+                        {letter.content}
+                      </p>
+                      <small className="text-muted">
+                        보낸 시간: {formatDate(letter.sentAt)}
+                      </small>
+                      <br />
+                      <small className="text-muted">
+                        읽은 시간: {letter.readAt ? formatDate(letter.readAt) : "읽지 않음"}
+                      </small>
+                    </div>
+                    <div className="d-flex flex-column align-items-end">
+                      <Link 
+                        to={`/letter/view/${letter.letterId}`} 
+                        className="btn btn-sm btn-outline-primary mb-2"
+                      >
+                        보기
+                      </Link>
+                      <button 
+                        className="btn btn-sm btn-outline-danger"
+                        onClick={() => handleDeleteLetter(letter.letterId)}
+                      >
+                        삭제
+                      </button>
+                    </div>
+                  </ListGroup.Item>
+                ))
+              ) : (
+                <div className="text-center p-5">
+                  <p>받은 쪽지가 없습니다.</p>
+                </div>
+              )}
+            </ListGroup>
           )}
-          <Button variant="danger" onClick={handleDelete}>
-            삭제
-          </Button>
-        </Card.Footer>
-      </Card>
-    </Container>
+
+          {/* 보낸 쪽지 목록 */}
+          {tabType === "sent" && (
+            <ListGroup>
+              {sentLetters.length > 0 ? (
+                sentLetters.map((letter) => (
+                  <ListGroup.Item 
+                    key={`sent-${letter.letterId}`}
+                    className="d-flex justify-content-between align-items-start"
+                  >
+                    <div className="form-check me-2">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        id={`check-${letter.letterId}`}
+                        checked={selectedLetters.includes(letter.letterId)}
+                        onChange={() => handleSelectLetter(letter.letterId)}
+                      />
+                    </div>
+                    <div className="ms-2 me-auto flex-grow-1">
+                      <div className="fw-bold">
+                        <img src={profile} className="mx-2" alt='프로필 사진' width={25} />
+                        사용자 {letter.receiverId} {/* 임시로 ID만 표시 */}
+                      </div>
+                      <p className="mb-1 text-truncate" style={{ maxWidth: '500px' }}>
+                        {letter.content}
+                      </p>
+                      <small className="text-muted">
+                        보낸 시간: {formatDate(letter.sentAt)}
+                      </small>
+                      <br />
+                      <small className="text-muted">
+                        읽은 시간: {letter.readAt ? formatDate(letter.readAt) : "읽지 않음"}
+                      </small>
+                    </div>
+                    <div className="d-flex flex-column align-items-end">
+                      <Link 
+                        to={`/letter/view/${letter.letterId}`} 
+                        className="btn btn-sm btn-outline-primary mb-2"
+                      >
+                        보기
+                      </Link>
+                      <button 
+                        className="btn btn-sm btn-outline-danger"
+                        onClick={() => handleDeleteLetter(letter.letterId)}
+                      >
+                        삭제
+                      </button>
+                    </div>
+                  </ListGroup.Item>
+                ))
+              ) : (
+                <div className="text-center p-5">
+                  <p>보낸 쪽지가 없습니다.</p>
+                </div>
+              )}
+            </ListGroup>
+          )}
+        </Container>
+      </Container>
+    </div>
   );
 };
 
-export default LetterViewComponent;
+export default LetterListComponent;

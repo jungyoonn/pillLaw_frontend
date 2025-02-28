@@ -10,7 +10,7 @@ import OrderList from './myPageChildren/OrderList';
 import PointList from './myPageChildren/PointList';
 import ModifyInfo from './myPageChildren/ModifyInfo';
 import FollowApp from '../follow/test/FollowApp';
-// import FollowList from '../follow/layout/FollowList';
+import LetterReceivedListTest from '../letter/layout/LetterReceivedListTest';
 
 const MyPageLayout = () => {
   const navigate = useNavigate();
@@ -46,10 +46,14 @@ const MyPageLayout = () => {
         return <OrderList memberId={memberId} />;  
       case 'points':
         return <PointList memberId={memberId} />;  
+      case 'letterreceivedlist':
+        return <LetterReceivedListTest activeKey={activeKey}/>;  
       default:
         return <div>선택된 메뉴가 없습니다.</div>;
     }
+    
   };
+  
 
   return (
     <Container style={{ paddingTop: '115.19px' }}>
@@ -90,7 +94,7 @@ const MyPageLayout = () => {
             <Nav.Link eventKey="link-2">즐겨찾기 상품</Nav.Link>
             <Nav.Link eventKey="link-2">내 후기 모아보기</Nav.Link>
             <br />
-            <Nav.Link eventKey="link-2">쪽지함</Nav.Link>
+            <Nav.Link eventKey="letterreceivedlist">쪽지함</Nav.Link>
             <Nav.Link eventKey="followapp">팔로우 / 팔로워</Nav.Link>
             <br />
             <Nav.Link eventKey="link-2">로그아웃</Nav.Link>
