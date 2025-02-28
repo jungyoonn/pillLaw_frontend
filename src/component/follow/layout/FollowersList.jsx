@@ -91,7 +91,7 @@ const handleToggleFollow = async (receiverMno) => {
                     to={`/followsenderpage/${follow.sender.mno}`}
                     className="d-flex align-items-center text-decoration-none text-dark"
                   >
-                    <img src={profile} className="mx-2" alt='프로필 사진' width={25} />
+                    <img src={profile} className="mx-2" alt='userpage' width={25} />
                     <span>{follow.sender.nickname}</span>
                   </Link>
                   

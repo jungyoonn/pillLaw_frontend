@@ -9,7 +9,7 @@ const LetterListComponent = () => {
   const { req } = UseAxios();
   const [searchParams, setSearchParams] = useSearchParams();
   const [receivedLetters, setReceivedLetters] = useState([]);
-  const [sentLetters, setSentLetters] = useState([]);
+  const [sendLetters, setSendLetters] = useState([]);
   const [selectedLetters, setSelectedLetters] = useState([]);
   const mno = localStorage.getItem('mno');
   
@@ -37,13 +37,13 @@ const LetterListComponent = () => {
             console.error("받은 쪽지 API 응답이 배열이 아닙니다:", resp);
             setReceivedLetters([]);
           }
-        } else if (tabType === "sent") {
-          const resp = await req('get', `letter/sent/${mno}`);
+        } else if (tabType === "send") {
+          const resp = await req('get', `letter/send/${mno}`);
           if (Array.isArray(resp)) {
-            setSentLetters(resp);
+            setSendLetters(resp);
           } else {
             console.error("보낸 쪽지 API 응답이 배열이 아닙니다:", resp);
-            setSentLetters([]);
+            setSendLetters([]);
           }
         }
       } catch (error) {
@@ -81,15 +81,15 @@ const LetterListComponent = () => {
   // 단일 쪽지 삭제
   const handleDeleteLetter = async (letterId) => {
     try {
-      const endpoint = tabType === "sent" 
+      const endpoint = tabType === "send" 
         ? `letter/delete/sender/${letterId}`
         : `letter/delete/receiver/${letterId}`;
       
       await req('put', endpoint);
       
       // 삭제 후 목록에서 제거
-      if (tabType === "sent") {
-        setSentLetters(prev => prev.filter(letter => letter.letterId !== letterId));
+      if (tabType === "send") {
+        setSendLetters(prev => prev.filter(letter => letter.letterId !== letterId));
       } else {
         setReceivedLetters(prev => prev.filter(letter => letter.letterId !== letterId));
       }
@@ -109,7 +109,7 @@ const LetterListComponent = () => {
     try {
       // 각 선택된 쪽지에 대해 삭제 요청
       const deletePromises = selectedLetters.map(letterId => {
-        const endpoint = tabType === "sent" 
+        const endpoint = tabType === "send" 
           ? `letter/delete/sender/${letterId}`
           : `letter/delete/receiver/${letterId}`;
         return req('put', endpoint);
@@ -118,8 +118,8 @@ const LetterListComponent = () => {
       await Promise.all(deletePromises);
       
       // 삭제 후 목록에서 제거
-      if (tabType === "sent") {
-        setSentLetters(prev => prev.filter(letter => !selectedLetters.includes(letter.letterId)));
+      if (tabType === "send") {
+        setSendLetters(prev => prev.filter(letter => !selectedLetters.includes(letter.letterId)));
       } else {
         setReceivedLetters(prev => prev.filter(letter => !selectedLetters.includes(letter.letterId)));
       }
@@ -157,8 +157,8 @@ const LetterListComponent = () => {
           </Nav.Item>
           <Nav.Item>
             <Nav.Link 
-              onClick={() => handleTabChange("sent")} 
-              active={tabType === "sent"}
+              onClick={() => handleTabChange("send")} 
+              active={tabType === "send"}
               className="btn btn-pilllaw"
             >
               보낸 쪽지
@@ -204,7 +204,7 @@ const LetterListComponent = () => {
                         {letter.content}
                       </p>
                       <small className="text-muted">
-                        보낸 시간: {formatDate(letter.sentAt)}
+                        보낸 시간: {formatDate(letter.sendAt)}
                       </small>
                       <br />
                       <small className="text-muted">
@@ -236,12 +236,12 @@ const LetterListComponent = () => {
           )}
 
           {/* 보낸 쪽지 목록 */}
-          {tabType === "sent" && (
+          {tabType === "send" && (
             <ListGroup>
-              {sentLetters.length > 0 ? (
-                sentLetters.map((letter) => (
+              {sendLetters.length > 0 ? (
+                sendLetters.map((letter) => (
                   <ListGroup.Item 
-                    key={`sent-${letter.letterId}`}
+                    key={`send-${letter.letterId}`}
                     className="d-flex justify-content-between align-items-start"
                   >
                     <div className="form-check me-2">

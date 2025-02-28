@@ -81,14 +81,14 @@ const LetterViewComponent = () => {
   // 단일 쪽지 삭제
   const handleDeleteLetter = async (letterId) => {
     try {
-      const endpoint = tabType === "sent" 
+      const endpoint = tabType === "send" 
         ? `letter/delete/sender/${letterId}`
         : `letter/delete/receiver/${letterId}`;
       
       await req('put', endpoint);
       
       // 삭제 후 목록에서 제거
-      if (tabType === "sent") {
+      if (tabType === "send") {
         setSentLetters(prev => prev.filter(letter => letter.letterId !== letterId));
       } else {
         setReceivedLetters(prev => prev.filter(letter => letter.letterId !== letterId));
@@ -109,7 +109,7 @@ const LetterViewComponent = () => {
     try {
       // 각 선택된 쪽지에 대해 삭제 요청
       const deletePromises = selectedLetters.map(letterId => {
-        const endpoint = tabType === "sent" 
+        const endpoint = tabType === "send" 
           ? `letter/delete/sender/${letterId}`
           : `letter/delete/receiver/${letterId}`;
         return req('put', endpoint);

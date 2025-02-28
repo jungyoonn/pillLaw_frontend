@@ -24,11 +24,11 @@ const LetterListComponent = () => {
   // 닉네임 가져오기 함수
   const fetchNickname = async (userId) => {
     try {
-      const response = await req('get', `member/nickname/${userId}`);
-      return response.nickname || `사용자${userId}`;
+      const response = await req('get', `member/nickname/${mno}`);
+      return response.nickname || `사용자${mno}`;
     } catch (error) {
-      console.error(`사용자 ${userId}의 닉네임을 가져올 수 없습니다:`, error);
-      return `사용자${userId}`;
+      console.error(` ${userId}의 닉네임을 가져올 수 없습니다:`, error);
+      return `${mno}`;
     }
   };
 
@@ -280,12 +280,12 @@ const LetterListComponent = () => {
           )}
 
           {/* 보낸 쪽지 목록 */}
-          {tabType === "sent" && (
+          {tabType === "send" && (
             <ListGroup>
               {sentLetters.length > 0 ? (
                 sentLetters.map((letter) => (
                   <ListGroup.Item 
-                    key={`sent-${letter.letterId}`}
+                    key={`send-${letter.letterId}`}
                     className="d-flex justify-content-between align-items-start"
                   >
                     <div className="form-check me-2">

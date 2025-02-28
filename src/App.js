@@ -37,13 +37,13 @@ import PaymentPage from './component/order/PaymentPage';
 import FollwSenderPage from './component/follow/layout/FollowSenderPage';
 import FollowIsBack from './component/follow/layout/FollowIsBack';
 import FollowApp from './component/follow/test/FollowApp';
-import LetterReceivedListTest from './component/letter/test/LetterReceivedListTest';
+import LetterReceivedListTest from './component/letter/test/LetterListComponent';
 import LetterHeader from './component/letter/layout/LetterHeader';
 import ProfilePageLayout from './component/member/ProfilePageLayout';
 import LetterSenderListTest from './component/letter/test/LetterSenderListTest';
 import LetterViewComponent from './component/letter/layout/LetterViewComponent';
 import LetterListLayOutTest from './component/letter/SendLetterPage';
-import LetterListComponent from './component/letter/test/LetterReceivedListTest';
+import LetterListComponent from './component/letter/test/LetterListComponent';
 
 
 function App() {
