@@ -43,6 +43,7 @@ import LetterReceivedListTest from './component/letter/layout/LetterReceivedList
 import LetterHeader from './component/letter/layout/LetterHeader';
 import LetterListComponent from './component/follow/layout/LetterListComponent';
 import LetterViewComponent from './component/letter/layout/LetterViewComponent';
+import ProfilePageLayout from './component/member/ProfilePageLayout';
 
 
 function App() {
@@ -84,6 +85,7 @@ function App() {
             <Route path='/order/test' element={<PaymentPage />} />
             <Route path='/order/fail' element={<OrderFailed />} />
             <Route path='/mypage' element={<MyPageLayout />} />
+            <Route path='/userpage/:id' element={<ProfilePageLayout />} />
           </Route>
 
           <Route element={<SignLayout />}>
