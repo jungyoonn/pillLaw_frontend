@@ -57,7 +57,7 @@ const ProfileCard = ({nickname}) => {
       <Row className="card-body p-0 mt-2">
         <Col xs lg="7">
           <div className="px-2 ms-4 mb-0 fs-14"><FontAwesomeIcon icon={faCoins} className="fw-bold header-font me-1" />&nbsp;포인트 1500p</div>
-          <div className="px-2 ms-4 mt-0 fs-14"><FontAwesomeIcon icon={faPaperPlane} className="fw-bold header-font me-1" />&nbsp;쪽지{receiverId.length}개</div>
+          <div className="px-2 ms-4 mt-0 fs-14"><FontAwesomeIcon icon={faPaperPlane} className="fw-bold header-font me-1" />&nbsp;쪽지{receiverId}개</div>
         </Col>
         <Col className="mt-2">
           <Button variant='pilllaw' className="btn btn-pilllaw fs-14" onClick={handleClick} >로그아웃</Button>
