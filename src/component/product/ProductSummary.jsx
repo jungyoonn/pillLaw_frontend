@@ -167,7 +167,7 @@ const ProductSummary = ({ product }) => {
         <Col xs={2}></Col>
         <Col className="d-flex justify-content-between">
           <Button variant="pilllaw" onClick={handleAddToCart}>
-          <FontAwesomeIcon icon={faCartShopping} /> 장바구니에 담기
+          <FontAwesomeIcon icon={faCartShopping} productImage={product.imageUrl}/> 장바구니에 담기
           </Button>
           <Button variant="pilllaw" onClick={goToCart}>
             <FontAwesomeIcon icon={faShare} size="xl" />&nbsp; 장바구니로 가기
