@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { Row, Col, Form } from 'react-bootstrap';
 import Button from '../common/Button';
+import { usingRuleText } from "./UsingRule";
+import { usingInfoText } from "./UsingInfo";
+
 
 const SignTerms = ({onSubmit}) => {
   const [terms, setTerms] = useState({
@@ -78,7 +81,7 @@ const SignTerms = ({onSubmit}) => {
                 onChange={handleCheckboxChange}
               />
             </Form.Label>
-            <Form.Control as="textarea" rows={5} readOnly className="mt-2 scroll" />
+            <Form.Control as="textarea" rows={7} readOnly className="mt-2 scroll" value={usingRuleText} />
 
             <Form.Label className="mt-3" htmlFor="info">
               <Form.Check
@@ -90,7 +93,7 @@ const SignTerms = ({onSubmit}) => {
                 onChange={handleCheckboxChange}
               />
             </Form.Label>
-            <Form.Control as="textarea" rows={5} readOnly className="mt-2 scroll" />
+            <Form.Control as="textarea" rows={7} readOnly className="mt-2 scroll" value={usingInfoText} />
           </div>
 
           <div className="form-check-reverse text-start">
