@@ -2,39 +2,43 @@ import React, { useState, useRef, useEffect } from "react";
 import { Container, Modal } from "react-bootstrap";
 import UseAxios from '../../../hooks/UseAxios';
 
-const LetterListLayOutTest = () => {
+const LetterSendComponent = () => {
   const [showModal, setShowModal] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [receiverId, setReceiverId] = useState("");
+  const [receiverNickname, setReceiverNickname] = useState("");
   const [content, setContent] = useState("");
   const [showToast, setShowToast] = useState(false);
-  const [isFollowBack, setIsFollowBack] = useState([]);
+  const [mutualFollows, setMutualFollows] = useState([]);
   const [sentAt, setSentAt] = useState(null);
   const [readAt, setReadAt] = useState(null);
   const dropdownRef = useRef(null);
   const mno = localStorage.getItem('mno');
-  const { req } = UseAxios('');
+  const { req } = UseAxios();
 
   useEffect(() => {
-    const mno = localStorage.getItem("senderFollowId");
     if (!mno) return;
 
-    const fetchIsBackFollows = async () => {
+    const fetchMutualFollows = async () => {
       try {
-        const response = await req('get', `/api/follow/${mno}/${mno}`);
-        if (response.data) {
-          setIsFollowBack(response.data);
+        // 맞팔 목록 가져오기
+        const response = await req('get', `follow/followBack/${mno}`);
+        console.log("맞팔 목록:", response);
+        
+        if (Array.isArray(response)) {
+          setMutualFollows(response);
         }
       } catch (error) {
-        console.error("상호 팔로우 목록 가져오기 실패:", error);
+        console.error("맞팔 목록 가져오기 실패:", error);
       }
     };
 
-    fetchIsBackFollows();
-  }, []);
+    fetchMutualFollows();
+  }, [mno, req]);
 
-  const handleRecipientSelect = (mno) => {
-    setReceiverId(mno);
+  const handleRecipientSelect = (user) => {
+    setReceiverId(user.sender.mno);
+    setReceiverNickname(user.sender.nickname);
     setShowDropdown(false);
   };
 
@@ -45,24 +49,28 @@ const LetterListLayOutTest = () => {
     }
 
     try {
-      const senderId = localStorage.getItem("senderFollowId");
-      if (!senderId) return;
-
-      const response = await req ('post', '/api/letter/send', {
-        senderId: senderId,
-        receiverId: receiverId,
+      // 쪽지 보내기 API 호출
+      const response = await req('post', 'letter/send', {
+        senderId: parseInt(mno),
+        receiverId: parseInt(receiverId),
         content: content
       });
-      if (response.data) {
-        setSentAt(response.data.sentAt);
-        setReadAt(response.data.readAt);
+      
+      console.log("쪽지 전송 응답:", response);
+      
+      // 응답 데이터 설정
+      if (response) {
+        setSentAt(response.sentAt);
+        setReadAt(response.readAt);
       }
 
       setShowToast(true);
     } catch (error) {
       console.error("쪽지 전송 실패:", error);
+      alert("쪽지 전송에 실패했습니다.");
     }
   };
+
   const formatDateTime = (dateTime) => {
     return dateTime ? new Date(dateTime).toLocaleString() : "확인되지 않음";
   };
@@ -70,6 +78,7 @@ const LetterListLayOutTest = () => {
   const handleCloseModal = () => {
     setShowModal(false);
     setReceiverId("");
+    setReceiverNickname("");
     setContent("");
   };
 
@@ -77,6 +86,20 @@ const LetterListLayOutTest = () => {
     setShowToast(false);
     handleCloseModal();
   };
+
+  // 외부 클릭 시 드롭다운 닫기
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <Container style={{paddingTop: '115.19px'}}>
@@ -93,27 +116,31 @@ const LetterListLayOutTest = () => {
         </Modal.Header>
         <Modal.Body>
           <div className="mb-3 position-relative" ref={dropdownRef}>
-            <label className="form-label fw-bold">받는 사람:{receiverId} </label>
+            <label className="form-label fw-bold">받는 사람: </label>
             <input
               type="text"
               className="form-control"
               placeholder="받는 사람 선택"
-              value={receiverId}
+              value={receiverNickname}
               readOnly
               onClick={() => setShowDropdown(!showDropdown)}
             />
             {showDropdown && (
               <div className="list-group mt-1 custom-scrollbar" 
                 style={{ position: "absolute", zIndex: 1050, width: "100%", border:"1px solid", borderRadius:"5px", maxHeight: "200px", overflowY:"auto"}}>
-                {isFollowBack.map((user, index) => (
-                  <button
-                    key={index}
-                    className="list-group-item list-group-item-action"
-                    onClick={() => handleRecipientSelect(user.nickname)}
-                  >
-                    {user.nickname}
-                  </button>
-                ))}
+                {mutualFollows.length > 0 ? (
+                  mutualFollows.map((follow) => (
+                    <button
+                      key={follow.sender.mno}
+                      className="list-group-item list-group-item-action"
+                      onClick={() => handleRecipientSelect(follow)}
+                    >
+                      {follow.sender.nickname}
+                    </button>
+                  ))
+                ) : (
+                  <div className="list-group-item">맞팔 목록이 없습니다</div>
+                )}
               </div>
             )}
           </div>
@@ -153,9 +180,9 @@ const LetterListLayOutTest = () => {
           }}
         >
           <div className="bg-white p-4 rounded shadow" style={{ minWidth: "300px", textAlign: "center" }}>
-            <p className="mb-3">쪽지가 {receiverId}님에게 전송되었습니다.</p>
-            <p>보낸 시간: {formatDateTime(sentAt)}</p>
-            <p>읽은 시간: {formatDateTime(readAt)}</p>
+            <p className="mb-3">쪽지가 {receiverNickname}님에게 전송되었습니다.</p>
+            {/* <p>보낸 시간: {formatDateTime(sentAt)}</p>
+            <p>읽은 시간: {formatDateTime(readAt)}</p> */}
             <button type="button" className="btn btn-pilllaw" onClick={handleToastConfirm}>
               확인
             </button>
@@ -166,4 +193,4 @@ const LetterListLayOutTest = () => {
   );
 };
 
-export default LetterListLayOutTest;
+export default LetterSendComponent;

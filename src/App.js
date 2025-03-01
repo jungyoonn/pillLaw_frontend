@@ -78,7 +78,7 @@ function App() {
             <Route path='/letterlistcomponent' element={<LetterListComponent />}/>
             <Route path='/letterviewcomponent' element={<LetterViewComponent />}/>
 
-            <Route path='/senderletterpage' element={<SendLetterPage />}/>
+            {/* <Route path='/senderletterpage' element={<SendLetterPage />}/> */}
             <Route path='/sendletter33' element={<SendLetterPage33 />}/>
             <Route path='/cart' element={<MyCart />} />
             <Route path='/order' element={<MyOrder />} />
