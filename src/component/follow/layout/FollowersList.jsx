@@ -112,13 +112,14 @@ const FollowersList = () => {
                   
                   {/* 맞팔 상태에 따른 버튼 */}
                   {follow.isFollowBack ? (
-                    <Button 
-                      variant="pilllaw" 
-                      className="btn btn-secondary btn-sm"
-                      onClick={() => handleToggleFollow(follow.sender.mno)}
-                    >
-                      팔로잉
-                    </Button>
+                    // <Button 
+                    //   variant="pilllaw" 
+                    //   className="btn btn-secondary btn-sm"
+                    //   onClick={() => handleToggleFollow(follow.sender.mno)}
+                    // >
+                    //   팔로잉
+                    // </Button>
+                    <p className="fs-14 fw-bold text-secondary mx-3 mb-1 mt-1">팔로잉</p>
                   ) : (
                     <Button 
                       variant="pilllaw" 

@@ -396,16 +396,16 @@ body {
 
 .custom-follow .nav-link {
   /* 기본 스타일 */
-  color: var(--primary-color); /* 글자 색상 (원하는 색상으로 변경) */
-  border: none;   /* 테두리 제거 */
-  background-color: #7da9a70c !important;
-  padding: 0.7rem 1rem;
-  transition: all 0.3s ease;
+  color: var(--primary-color) !important; /* 글자 색상 (원하는 색상으로 변경) */
+  border: none !important;   /* 테두리 제거 */
+  background-color: #7da9a71f !important;
+  padding: 0.7rem 1rem !important;
+  transition: all 0.3s ease !important;
 }
 
 /* Hover 시 스타일 */
 .custom-follow .nav-link:hover {
-  color: var(--header-color); /* hover 시 글자 색상 */
+  color: var(--active-color); /* hover 시 글자 색상 */
   /* background-color: rgba(0, 123, 255, 0.05); 아주 연한 배경 (선택사항) */
   border: none !important;
   outline: none !important;  /* 기본 outline 제거 */
@@ -414,7 +414,7 @@ body {
 
 /* Focus 시 스타일 */
 .custom-follow .nav-link:focus {
-  color: var(--header-color);; /* focus 시 글자 색상 */
+  color: var(--active-color) !important; /* focus 시 글자 색상 */
   box-shadow: none; /* 기본 focus 테두리 제거 */
   border: none !important;
   outline: none !important;  /* 기본 outline 제거 */
@@ -423,9 +423,8 @@ body {
 
 /* Active 시 스타일 */
 .custom-follow .nav-link.active,
-.custom-follow .nav-item .active,
-.custom-follow .active {
-  color: var(--active-color) !important;  /* !important 추가 */
+.custom-follow .nav-item .active {
+  color: var(--header-color) !important;  /* !important 추가 */
   font-weight: bold !important;
   background-color: var(--background-color) !important;
   border: none !important;
