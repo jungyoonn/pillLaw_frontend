@@ -169,7 +169,7 @@ const ProductSummary = ({ product }) => {
         <Col xs={2}></Col>
         <Col className="d-flex justify-content-start gap-2">  {/* justify-content-end로 우측 정렬하고 gap-2로 간격 추가 */}
           <Button variant="pilllaw" onClick={handleAddToCart}>
-            <FontAwesomeIcon icon={faCartShopping} productImage={product.imageUrl} /> 장바구니 담기
+            <FontAwesomeIcon icon={faCartShopping} productImage={product.imageUrl} />&nbsp; 상품 담기
           </Button>
           <Button variant="pilllaw" onClick={goToCart}>
             <FontAwesomeIcon icon={faShare} />&nbsp; 장바구니 가기
