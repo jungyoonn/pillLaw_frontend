@@ -8,11 +8,13 @@ import {
   faTruck,
   faCartShopping,
   faShare,
+  faCalendarCheck
 } from "@fortawesome/free-solid-svg-icons";
 import { Col, Row, Button, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from '../../hooks/AuthContext';
 import UseAxios from '../../hooks/UseAxios'; // axios 훅
+import ToastMsg from "../common/ToastMsg";
 
 
 
@@ -22,14 +24,15 @@ const ProductSummary = ({ product }) => {
   const [selectedOption, setSelectedOption] = useState("30");
   const [cno, setCno] = useState(null);
   const navigate = useNavigate();
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastTitle, setToastTitle] = useState("");
 
   const fetchCartCno = useCallback(async () => {
     try {
       const response = await req("get", `v1/cart/${mno}`);
-      console.log("🔍 전체 응답 데이터:", response);
       setCno(response); // 👈 response 자체가 13이므로 이렇게 설정!
     } catch (error) {
-      console.error("장바구니 조회 실패:", error);
     }
   }, [mno]); // mno가 변경될 때마다 새로 정의되도록 의존성 추가
 
@@ -39,17 +42,38 @@ const ProductSummary = ({ product }) => {
     }
   }, [mno, fetchCartCno]); // mno나 fetchCartCno가 변경될 때마다 실행되도록 설정
 
+  useEffect(() => {
+    if (showToast) {
+      const timer = setTimeout(() => {
+        setShowToast(false); // 3초 후 토스트 닫기
+      }, 3000);
+
+      return () => clearTimeout(timer); // 클린업 (안전하게 정리)
+    }
+  }, [showToast]);
+
+
   const goToCart = () => {
+    if (!mno) {
+      setToastMessage("로그인이 필요한 서비스입니다.");
+      setToastTitle("실패");
+      setShowToast(true);
+      return;
+    }
     navigate("/cart");
   };
 
   const handleAddToCart = async () => {
     if (!mno) {
-      alert("로그인이 필요합니다.");
+      setToastMessage("로그인이 필요한 서비스입니다.");
+      setToastTitle("실패");
+      setShowToast(true);
       return;
     }
     if (!cno) {
-      alert("장바구니를 불러올 수 없습니다.");
+      setToastMessage("장바구니가 생성되지 못했습니다. 로그아웃 후 다시 시도해주세요");
+      setToastTitle("성공");
+      setShowToast(true);
       return;
     }
     try {
@@ -61,17 +85,19 @@ const ProductSummary = ({ product }) => {
       };
       const response = await req("post", `v1/cart/${cno}/items`, cartItemDto);
       console.log("장바구니 추가 성공:", response);
-      alert("장바구니에 추가되었습니다.");
+      setToastMessage("상품이 장바구니에 추가되었습니다.");
+      setToastTitle("성공");
+      setShowToast(true);
 
     } catch (error) {
       console.error("장바구니 추가 실패:", error);
-      alert("장바구니 추가에 실패했습니다.");
+      setToastMessage("다시 시도해 주세요");
+      setToastTitle("실패");
+      setShowToast(true);
     }
   };
 
-  console.log("🧐 ProductSummary에서 받은 product:", product);
   if (!product || Object.keys(product).length === 0) {
-    console.warn("⚠️ ProductSummary에서 product가 유효하지 않음:", product);
     return <div>상품 정보를 불러올 수 없습니다.</div>;
   }
 
@@ -119,16 +145,6 @@ const ProductSummary = ({ product }) => {
         </Col>
       </Row>
 
-      {/* 구독 권유 버튼 */}
-      <Row>
-        <Col className="d-grid mt-4">
-          <Button variant="pilllaw" className="btn-block">
-            필로 구독 시 배송비 무료! 구독하러 가기 &nbsp;&nbsp;
-            <FontAwesomeIcon icon={faShare} size="xl" />
-          </Button>
-        </Col>
-      </Row>
-
       <Row className="mt-4">
         <Col className="text-start">
           <FontAwesomeIcon icon={faTruck} size="xl" /> &nbsp; <span>배송비</span>
@@ -136,59 +152,40 @@ const ProductSummary = ({ product }) => {
         </Col>
       </Row>
 
-      {/* <Row className="mt-5">
-        <Col xs={1}></Col>
-        <Col>
-          <Form.Select className="fs-16" value={selectedOption} onChange={(e)=> setSelectedOption(e.target.value)}>
-            <option className="text-secondary" disabled>
-              (필수)옵션 선택
-            </option>
-            <option className="fs-12">30일 &nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;&nbsp;</option>
-            <option className="fs-12">60일 &nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;&nbsp; </option>
-            <option className="fs-12">90일 &nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;&nbsp; </option>
-          </Form.Select>
-        </Col>
-        <Col xs={1}></Col>
-      </Row> */}
-
-      <Row className="mt-5">
-        <Col xs={1}></Col>
-        <Col>
-          <Form.Select className="fs-16" value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)}>
+      <Row className="mt-4">
+        <Col className="d-flex align-items-center gap-2">
+          <FontAwesomeIcon icon={faCalendarCheck} size="xl" className="align-middle me-2" />
+          <Form.Select className="fs-16 w-25" value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)}>
             <option value="30">30일</option>
             <option value="60">60일</option>
             <option value="90">90일</option>
           </Form.Select>
+          <span className="text-muted">섭취기간을 선택해주세요</span>
         </Col>
-        <Col xs={1}></Col>
       </Row>
 
+    
       <Row className="mt-5">
         <Col xs={2}></Col>
-        <Col className="d-flex justify-content-between">
+        <Col className="d-flex justify-content-start gap-2">  {/* justify-content-end로 우측 정렬하고 gap-2로 간격 추가 */}
           <Button variant="pilllaw" onClick={handleAddToCart}>
-          <FontAwesomeIcon icon={faCartShopping} productImage={product.imageUrl}/> 장바구니에 담기
+            <FontAwesomeIcon icon={faCartShopping} productImage={product.imageUrl} /> 장바구니 담기
           </Button>
           <Button variant="pilllaw" onClick={goToCart}>
-            <FontAwesomeIcon icon={faShare}/>&nbsp; 장바구니로 가기
+            <FontAwesomeIcon icon={faShare} />&nbsp; 장바구니 가기
           </Button>
         </Col>
         <Col xs={2}></Col>
       </Row>
 
-      
-      {/* <Row className="mt-5">
-        <Col xs={2}></Col>
-        <Col className="d-flex justify-content-between">
-          <Button variant="pilllaw">
-            <FontAwesomeIcon icon={faCartShopping} /> &nbsp; 장바구니
-          </Button>
-          <Button variant="pilllaw">
-            <FontAwesomeIcon icon={faCoins} /> &nbsp; 구매하기
-          </Button>
-        </Col>
-        <Col xs={2}></Col>
-      </Row> */}
+      {showToast && (
+        <ToastMsg
+          title={toastTitle}
+          msg={toastMessage}
+          state={showToast}  // 토스트 표시 상태
+          nav={null}  // 토스트 버튼 클릭 시 이동할 경로
+        />
+      )}
     </>
   );
 };

@@ -184,7 +184,7 @@ const OrderList = ({ memberId }) => {
 
 
 
-                            <hr></hr>
+                            <hr />
 
                             {deliveryInfo && (
                                 <>
@@ -211,33 +211,34 @@ const OrderList = ({ memberId }) => {
                                     </Row>
                                 </>
                             )}
-
-                            <Card className='mt-3'>
-                                <Table responsive>
-                                    <thead>
-                                        <tr>
-                                            <th>주문상품목록</th>
-                                            <th></th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {orderItems.length > 0 ? (
-                                            orderItems.map((item) => (
+                            {/* 주문 아이템이 없을 때 처리 */}
+                         
+                            {orderItems.length === 0 ? (
+                                <>
+                                    <p className="text-center fw-bold">주문상품 및 배송정보를 찾을 수 없습니다.<br></br> 고객센터에 문의 바랍니다.</p>
+                                </>
+                            ) : (
+                                <Card className='mt-3'>
+                                    <Table responsive>
+                                        <thead>
+                                            <tr>
+                                                <th>주문상품목록</th>
+                                                <th></th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {orderItems.map((item) => (
                                                 <tr key={item.itemId}>
                                                     <td>{item.name}({item.subday}일)</td>
                                                     <td>{item.quantity}개</td>
                                                     <td>{item.price.toLocaleString()}원</td>
                                                 </tr>
-                                            ))
-                                        ) : (
-                                            <tr>
-                                                <td colSpan="4" className="text-center">주문 아이템이 없습니다.</td>
-                                            </tr>
-                                        )}
-                                    </tbody>
-                                </Table>
-                            </Card>
+                                            ))}
+                                        </tbody>
+                                    </Table>
+                                </Card>
+                            )}
                         </>
                     )}
                 </Modal.Body>

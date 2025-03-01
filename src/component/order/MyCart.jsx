@@ -61,7 +61,7 @@ const MyCart = () => {
               return {
                 ...item,
                 name: product.pname || "알수없음",  // 상품명
-                img: "https://placehold.co/60",  // 기본 이미지
+                img: product.imageUrl || "https://placehold.co/60",  // 실제 이미지 URL로 변경
                 option: getOption(item.subday),  // 옵션 설정
               };
             } catch (error) {
