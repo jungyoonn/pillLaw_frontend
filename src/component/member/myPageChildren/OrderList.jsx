@@ -6,7 +6,7 @@ import { formatDate, formatDateTime } from '../../../utils/formatDate'; // 날�
 
 const OrderList = ({ memberId }) => {
     const [orders, setOrders] = useState([]);
-    const [visibleCount, setVisibleCount] = useState(10);
+    const [visibleCount, setVisibleCount] = useState(5);
     const [orderItems, setOrderItems] = useState([]); // 주문 아이템 상태 추가
     const [showModal, setShowModal] = useState(false); // 모달 상태 관리
     const [selectedOrder, setSelectedOrder] = useState(null); // 선택된 주문
@@ -24,7 +24,7 @@ const OrderList = ({ memberId }) => {
                 setOrders(sortedOrders); // 정렬된 주문 데이터 저장
 
                 // 주문 데이터가 변경되면 visibleCount를 초기화 (10개로 설정)
-                setVisibleCount(10);
+                setVisibleCount(5);
                 console.log("주문 데이터:", sortedOrders);  // 데이터 확인용 로그
             } catch (error) {
                 console.error('주문 내역을 가져오는 데 실패했습니다:', error);
@@ -37,7 +37,7 @@ const OrderList = ({ memberId }) => {
     }, [memberId, req]);
 
     const loadMoreOrders = () => {
-        setVisibleCount(visibleCount + 10);  // 더보기 버튼 클릭 시 10개씩 추가
+        setVisibleCount(visibleCount + 5);  // 더보기 버튼 클릭 시 10개씩 추가
     };
 
     const fetchOrderItems = async (ono) => {
@@ -200,8 +200,8 @@ const OrderList = ({ memberId }) => {
                                         <Col xs={3} className="fw-bold">배송상태</Col>
                                         <Col xs={9}>
                                             {deliveryInfo.deliveryStatus === 'READY' && '결제 완료(배송 준비중)'}
+                                            {deliveryInfo.deliveryStatus === 'CANCELLED' && '결제 취소'}
                                             {deliveryInfo.deliveryStatus === 'SHIPPED' && '배송 중'}
-                                            {deliveryInfo.deliveryStatus === 'CANCELLED' && '취소'}
                                             {deliveryInfo.deliveryStatus === 'FINISHED' && '배송완료'}
                                         </Col>
                                     </Row>

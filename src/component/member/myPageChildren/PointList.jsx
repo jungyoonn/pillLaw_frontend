@@ -7,7 +7,7 @@ import { formatDate, formatDateTime } from '../../../utils/formatDate'; // 날�
 const PointHistory = ({ memberId }) => {
     const [pointHistory, setPointHistory] = useState([]);  // 포인트 내역
     const [totalPoints, setTotalPoints] = useState(0);  // 총 포인트
-    const [visibleCount, setVisibleCount] = useState(10);  // 보이는 포인트 내역 수
+    const [visibleCount, setVisibleCount] = useState(5);  // 보이는 포인트 내역 수
     const { req } = UseAxios("http://localhost:8080/api/v1");
     const navigate = useNavigate();
 
@@ -36,7 +36,7 @@ const PointHistory = ({ memberId }) => {
 
 
     const loadMorePoints = () => {
-        setVisibleCount(visibleCount + 10);  // 더보기 버튼 클릭 시 10개씩 추가
+        setVisibleCount(visibleCount + 5);  // 더보기 버튼 클릭 시 10개씩 추가
     };
 
     return (
