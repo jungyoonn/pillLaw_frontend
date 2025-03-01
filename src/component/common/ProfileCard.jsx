@@ -29,7 +29,7 @@ const ProfileCard = ({ nickname }) => {
     const fetchData = async () => {
       try {
         const respFollw = await req('get', `follow/count/${mno}`);
-        const respLetter = await req('get', `letter/received/${mno}`);
+        const respLetter = await req('get', `letter/receiverId/${mno}`);
         const totalResponse = await req('get', `v1/point/${mno}/total`);
         
         
