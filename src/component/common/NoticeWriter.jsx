@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { Editor } from "@tinymce/tinymce-react";
 import UseAxios from '../../hooks/UseAxios';
-import {useAuth} from '../../hooks/AuthContext';
+import { useAuth } from '../../hooks/AuthContext';
 
 function NoticeWriter({ show, handleClose, onNoticeAdded }) {
   const { mno } = useAuth(); // 로그인된 회원 ID
@@ -39,20 +39,20 @@ function NoticeWriter({ show, handleClose, onNoticeAdded }) {
     };
 
     try {
-      console.log("📌 공지사항 등록 요청 전송:", noticeData);
-      const response = await req("post", "api/v1/notice/register", noticeData, {
+      console.log("전송:", noticeData);
+      const response = await req("post", "v1/notice/register", noticeData, {
         "Content-Type": "application/json",
       });
 
-      console.log("✅ 공지사항 등록 응답:", response);
+      console.log("응답:", response);
 
       if (response) {
         alert("공지사항이 성공적으로 등록되었습니다!");
-        setTitle(""); 
+        setTitle("");
         setContent("");
 
         if (onNoticeAdded) {
-          onNoticeAdded(response); 
+          onNoticeAdded(response);
         }
 
         handleClose();
@@ -88,24 +88,26 @@ function NoticeWriter({ show, handleClose, onNoticeAdded }) {
           <Form.Group controlId="noticeContent" className="mb-3">
             <Form.Label>공지사항 내용</Form.Label>
             <Editor
-              apiKey={process.env.REACT_APP_TINYMCE_API_KEY} // TinyMCE API 키 사용
+              apiKey={process.env.REACT_APP_TINYMCE_API_KEY} // TinyMCE API 키
               initialValue=""
               init={{
                 resize: false,
                 height: 250,
                 menubar: true,
                 plugins: [
-                  "advlist autolink lists link charmap print preview anchor",
-                  "searchreplace visualblocks code fullscreen",
-                  "insertdatetime media table paste code help wordcount",
-                ],
+                  "advlist", "autolink", "lists", "link", "charmap", "print", "preview", "anchor",
+                  "searchreplace", "visualblocks", "code", "fullscreen",
+                  "insertdatetime", "media", "table", "paste", "code", "help", "wordcount"
+                ], 
                 toolbar:
-                  "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media code",
+                  "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | " +
+                  "bullist numlist outdent indent | link image media code",
                 branding: false,
                 statusbar: false,
               }}
               onEditorChange={(newContent) => setContent(newContent)}
             />
+
           </Form.Group>
 
           <Modal.Footer>
@@ -123,4 +125,3 @@ function NoticeWriter({ show, handleClose, onNoticeAdded }) {
 }
 
 export default NoticeWriter;
-  
