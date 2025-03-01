@@ -59,6 +59,7 @@ function App() {
             <Route path="/posts/:id" element={<PostDetail />} /> */}
             {/* <Route path='FollowListt' element={<FollowListt />} /> */}
 
+            <Route path='/notice' element={<Notice/> }/>
             <Route path='/profilecard' element={<ProfileCard/> }/>
             <Route path='/followlist' element={<FollowList/> }/>
             <Route path='/followerslist' element={<FollowersList/> }/>
