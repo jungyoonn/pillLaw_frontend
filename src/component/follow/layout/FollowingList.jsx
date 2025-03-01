@@ -18,7 +18,7 @@ const FollowingList = () => {
 
     const fetchData = async () => {
       try {
-        const resp = await req('get', `follow/sender/${mno}`);
+        const resp = await req('get', `follow/following/${mno}`);
         console.log(resp);
         console.log("배열 여부:", Array.isArray(resp));
         setFollow([...resp]);
