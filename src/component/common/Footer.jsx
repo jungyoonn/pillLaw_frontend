@@ -27,12 +27,14 @@ const Footer = () => {
             <Col className="mt-3 text-center">
               <div className=" clearfix">
                 <div className=" float-start">
-                  <Link to={"/"} className="header-font text-decoration-none fw-bold"><FontAwesomeIcon icon={faGithub} className="fa-2xl header-font" /></Link>
-                  <Link to={"/"} className="header-font text-decoration-none fw-bold fs-14"><br />GitHub 방문하기</Link>
+                  <Link to={"https://github.com/jungyoonn/pillLaw_backend"} className="header-font text-decoration-none fw-bold"><FontAwesomeIcon icon={faGithub} className="fa-2xl header-font" /></Link>
+                  <Link to={""} className="header-font text-decoration-none fw-bold fs-14"><br />GitHub 방문하기</Link>
+                  <Link to={"https://github.com/jungyoonn/pillLaw_backend"} className="header-font text-decoration-none fw-bold fs-12"><br /> backend</Link>
+                  <Link to={"https://github.com/jungyoonn/pillLaw_frontend"} className="header-font text-decoration-none fw-bold fs-12"><br /> frontend</Link>
                 </div>
                 <div className="mt-3">
-                  <Link to={"/"} className="header-font text-decoration-none fw-bold"><FontAwesomeIcon icon={faDatabase} className="fa-2xl header-font" /></Link>
-                  <Link to={"/"} className="header-font text-decoration-none fw-bold fs-14"><br />ERD diagram</Link>
+                  <Link to={"https://dbdiagram.io/d/pillLaw-67932e2237f5d6cbebc4efcd"} className="header-font text-decoration-none fw-bold"><FontAwesomeIcon icon={faDatabase} className="fa-2xl header-font" /></Link>
+                  <Link to={"https://dbdiagram.io/d/pillLaw-67932e2237f5d6cbebc4efcd"} className="header-font text-decoration-none fw-bold fs-14"><br />ERD diagram</Link>
                 </div>
               </div>
             </Col>
