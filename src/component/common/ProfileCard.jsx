@@ -29,7 +29,7 @@ const ProfileCard = ({ nickname }) => {
     const fetchData = async () => {
       try {
         const respFollw = await req('get', `follow/count/${mno}`);
-        const respLetter = await req('get', `letter/receiverId/${mno}`);
+        const respLetter = await req('get', `letter/received/${mno}`);
         const totalResponse = await req('get', `v1/point/${mno}/total`);
         
         
@@ -61,7 +61,7 @@ const ProfileCard = ({ nickname }) => {
       <Row className="card-body p-0 mt-2">
         <Col xs lg="7">
         <div className="px-2 ms-4 mb-0 fs-14"><FontAwesomeIcon icon={faCoins} className="fw-bold header-font me-1" />&nbsp;포인트 {totalPoints.toLocaleString()}P</div>
-        <div className="px-2 ms-4 mt-0 fs-14"><FontAwesomeIcon icon={faPaperPlane} className="fw-bold header-font me-1" />&nbsp;쪽지 {receiverId}개</div>
+        <div className="px-2 ms-4 mt-0 fs-14"><FontAwesomeIcon icon={faPaperPlane} className="fw-bold header-font me-1" />&nbsp;쪽지 {receiverId || 0}개</div>
         </Col>
         <Col className="mt-2">
           <Button variant='pilllaw' className="btn btn-pilllaw fs-14" onClick={handleClick} >로그아웃</Button>
@@ -69,10 +69,10 @@ const ProfileCard = ({ nickname }) => {
       </Row>
       <Row className="row mt-4 d-flex justify-content-center">
         <Col>
-          <p className="fs-14 fw-bold text-center ms-2"><Link to={"/mypage?tab=followapp&type=following"} className="text-pilllaw" >팔로잉 {following}명</Link></p>
+          <p className="fs-14 fw-bold text-center ms-2"><Link to={"/mypage?tab=followapp&type=following"} className="text-pilllaw" >팔로잉 {following || 0}명</Link></p>
         </Col>
         <Col>
-          <p className="fs-14 fw-bold text-center me-2"><Link to={"/mypage?tab=followapp&type=followers"} className="text-pilllaw">팔로워 {follow}명</Link></p>
+          <p className="fs-14 fw-bold text-center me-2"><Link to={"/mypage?tab=followapp&type=followers"} className="text-pilllaw">팔로워 {follow || 0}명</Link></p>
         </Col>
       </Row>
     </>
