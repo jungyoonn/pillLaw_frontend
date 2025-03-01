@@ -86,7 +86,7 @@ const UserInfo = () => {
 
           {user.followBack && <div className='mt-5 mb-5'>
             <FontAwesomeIcon icon={faPaperPlane} className='text-pilllaw' />
-            <Link to={"/senderletterpage"} className='text-decoration-none'>
+            <Link to={"/letterlistlayouttest"} className='text-decoration-none'>
               <span className='fs-14 header-font fw-bold mx-2'>쪽지 보내기</span>
             </Link>
           </div>}
