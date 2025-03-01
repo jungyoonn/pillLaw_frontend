@@ -112,7 +112,7 @@ const LetterSendComponent = () => {
               <FontAwesomeIcon icon={faEnvelope} className="text-pilllaw fa-3x mb-3" />
               <h3 className="fw-bold text-pilllaw mb-4">쪽지 보내기</h3>
               <p className="text-muted mb-4">맞팔로우한 친구들에게 쪽지를 보내보세요!</p>
-              <button className="btn btn-pilllaw btn-lg px-4 py-2" onClick={() => setShowModal(true)}>
+              <button className="btn btn-pilllaw btn-sm px-4 py-2" onClick={() => setShowModal(true)}>
                 <FontAwesomeIcon icon={faPaperPlane} className="me-2" />
                 새 쪽지 작성하기
               </button>
@@ -242,7 +242,8 @@ const LetterSendComponent = () => {
           }}
         >
           <div className="bg-white p-4 rounded shadow-lg" style={{ minWidth: "350px", textAlign: "center" }}>
-            <div className="rounded-circle bg-success mx-auto mb-3 d-flex align-items-center justify-content-center" style={{ width: 60, height: 60 }}>
+            <div className="rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" 
+                style={{ width: 60, height: 60, backgroundColor: "#7DA9A7" }}>
               <FontAwesomeIcon icon={faPaperPlane} className="text-white fa-2x" />
             </div>
             <h5 className="mb-3">쪽지 전송 완료</h5>
