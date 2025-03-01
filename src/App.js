@@ -44,6 +44,7 @@ import LetterSenderListTest from './component/letter/test/LetterSenderListTest';
 import LetterViewComponent from './component/letter/layout/LetterViewComponent';
 import LetterListLayOutTest from './component/letter/SendLetterPage';
 import LetterListComponent from './component/letter/test/LetterListComponent';
+import LetterSelectViewPage from './component/letter/layout/LetterSelectViewPage';
 
 
 function App() {
@@ -86,6 +87,7 @@ function App() {
             <Route path='/order/fail' element={<OrderFailed />} />
             <Route path='/mypage' element={<MyPageLayout />} />
             <Route path='/userpage/:id' element={<ProfilePageLayout />} />
+            <Route path='/letterselectview/:id' element={<LetterSelectViewPage />} />
           </Route>
 
           <Route element={<SignLayout />}>

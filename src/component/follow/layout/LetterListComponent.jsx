@@ -208,7 +208,7 @@ const LetterListComponent = () => {
                     <div className="ms-2 me-auto flex-grow-1">
                       <div className="fw-bold">
                         <img src={profile} className="mx-2" alt='프로필 사진' width={25} />
-                        사용자 {letter.senderId} {/* 임시로 ID만 표시 */}
+                         {letter.nickName} {/* 임시로 ID만 표시 */}
                         {!letter.readAt && <Badge bg="info" className="ms-2">New</Badge>}
                       </div>
                       <p className="mb-1 text-truncate" style={{ maxWidth: '500px' }}>
@@ -224,7 +224,7 @@ const LetterListComponent = () => {
                     </div>
                     <div className="d-flex flex-column align-items-end">
                       <Link 
-                        to={`/letter/view/${letter.letterId}`} 
+                        to={`/letterselectview/${letter.letterId}`} 
                         className="btn btn-sm btn-outline-primary mb-2"
                       >
                         보기
