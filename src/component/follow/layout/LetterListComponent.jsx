@@ -115,8 +115,6 @@ const LetterListComponent = () => {
       return;
     }
 
-    
-
     try {
       // 각 선택된 쪽지에 대해 삭제 요청
       const deletePromises = selectedLetters.map(letterId => {
@@ -208,7 +206,7 @@ const LetterListComponent = () => {
                     <div className="ms-2 me-auto flex-grow-1">
                       <div className="fw-bold">
                         <img src={profile} className="mx-2" alt='프로필 사진' width={25} />
-                         {letter.nickName} {/* 임시로 ID만 표시 */}
+                        {letter.nickName} {/* 임시로 ID만 표시 */}
                         {!letter.readAt && <Badge bg="info" className="ms-2">New</Badge>}
                       </div>
                       <p className="mb-1 text-truncate" style={{ maxWidth: '500px' }}>
@@ -247,63 +245,62 @@ const LetterListComponent = () => {
           )}
 
           {/* 보낸 쪽지 목록 */}
-          {/* 보낸 쪽지 목록 */}
-{tabType === "send" && (
-  <ListGroup>
-    {sendLetters.length > 0 ? (
-      sendLetters.map((letter) => (
-        <ListGroup.Item 
-          key={`send-${letter.letterId}`}
-          className="d-flex justify-content-between align-items-start"
-          >
-          <div className="form-check me-2">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              id={`check-${letter.letterId}`}
-              checked={selectedLetters.includes(letter.letterId)}
-              onChange={() => handleSelectLetter(letter.letterId)}
-            />
-            </div>
-            <div className="ms-2 me-auto flex-grow-1">
-              <div className="fw-bold">
-                <img src={profile} className="mx-2" alt='프로필 사진' width={25} />
-                {letter.nickName || `사용자 ${letter.receiverId}`}
-              </div>
-                <p className="mb-1 text-truncate" style={{ maxWidth: '500px' }}>
-                  {letter.content}
-                </p>
-                <small className="text-muted">
-                  보낸 시간: {formatDate(letter.sentAt)}
-                </small>
-                <br />
-                <small className="text-muted">
-                  읽은 시간: {letter.readAt ? formatDate(letter.readAt) : "읽지 않음"}
-                </small>
-              </div>
-              <div className="d-flex flex-column align-items-end">
-                <Link 
-                  to={`/letterselectview/${letter.letterId}`}
-                  className="btn btn-sm btn-outline-primary mb-2"
-                >
-                  보기
-                </Link>
-                <button 
-                  className="btn btn-sm btn-outline-danger"
-                  onClick={() => handleDeleteLetter(letter.letterId)}
-                >
-                삭제
-                </button>
-            </div>
-          </ListGroup.Item>
-        ))
-      ) : (
-        <div className="text-center p-5">
-          <p>보낸 쪽지가 없습니다.</p>
-        </div>
-      )}
-    </ListGroup>
-    )}
+          {tabType === "send" && (
+            <ListGroup>
+              {sendLetters.length > 0 ? (
+                sendLetters.map((letter) => (
+                  <ListGroup.Item 
+                    key={`send-${letter.letterId}`}
+                    className="d-flex justify-content-between align-items-start"
+                  >
+                    <div className="form-check me-2">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        id={`check-${letter.letterId}`}
+                        checked={selectedLetters.includes(letter.letterId)}
+                        onChange={() => handleSelectLetter(letter.letterId)}
+                      />
+                    </div>
+                    <div className="ms-2 me-auto flex-grow-1">
+                      <div className="fw-bold">
+                        <img src={profile} className="mx-2" alt='프로필 사진' width={25} />
+                        {letter.nickName || `사용자 ${letter.receiverId}`}
+                      </div>
+                      <p className="mb-1 text-truncate" style={{ maxWidth: '500px' }}>
+                        {letter.content}
+                      </p>
+                      <small className="text-muted">
+                        보낸 시간: {formatDate(letter.sentAt)}
+                      </small>
+                      <br />
+                      <small className="text-muted">
+                        읽은 시간: {letter.readAt ? formatDate(letter.readAt) : "읽지 않음"}
+                      </small>
+                    </div>
+                    <div className="d-flex flex-column align-items-end">
+                      <Link 
+                        to={`/letterselectview/${letter.letterId}`}
+                        className="btn btn-sm btn-outline-primary mb-2"
+                      >
+                        보기
+                      </Link>
+                      <button 
+                        className="btn btn-sm btn-outline-danger"
+                        onClick={() => handleDeleteLetter(letter.letterId)}
+                      >
+                        삭제
+                      </button>
+                    </div>
+                  </ListGroup.Item>
+                ))
+              ) : (
+                <div className="text-center p-5">
+                  <p>보낸 쪽지가 없습니다.</p>
+                </div>
+              )}
+            </ListGroup>
+          )}
         </Container>
       </Container>
     </div>
