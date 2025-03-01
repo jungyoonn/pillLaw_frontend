@@ -121,15 +121,10 @@ const MyOrder = () => {
     fetchAddresses();
   }, [mno, req, navigate]); // mno가 변경될 때마다 실행
 
-
-
   const handleCloseAndRedirect = () => {
     setShowLoginModal(false);
     navigate('/');
   };
-
-
-
 
   const handleOrder = async () => {
 
@@ -297,19 +292,44 @@ const MyOrder = () => {
   };
 
   const handlePhoneChange = (e) => {
-    const value = e.target.value.replace(/[^0-9]/g, ""); // 숫자만 입력 가능
-    let formatted = "";
+    let value = e.target.value.replace(/[^0-9]/g, ""); // 숫자만 입력 가능
 
-    if (value.length <= 3) {
-      formatted = value;
-    } else if (value.length <= 7) {
-      formatted = `${value.slice(0, 3)}-${value.slice(3)}`;
-    } else {
-      formatted = `${value.slice(0, 3)}-${value.slice(3, 7)}-${value.slice(7, 11)}`;
+    // 항상 010부터 시작하도록 설정
+    if (!value.startsWith("010")) {
+      value = "010" + value.slice(3);
+    }
+
+    // 최대 길이 제한 (010 포함 11자리까지만)
+    if (value.length > 11) {
+      value = value.slice(0, 11);
+    }
+
+    // 형식 적용: 010-xxxx-xxxx
+    let formatted = "010";
+    if (value.length > 3) {
+      formatted += `-${value.slice(3, 7)}`;
+    }
+    if (value.length > 7) {
+      formatted += `-${value.slice(7, 11)}`;
     }
 
     setPhone(formatted);
   };
+
+  // const handlePhoneChange = (e) => {
+  //   const value = e.target.value.replace(/[^0-9]/g, ""); // 숫자만 입력 가능
+  //   let formatted = "";
+
+  //   if (value.length <= 3) {
+  //     formatted = value;
+  //   } else if (value.length <= 7) {
+  //     formatted = `${value.slice(0, 3)}-${value.slice(3)}`;
+  //   } else {
+  //     formatted = `${value.slice(0, 3)}-${value.slice(3, 7)}-${value.slice(7, 11)}`;
+  //   }
+
+  //   setPhone(formatted);
+  // };
 
   // 1. Kakao 주소 API 스크립트 로드
   useEffect(() => {
@@ -420,7 +440,7 @@ const MyOrder = () => {
   };
 
   // 배송지 입력 체크
-  const isAddressValid = recipient && address.postcode && address.roadAddress && address.detailAddress && phone;
+  const isAddressValid = recipient && address.postcode && address.roadAddress && address.detailAddress && phone.length === 13;
 
   // 결제하기 버튼 활성화 조건
   const isOrderValid = totalPayment > 0 && isAddressValid && isTermsChecked;
@@ -458,9 +478,21 @@ const MyOrder = () => {
               </Form.Group>
 
               <Form.Group className="mb-3">
-                <Form.Label>휴대전화</Form.Label>
-                <Form.Control type="text" placeholder="하이픈(-) 없이 숫자만 입력하세요" value={phone} onChange={(e) => { setPhone(e.target.value); handlePhoneChange(e); }} required />
-
+                <div className="d-flex justify-content-between align-items-center">
+                  <Form.Label className="mb-0">휴대전화</Form.Label>
+                  <small className="text-muted ms-auto">하이픈(-) 없이 숫자만 입력하세요</small>
+                </div>
+                <Form.Control
+                  type="text"
+                  value={phone}
+                  onChange={handlePhoneChange}
+                  required
+                />
+                {phone.length !== 13 && ( // 13자리가 아닐 때만 문구 표시
+                  <Form.Text className="text-muted">
+                    올바른 휴대전화 번호를 입력해 주세요.
+                  </Form.Text>
+                )}
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label htmlFor="deliveryMessage">배송 메세지</Form.Label>
