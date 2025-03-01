@@ -14,11 +14,18 @@ const LetterListComponent = () => {
   const mno = localStorage.getItem('mno');
   
   // 기본 탭은 'received'로 설정
-  const tabType = searchParams.get("tab") || "received";
+  const tabType = searchParams.get("type") || "received";
+
+  // 현재 마이페이지 탭 유지
+  const currentTab = searchParams.get("tab") || "letterlistcomponent";
   
   // 탭 변경 핸들러
-  const handleTabChange = (tab) => {
-    setSearchParams({ tab: tab });
+  const handleTabChange = (type) => {
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set("type", type);
+    // 쿼리 파라미터 업데이트
+    setSearchParams(newParams);
+
     setSelectedLetters([]); // 탭 변경 시 선택 초기화
   };
 
@@ -31,6 +38,8 @@ const LetterListComponent = () => {
         // 현재 탭에 따라 필요한 데이터만 로드
         if (tabType === "received") {
           const resp = await req('get', `letter/received/${mno}`);
+          console.log(resp);
+          
           if (Array.isArray(resp)) {
             setReceivedLetters(resp);
           } else {
