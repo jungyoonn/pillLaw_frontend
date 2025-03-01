@@ -56,11 +56,11 @@ const ProfileCard = ({ nickname }) => {
           <span className="fs-16 fw-bold">{nickname + ' ' || '익명의 사용자 '} </span>
           <span className="fs-14">님, <br /> 환영합니다!</span>
         </Col>
-        <Col xs lg="2" className="float-end p-2 me-2"><Link to={"/"} className="text-decoration-none"><FontAwesomeIcon icon={faGear} className="fa-xl header-font" /></Link></Col>
+        <Col xs lg="2" className="float-end p-2 me-2"><Link to={"/mypage?tab=edit-info"} className="text-decoration-none"><FontAwesomeIcon icon={faGear} className="fa-xl header-font" /></Link></Col>
       </Row>
       <Row className="card-body p-0 mt-2">
         <Col xs lg="7">
-        <div className="px-2 ms-4 mb-0 fs-14"><FontAwesomeIcon icon={faCoins} className="fw-bold header-font me-1" />&nbsp;{totalPoints.toLocaleString()}P</div>
+        <div className="px-2 ms-4 mb-0 fs-14"><FontAwesomeIcon icon={faCoins} className="fw-bold header-font me-1" />&nbsp;포인트 {totalPoints.toLocaleString()}P</div>
         <div className="px-2 ms-4 mt-0 fs-14"><FontAwesomeIcon icon={faPaperPlane} className="fw-bold header-font me-1" />&nbsp;쪽지 {receiverId}개</div>
         </Col>
         <Col className="mt-2">
@@ -69,10 +69,10 @@ const ProfileCard = ({ nickname }) => {
       </Row>
       <Row className="row mt-4 d-flex justify-content-center">
         <Col>
-          <p className="fs-14 fw-bold text-center ms-2"><Link to={"/followapp"} className="text-pilllaw" >팔로잉 {following}명</Link></p>
+          <p className="fs-14 fw-bold text-center ms-2"><Link to={"/mypage?tab=followapp&type=following"} className="text-pilllaw" >팔로잉 {following}명</Link></p>
         </Col>
         <Col>
-          <p className="fs-14 fw-bold text-center me-2"><Link to={"/followerslist"} className="text-pilllaw">팔로워 {follow}명</Link></p>
+          <p className="fs-14 fw-bold text-center me-2"><Link to={"/mypage?tab=followapp&type=followers"} className="text-pilllaw">팔로워 {follow}명</Link></p>
         </Col>
       </Row>
     </>
