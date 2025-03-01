@@ -13,15 +13,23 @@ import {
   faCartShopping,
   faBell,
   faMagnifyingGlass,
-  faCommentDots,
+  faPaperPlane,
   faCapsules
 } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from '../../hooks/AuthContext';
+import { icon } from '@fortawesome/fontawesome-svg-core';
+
+const icons = [
+  { icon: faUser, path: "/mypage" },
+  { icon: faBell, path: ""}, 
+  { icon: faMagnifyingGlass, path: ""},
+  { icon: faPaperPlane, path: "/mypage?tab=letterlistcomponent" },
+];
 
 const navItems = [
   { name: "전체 상품", path: "/product/list" },
-  { name: "구독하기", path: "/subscribe" },
   { name: "필로", path: "/pillaw" },
+  { name: "장바구니", path: "/cart" },
   { name: "마이페이지", path: "/mypage" },
 ];
 
@@ -76,12 +84,12 @@ const Headerr = () => {
               ))}
             </div>
             <div className="float-end py-4">
-              {[faUser, faCartShopping, faBell, faMagnifyingGlass, faCommentDots].map(
-                (icon, index) => (
-                  <Link to={"/"}>
+              {icons.map(
+                (item, index) => (
+                  <Link to={item.path} key={index}>
                     <FontAwesomeIcon
                       key={index}
-                      icon={icon}
+                      icon={item.icon}
                       className="fa-lg header-font float-end mx-2 pt-4 text-center"
                     />
                   </Link>
