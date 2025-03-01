@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import NoticeItem from './NoticeItem';
 import NoticeWriter from './NoticeWriter';
+import SearchBar from "../common/SearchBar";
 
 function Notice() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -13,7 +14,7 @@ function Notice() {
 
   useEffect(() => {
     console.log("📌 공지사항 리스트 요청 시작");
-    req("get", "api/v1/notice/list"); 
+    req("get", "v1/notice/list"); 
   }, [req]);  
 
   if (err) {
@@ -36,20 +37,7 @@ function Notice() {
         <h1 className="fw-bold my-5"> 공지사항 </h1>
 
         {/* 검색창 */}
-        <div className="form-floating my-2 fs-12">
-          <input
-            type="text"
-            className="form-control"
-            id="search"
-            placeholder="검색어를 입력하세요."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            style={{ opacity: 0.2 }}
-          />
-          <label htmlFor="search">
-            <FontAwesomeIcon icon={faMagnifyingGlass} className="fs-14" /> 검색어를 입력하세요.
-          </label>
-        </div>
+        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         <hr className="text-pilllaw" />
 
         {/* 공지 리스트 */}
