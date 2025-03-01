@@ -48,21 +48,11 @@ const FollowersList = () => {
 
   // 팔로우 상태 변경 함수 (GET 메서드로 변경)
  // 팔로우 상태 변경 함수 (기존 API 활용)
-const handleToggleFollow = async (receiverMno) => {
+ const handleToggleFollow = async (receiverMno) => {
   try {
-    // 현재 맞팔 상태 확인
-    const isAlreadyFollowing = followBackList.includes(receiverMno);
-    
-    if (isAlreadyFollowing) {
-      // 이미 팔로우 중이면 언팔로우 (삭제)
-      await req('delete', `follow/${mno}/${receiverMno}`);
-    } else {
-      // 팔로우하지 않았으면 팔로우 추가
-      await req('post', `follow/add`, {
-        receiverMno: receiverMno,
-        senderMno: mno
-      });
-    }
+    // 서버의 toggle API 사용
+    const resp = await req('get', `follow/toggle/${mno}/${receiverMno}`);
+    console.log(resp);
     
     // 데이터 새로고침
     setTimeout(refreshData, 300); // 서버 응답 후 새로고침을 위해 약간의 지연 추가
@@ -98,19 +88,19 @@ const handleToggleFollow = async (receiverMno) => {
                   {/* 맞팔 상태에 따른 버튼 */}
                   {isFollowBack(follow.sender.mno) ? (
                     <Button 
-                      variant="success" 
-                      size="sm"
+                      variant="pilllaw" 
+                      className="btn btn-secondary btn-sm"
                       onClick={() => handleToggleFollow(follow.sender.mno)}
                     >
-                      맞팔로우
+                      팔로잉
                     </Button>
                   ) : (
                     <Button 
-                      variant="primary" 
-                      size="sm"
+                      variant="pilllaw" 
+                      className="btn btn-secondary btn-sm"
                       onClick={() => handleToggleFollow(follow.sender.mno)}
                     >
-                      팔로우 하기
+                      맞팔로우 하기
                     </Button>
                   )}
                 </ListGroup.Item>

@@ -90,7 +90,7 @@ const MyPageLayout = () => {
             <br />
             <Nav.Link eventKey="orders">주문내역 조회</Nav.Link>  {/* 주문내역 추가 */}
             <Nav.Link eventKey="points">포인트 사용 이력</Nav.Link>
-            <Nav.Link eventKey="link-2">구독 내역</Nav.Link>
+            {/* <Nav.Link eventKey="link-2">구독 내역</Nav.Link> */}
             <Nav.Link eventKey="link-2">즐겨찾기 상품</Nav.Link>
             <Nav.Link eventKey="link-2">내 후기 모아보기</Nav.Link>
             <br />
