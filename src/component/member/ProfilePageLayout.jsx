@@ -98,7 +98,7 @@ const ProfilePageLayout = () => {
             onSelect={handleTabChange}
             className="flex-column text-pilllaw custom-nav"
             variant="tabs">
-            <Nav.Link eventKey="info">내 정보</Nav.Link>
+            <Nav.Link eventKey="info">회원 정보</Nav.Link>
             <br />
             <Nav.Link eventKey="likes">즐겨찾기 상품</Nav.Link>
             <Nav.Link eventKey="reviews">후기 모아보기</Nav.Link>
