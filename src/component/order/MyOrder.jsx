@@ -206,7 +206,7 @@ const MyOrder = () => {
             // 📌 1️⃣ 결제 정보 저장 (결제 요청)
             const payResponse = await req("POST", "pay/req", {
               ono,
-              method: "카드",
+              method: "CARD",
               totalPrice: amount,
               impUid: response.imp_uid,
             });
@@ -224,13 +224,13 @@ const MyOrder = () => {
             const paymentResponse = await req("POST", "pay/complete", {
               ono,
               imp_uid: response.imp_uid,
-              method: "카드",
+              method: "CARD",
             });
 
             console.log("🔹 결제 검증 응답:", paymentResponse);
 
             // 📌 3️⃣ 검증 성공 시, 결제 완료 처리
-            if (!paymentResponse || paymentResponse.status !== "완료") {
+            if (!paymentResponse || paymentResponse.status !== "SUCCESS") {
               alert("❌ 결제 완료 처리 실패. 고객센터에 문의하세요.");
               sessionStorage.setItem('paymentStatus', 'fail');
               navigate("/order/fail");
