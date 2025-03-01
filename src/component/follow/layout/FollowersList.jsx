@@ -18,6 +18,7 @@ const FollowersList = () => {
     try {
       // 팔로워 목록 가져오기 (나를 팔로우하는 사람들)
       const resp = await req('get', `follow/${mno}`);
+      console.log(resp);
       
       if (Array.isArray(resp)) {
         // 중복 제거 (필요한 경우)
@@ -29,6 +30,7 @@ const FollowersList = () => {
         
         // 맞팔 목록 가져오기 
         const followBackResp = await req('get', `follow/followBack/${mno}`);
+        
         if (Array.isArray(followBackResp)) {
           // 맞팔 목록의 sender.mno 값들만 추출
           const followBackIds = followBackResp.map(follow => follow.sender.mno);
@@ -41,7 +43,7 @@ const FollowersList = () => {
       console.error("Error fetching follow list:", error);
     }
   };
-  
+
   useEffect(() => {
     refreshData();
   }, [mno, req]);
@@ -54,17 +56,40 @@ const FollowersList = () => {
     const resp = await req('get', `follow/toggle/${mno}/${receiverMno}`);
     console.log(resp);
     
-    // 데이터 새로고침
-    setTimeout(refreshData, 300); // 서버 응답 후 새로고침을 위해 약간의 지연 추가
+    // 서버에서 반환된 실제 상태를 사용하여 상태 업데이트
+    // resp.followed가 true인 경우 '팔로잉' 상태, false인 경우 '맞팔로우 하기' 상태
+    // setFollows(prevFollows => prevFollows.map(follow => {
+    //   if (follow.sender.mno === receiverMno) {
+    //     return {
+    //       ...follow,
+    //       isFollowBack: resp.followed // 서버에서 반환된 실제 상태 사용
+    //     };
+    //   }
+    //   return follow;
+    // }));
+    
+    // 필요한 경우 맞팔 목록도 업데이트
+    if (resp.followed) {
+      // 맞팔 추가
+      if (!followBackList.includes(receiverMno)) {
+        setFollowBackList(prev => [...prev, receiverMno]);
+      }
+    } else {
+      // 맞팔 제거
+      setFollowBackList(prev => prev.filter(id => id !== receiverMno));
+    }
+    refreshData();
+    // 데이터를 완전히 새로고침하려면 유지
+    // setTimeout(refreshData, 300);
   } catch (error) {
     console.error("팔로우 상태 변경 오류:", error);
   }
 };
 
   // 맞팔 여부 확인
-  const isFollowBack = (senderMno) => {
-    return followBackList.includes(senderMno);
-  };
+  // const isFollowBack = (senderMno) => {
+  //   return followBackList.includes(senderMno);
+  // };
 
   return (
     <Container>
@@ -78,15 +103,15 @@ const FollowersList = () => {
                   className="d-flex justify-content-between align-items-center list-group-bg fs-14 fw-bold"
                 >
                   <Link
-                    to={`/followsenderpage/${follow.sender.mno}`}
+                    to={`/userpage/${follow.sender.mno}`}
                     className="d-flex align-items-center text-decoration-none text-dark"
                   >
-                    <img src={profile} className="mx-2" alt='userpage' width={25} />
+                    <img src={profile} className="mx-2" alt='userprofile' width={25} />
                     <span>{follow.sender.nickname}</span>
                   </Link>
                   
                   {/* 맞팔 상태에 따른 버튼 */}
-                  {isFollowBack(follow.sender.mno) ? (
+                  {follow.isFollowBack ? (
                     <Button 
                       variant="pilllaw" 
                       className="btn btn-secondary btn-sm"
