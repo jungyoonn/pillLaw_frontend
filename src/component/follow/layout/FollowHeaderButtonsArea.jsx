@@ -11,7 +11,7 @@ const FollowHeaderButtons = () => {
   const currentTab = searchParams.get("tab") || "followapp";
   
   // 기본 팔로우 타입은 'followers'로 설정
-  const tabType = searchParams.get("tabType") || "followers";
+  const tabType = searchParams.get("type") || "followers";
   
   // 팔로우 타입 변경 핸들러
   const handleTabChange = (type) => {
@@ -30,12 +30,12 @@ const FollowHeaderButtons = () => {
 
   return (
       <Container style={{ paddingTop: '115.19px' }}>
-        <Nav fill variant="tabs" defaultActiveKey={tabType}>
+        <Nav fill variant="tabs" className="header-font custom-follow">
           <Nav.Item>
             <Nav.Link 
               onClick={() => handleTabChange("follow")} 
               active={tabType === "follow"}
-              className={tabType === "follow" ? "btn btn-pilllaw active" : "btn btn-pilllaw"}
+              className={tabType === "follow" ? "active" : ""}
             >
               맞팔로우
             </Nav.Link>
@@ -44,7 +44,7 @@ const FollowHeaderButtons = () => {
             <Nav.Link 
               onClick={() => handleTabChange("followers")} 
               active={tabType === "followers"}
-              className={tabType === "followers" ? "btn btn-pilllaw active" : "btn btn-pilllaw"}
+              className={tabType === "followers" ? "active" : ""}
             >
               팔로워
             </Nav.Link>
@@ -53,7 +53,7 @@ const FollowHeaderButtons = () => {
             <Nav.Link 
               onClick={() => handleTabChange("following")} 
               active={tabType === "following"}
-              className={tabType === "following" ? "btn btn-pilllaw active" : "btn btn-pilllaw"}
+              className={tabType === "following" ? "active" : ""}
             >
               팔로잉
             </Nav.Link>
