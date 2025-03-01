@@ -25,7 +25,7 @@ const ProductList = () => {
     return <div><h1>Error Occured!</h1></div>;
   }
   if(loading){
-    <Container className="text-center" style={{ paddingTop: "115.19px" }}>
+    <Container className="text-center d-flex justify-content-center " style={{ paddingTop: "115.19px" }}>
       <h1 className="fw-bold my-5">전체 상품</h1>
       <Spinner className="text-center" animation="border" variant="info" />
       <p className="mt-2 text-secondary">상품을 불러오는 중...</p>

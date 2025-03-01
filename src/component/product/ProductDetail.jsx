@@ -43,6 +43,7 @@ useEffect(() => {
 
     req("get", `v1/product/detail/review/list/${id}`)
       .then((response) => {
+        setReviews([]);
         console.log("리뷰 목록 갱신 : ", response);
         setReviews(response);
       })
@@ -115,7 +116,7 @@ useEffect(() => {
       <Container className="container-fluid product-detail text-center">
         <h1 className="fw-bold mb-4 text-pilllaw">상품 상세정보</h1>
         <hr className="text-pilllaw" />
-        <pre>{JSON.stringify(product, null, 2)}</pre>
+        {/* <pre>{JSON.stringify(product, null, 2)}</pre> */}
 
         <Row className="mt-4">
           <Col xs={5}>

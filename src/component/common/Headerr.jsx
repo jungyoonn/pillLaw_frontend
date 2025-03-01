@@ -31,6 +31,7 @@ const navItems = [
   { name: "필로", path: "/pillaw" },
   { name: "장바구니", path: "/cart" },
   { name: "마이페이지", path: "/mypage" },
+  // { name: "공지사항", path: "/notice" }
 ];
 
 const Headerr = () => {

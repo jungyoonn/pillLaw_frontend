@@ -73,8 +73,6 @@ function Notice() {
             </Button>
           </Col>
         </Row>
-
-        {/* 공지사항 작성 모달 */}
         <NoticeWriter show={showWriter} handleClose={() => setShowWriter(false)} />
       </Container>
     </div>

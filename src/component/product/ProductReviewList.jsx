@@ -5,12 +5,14 @@ import { Row, Col, Button } from "react-bootstrap";
 import UseAxios from "../../hooks/UseAxios";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/AuthContext";
+import { formatDate } from "../../utils/formatDate";
 
 const ProductReviewList = ({ reviews, onDelete}) => {
   const {mno} = useAuth();
   const [reviewLikes, setReviewLikes] = useState({});
   const [likedReviews, setLikedReviews] = useState({});
   const { req } = UseAxios();
+
 
   useEffect(() => {
     console.log("리뷰 :", reviews);  
@@ -20,6 +22,7 @@ const ProductReviewList = ({ reviews, onDelete}) => {
         return acc;
       }, {});
       setReviewLikes(initialLikes);
+      
     }
   }, [reviews]);
   
@@ -66,6 +69,8 @@ const ProductReviewList = ({ reviews, onDelete}) => {
             <Link className="text-decoration-none text-pilllaw" to={`/userpage/${review.mno}`}>{review.nickName}</Link>
           </Col>
           <Col xs={1} className="text-center">
+            {/* {{const formattedDate = formatDate(review.regDate)}}; */}
+            {/* <span>{review.regDate ? formatDate(review.regDate) : "날짜 없음"}</span> */}
             <span>{review.regDate}</span>
           </Col>
           <Col xs={2} className="text-center">
