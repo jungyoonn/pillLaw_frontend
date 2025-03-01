@@ -44,6 +44,7 @@ import LetterViewComponent from './component/letter/layout/LetterViewComponent';
 import LetterListLayOutTest from './component/letter/SendLetterPage';
 import LetterListComponent from './component/letter/test/LetterListComponent';
 import LetterSelectViewPage from './component/letter/layout/LetterSelectViewPage';
+import Notice from './component/common/Notice';
 
 
 function App() {
