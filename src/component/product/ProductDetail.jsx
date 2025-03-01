@@ -22,6 +22,36 @@ const ProductDetail = () => {
   const { loading, error, req } = useAxios();
   const [product, setProduct] = useState({});
   const [selectedImage, setSelectedImage] = useState("");
+  const [detailUrls, setDetailUrls] = useState([]);
+
+useEffect(() => {
+  if (id) {
+    req("get", `v1/product/${id}`)
+      .then((response) => {
+        console.log("제품 데이터:", response);
+        setProduct(response.product);
+        setSelectedImage(response.product.imageUrl);
+        
+        // ✅ 상세 이미지 URL을 별도 상태로 저장
+        if (response.detailUrls) {
+          setDetailUrls(response.detailUrls);
+        }
+      })
+      .catch((err) => {
+        console.error("제품 데이터 로드 에러:", err);
+      });
+
+    req("get", `v1/product/detail/review/list/${id}`)
+      .then((response) => {
+        console.log("리뷰 목록 갱신 : ", response);
+        setReviews(response);
+      })
+      .catch((err) => {
+        console.error("리뷰 로드 에러 :: ", err);
+        setReviews([]);
+      });
+  }
+}, [id]);
 
 useEffect(() => {
   if (id) {
@@ -54,60 +84,18 @@ useEffect(() => {
   }
 
   const handleDeleteReview = (prno) => {
+    if (!window.confirm("정말 삭제하시겠습니까?")) return;
+  
     req("delete", `v1/review/${prno}`)
       .then(() => {
         console.log(`리뷰 삭제 성공: ${prno}`);
-        return req("get", `v1/review/list/${id}`); 
+        return req("get", `v1/product/detail/review/list/${id}`); 
       })
       .then((response) => {
         setReviews(response || []);
       })
       .catch((err) => console.error("리뷰 삭제 실패:", err));
   };
-  
-  // const handleAddReview = async (newReview) => {
-  //   try {
-  //     const formData = new FormData();
-  //     formData.append("pno", newReview.pno);
-  //     formData.append("mno", newReview.mno);
-  //     formData.append("content", newReview.content);
-  //     formData.append("rating", newReview.rating);
-  
-  //     // 파일이 있다면 FormData에 추가
-  //     if (newReview.files && newReview.files.length > 0) {
-  //       newReview.files.forEach((file) => {
-  //         formData.append("files", file);
-  //       });
-  //     }
-  
-  //     // ✅ 리뷰 등록 요청 (multipart/form-data)
-  //     const reviewResponse = await req(
-  //       "post",
-  //       "v1/product/detail/review/register",
-  //       formData,
-  //       { "Content-Type": "multipart/form-data" } 
-  //     );
-  
-  //     console.log("✅ 리뷰 등록 성공:", reviewResponse);
-  
-  //     // ✅ 등록된 리뷰를 즉시 목록에 추가 (불필요한 GET 요청 최소화)
-  //     setReviews((prevReviews) => [reviewResponse, ...prevReviews]);
-  
-  //     // ✅ 최신 리뷰 목록을 다시 불러오기
-  //     const updatedReviews = await req(
-  //       "get",
-  //       `v1/product/detail/review/list/${newReview.pno}`
-  //     );
-  
-  //     if (updatedReviews && updatedReviews.length > 0) {
-  //       setReviews(updatedReviews);
-  //     }
-  
-  //   } catch (err) {
-  //     console.error("❌ 리뷰 등록 실패:", err.response?.data);
-  //     console.error("전체 에러:", err);
-  //   }
-  // };
   
   
   const calculateRatingDistribution = (reviews) => {
@@ -156,6 +144,7 @@ useEffect(() => {
       </Row>
         <Row className="mt-5">
           <ul className="nav nav-tabs nav-justified">
+
             <li className="nav-item">
               <Button 
                 variant="pilllaw" 
@@ -164,6 +153,7 @@ useEffect(() => {
                 제품 상세정보
               </Button>
             </li>
+            
             <li className="nav-item">
               <Button
                 variant="pilllaw"
@@ -173,18 +163,34 @@ useEffect(() => {
                 제품 리뷰({reviews ? reviews.length : "-"})
               </Button>
             </li>
+
           </ul>
 
           {activeTab === "real-product-details" && (
             <div className="tab-content mt-5 fade show active">
-              {product.effect && product.effect.split(',').map((tag, index) => (
+              {product.effect && product.effect.split(",").map((tag, index) => (
                 <span key={index} className="badge bg-success fs-14 mx-1">{tag.trim()}</span>
               ))}
-              <div className="d-flex justify-content-center mt-3">
-                <img className="img-fluid mx-auto" src={product.detailImage} alt="상세정보" />
+
+              <div className="d-flex flex-column align-items-center mt-3">
+                {detailUrls.length > 0 ? (
+                  detailUrls.map((url, index) => (
+                    <img
+                      key={index}
+                      className="img-fluid mx-auto my-2"
+                      src={url}
+                      alt={`상세 이미지 ${index + 1}`}
+                      style={{ maxWidth: "100%", height: "auto" }}
+                      onError={(e) => (e.target.src = "https://via.placeholder.com/500")}
+                    />
+                  ))
+                ) : (
+                  <p className="text-muted">상세 이미지가 없습니다.</p>
+                )}
               </div>
             </div>
           )}
+
 
           {activeTab === "real-product-review" && (
             <div className="tab-content mt-5 mb-5 fade show active">
@@ -231,9 +237,6 @@ useEffect(() => {
                     productId={product.pno} 
                     onReviewAdded={(newReview) => setReviews(prev => [newReview, ...prev])}  // ✅ 최신 리뷰 추가
                   />
-
-
-
 
                   <Col xs={2} className="justify-content-end">
                     <Button variant="pilllaw" className="fw-bold fs-14 btn-pilllaw btn" onClick={() => setShowReviewModal(true)}>
