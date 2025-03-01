@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Button, Modal, Row, Col, Card } from 'react-bootstrap';
 import UseAxios from '../../../hooks/UseAxios';
-import { useNavigate } from 'react-router-dom';
 import { formatDate, formatDateTime } from '../../../utils/formatDate'; // 날짜 포맷 함수 임포트
 
 const OrderList = ({ memberId }) => {

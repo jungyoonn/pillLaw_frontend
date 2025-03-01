@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, Table, Button, InputGroup, Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../resources/css/style.css";
@@ -8,8 +8,8 @@ import UseAxios from '../../hooks/UseAxios'; // axios 훅
 import logo from '../../resources/image/pilllaw_favicon.png';
 
 const MyOrder = () => {
-  const { mno, email, token } = useAuth();
-  const { req, loading, error } = UseAxios();  // useAxios 훅을 사용하여 HTTP 요청을 처리
+  const { mno, email } = useAuth();
+  const { req } = UseAxios();  // useAxios 훅을 사용하여 HTTP 요청을 처리
   const [address, setAddress] = useState({ postcode: "", roadAddress: "", detailAddress: "", });
   const [savedAddresses, setSavedAddresses] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -18,7 +18,7 @@ const MyOrder = () => {
   const [phone, setPhone] = useState("");
   const navigate = useNavigate();
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [userMembershipStatus, setUserMembershipStatus] = useState("ACTIVE");
+  const userMembershipStatus = "ACTIVE";
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalPoints, setTotalPoints] = useState(0); // 포인트 상태 추가
   const [expectedPoints, setExpectedPoints] = useState(0);
@@ -36,13 +36,12 @@ const MyOrder = () => {
     }
 
 
-    // ✅ 포인트 조회 함수
+    // 포인트 조회 함수
     const fetchTotalPoints = async () => {
       try {
         const pointsResponse = await req("GET", `v1/point/${mno}/total`);
         setTotalPoints(pointsResponse); // 포인트 상태 업데이트
       } catch (error) {
-        console.error("❌ 포인트 불러오기 실패:", error);
       }
     };
 
@@ -75,7 +74,6 @@ const MyOrder = () => {
                 option: item.subday === 30 ? "30일" : item.subday === 60 ? "60일" : "90일", // 옵션 설정
               };
             } catch (error) {
-              console.error(`상품 정보 요청 중 오류 발생 (pno: ${item.pno})`, error);
               return {
                 ...item,
                 name: "알수없음", // 상품명
@@ -89,16 +87,14 @@ const MyOrder = () => {
         // 상태 업데이트
         setCartItems(itemsWithProductInfo);
       } catch (error) {
-        console.error("❌ 장바구니 불러오기 실패:", error);
       }
     };
 
-    // ✅ 주소 조회 함수
+    // 주소 조회 함수
     const fetchAddresses = async () => {
       try {
         const addressResponse = await req("GET", `v1/address/${mno}`);
         setSavedAddresses(addressResponse); // 주소 상태 업데이트
-        console.log("✅ 주소 불러오기 성공:", addressResponse);
 
         // 기본 배송지 자동 입력
         const defaultAddress = addressResponse.find(address => address.defaultAddr === true);
@@ -112,7 +108,6 @@ const MyOrder = () => {
           setPhone(defaultAddress.tel);
         }
       } catch (error) {
-        console.error("❌ 주소 불러오기 실패:", error);
       }
     };
 
@@ -137,16 +132,14 @@ const MyOrder = () => {
       usingPoint: points,
     };
     try {
-      // 2️⃣ 주문 요청 → ono 응답받음
-      console.log('🟡 주문 요청 중...');
+      // 주문 요청 → ono 응답받음
       const ono = await req('POST', 'v1/order/', orderData);
-      console.log('✅ 주문 성공, ono:', ono);
 
       if (!ono) {
         throw new Error('주문 번호(ono)를 받아올 수 없습니다.');
       }
 
-      // 3️⃣ 주소 데이터 생성 (AddressDto 기반)
+      //주소 데이터 생성 (AddressDto 기반)
       const addressData = {
         mno,
         recipient,
@@ -157,27 +150,20 @@ const MyOrder = () => {
         defaultAddr: false,
       };
 
-      // 4️⃣ 주소 정보 저장 요청
-      console.log('🟡 주소 저장 중...');
+      //주소 정보 저장 요청
       const addrno = await req('POST', 'v1/address/', addressData);
-      console.log('✅ 주소 저장 완료, addrno:', addrno);
 
       // 서버에서 중복 주소가 있으면 addrno가 null이므로 그 경우에만 건너뜀
       if (addrno) {
-        console.log('✅ 주소 저장 완료, addrno:', addrno);
       } else {
-        console.log('중복된 주소이므로 주소 저장을 건너뜁니다.');
       }
 
-      // 5️⃣ 결제 진행
+      //결제 진행
       handlePayment(ono, totalPayment, points, addrno);
 
-
     } catch (err) {
-      console.error('❌ 주문 처리 중 오류 발생:', err);
-      // 중복 주소로 인한 실패는 알리지 않음
       if (err.message !== '주소 저장에 실패했습니다.') {
-        alert('주문 또는 주소 저장에 실패했습니다. 다시 시도해주세요.');
+        navigate("/order/fail");
       }
     }
   };
@@ -191,7 +177,7 @@ const MyOrder = () => {
       {
         pg: "html5_inicis",
         pay_method: "card",
-        merchant_uid: `order_${ono}`, // 📌 ono 사용
+        merchant_uid: `order_${ono}`,
         name: "PILL LAW(필로우)",
         amount: amount,
         buyer_email: email,
@@ -200,10 +186,8 @@ const MyOrder = () => {
       },
       async (response) => {
         if (response.success) {
-          console.log("✅ 결제 성공, imp_uid:", response.imp_uid);
-
           try {
-            // 📌 1️⃣ 결제 정보 저장 (결제 요청)
+            // 1️. 결제 정보 저장 (결제 요청)
             const payResponse = await req("POST", "pay/req", {
               ono,
               method: "CARD",
@@ -211,55 +195,45 @@ const MyOrder = () => {
               impUid: response.imp_uid,
             });
 
-            console.log("🔹 결제 정보 저장 응답:", payResponse);
-
             if (!payResponse || !payResponse.no) {
-              alert("❌ 결제 정보 저장 실패");
               sessionStorage.setItem('paymentStatus', 'fail');
               navigate("/order/fail");
               return;
             }
 
-            // 📌 2️⃣ 결제 검증 요청 (IAMPORT 결제 확인)
+            // 2. 결제 검증 요청 (IAMPORT 결제 확인)
             const paymentResponse = await req("POST", "pay/complete", {
               ono,
               imp_uid: response.imp_uid,
               method: "CARD",
             });
 
-            console.log("🔹 결제 검증 응답:", paymentResponse);
-
-            // 📌 3️⃣ 검증 성공 시, 결제 완료 처리
+            // 3. 검증 성공 시, 결제 완료 처리
             if (!paymentResponse || paymentResponse.status !== "SUCCESS") {
-              alert("❌ 결제 완료 처리 실패. 고객센터에 문의하세요.");
               sessionStorage.setItem('paymentStatus', 'fail');
               navigate("/order/fail");
               return;
             }
-            // 📌 4️⃣ 결제 성공 후 포인트 차감
+            // 4. 결제 성공 후 포인트 차감
             if (usedPoints > 0) {
               await req("POST", `v1/point/${mno}/use?pointAmount=${usedPoints}`);
               setTotalPoints((prev) => prev - usedPoints); // 프론트엔드에서도 차감
               setPoints(0); // 입력 필드 초기화
             }
 
-            // 📌 5️⃣ 배송 정보 생성 요청
+            // 5. 배송 정보 생성 요청
             const deliveryResponse = await req("POST", "v1/delivery/create", {
               ono,
               addrno,
               trackingNumber: null,
             });
 
-            console.log("🔹 배송 정보 생성 응답:", deliveryResponse);
-
             if (!deliveryResponse || !deliveryResponse.dno) {
-              alert("❌ 배송 정보 생성 실패");
               sessionStorage.setItem('paymentStatus', 'fail');
               navigate("/order/fail");
               return;
             }
-            // 📌 4️⃣ 최종 결제 성공 처리
-            // alert("🎉 결제가 완료되었습니다!");
+            //  최종 결제 성공 처리
             sessionStorage.setItem('paymentStatus', 'success');
             navigate("/order/success", {
               state: {
@@ -274,12 +248,10 @@ const MyOrder = () => {
             });
 
           } catch (error) {
-            alert(`❌ 결제 확인 요청 중 오류 발생: ${error.message}`);
             sessionStorage.setItem('paymentStatus', 'fail');
             navigate("/order/fail");
           }
         } else {
-          alert(`❌ 결제 실패: ${response.error_msg}`);
           sessionStorage.setItem('paymentStatus', 'fail');
           navigate("/order/fail");
         }
@@ -316,20 +288,6 @@ const MyOrder = () => {
     setPhone(formatted);
   };
 
-  // const handlePhoneChange = (e) => {
-  //   const value = e.target.value.replace(/[^0-9]/g, ""); // 숫자만 입력 가능
-  //   let formatted = "";
-
-  //   if (value.length <= 3) {
-  //     formatted = value;
-  //   } else if (value.length <= 7) {
-  //     formatted = `${value.slice(0, 3)}-${value.slice(3)}`;
-  //   } else {
-  //     formatted = `${value.slice(0, 3)}-${value.slice(3, 7)}-${value.slice(7, 11)}`;
-  //   }
-
-  //   setPhone(formatted);
-  // };
 
   // 1. Kakao 주소 API 스크립트 로드
   useEffect(() => {

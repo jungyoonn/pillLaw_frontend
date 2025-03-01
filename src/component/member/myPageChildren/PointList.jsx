@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Button } from 'react-bootstrap';
 import UseAxios from '../../../hooks/UseAxios';
-import { useNavigate } from 'react-router-dom';
-import { formatDate, formatDateTime } from '../../../utils/formatDate'; // 날짜 포맷 함수 임포트
+import { formatDateTime } from '../../../utils/formatDate'; // 날짜 포맷 함수 임포트
 
 const PointHistory = ({ memberId }) => {
     const [pointHistory, setPointHistory] = useState([]);  // 포인트 내역
     const [totalPoints, setTotalPoints] = useState(0);  // 총 포인트
     const [visibleCount, setVisibleCount] = useState(5);  // 보이는 포인트 내역 수
     const { req } = UseAxios("http://localhost:8080/api/v1");
-    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchPointData = async () => {

@@ -34,7 +34,7 @@ const ProductSummary = ({ product }) => {
       setCno(response); // 👈 response 자체가 13이므로 이렇게 설정!
     } catch (error) {
     }
-  }, [mno]); // mno가 변경될 때마다 새로 정의되도록 의존성 추가
+  }, [mno, req]); // mno가 변경될 때마다 새로 정의되도록 의존성 추가
 
   useEffect(() => {
     if (mno) {

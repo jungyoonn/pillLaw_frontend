@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Button, Table, Modal, Form } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
-import axios from 'axios'; // Axios 추가
 import { useAuth } from '../../hooks/AuthContext';
 import UseAxios from '../../hooks/UseAxios'; // axios 훅
 import logo from '../../resources/image/pilllaw_favicon.png';
+import ToastMsg from '../common/ToastMsg';
 
 
 const MyCart = () => {
@@ -15,11 +15,14 @@ const MyCart = () => {
   const [currentItemId, setCurrentItemId] = useState(null);
   const [currentOption, setCurrentOption] = useState('30일'); // 모달 기본값
   const [errorMessage, setErrorMessage] = useState(""); // 에러 메시지 상태 추가
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastTitle, setToastTitle] = useState("");
 
   const navigate = useNavigate();
 
   const { req } = UseAxios(); // 'req' 함수 가져오기
-  const { mno, email, token } = useAuth();
+  const { mno} = useAuth();
 
   useEffect(() => {
 
@@ -79,13 +82,21 @@ const MyCart = () => {
         // 상태 업데이트
         setCartItems(itemsWithProductInfo);
       } catch (error) {
-        console.error("Error fetching cart items", error);
       }
     };
 
     fetchCartItems();
-  }, [mno]); // mno가 변경될 때마다 실행
+  }, [mno, req]); // mno가 변경될 때마다 실행
 
+  useEffect(() => {
+    if (showToast) {
+      const timer = setTimeout(() => {
+        setShowToast(false); // 3초 후 토스트 닫기
+      }, 3000);
+
+      return () => clearTimeout(timer); // 클린업 (안전하게 정리)
+    }
+  }, [showToast]);
 
 
   const handleCloseAndRedirect = () => {
@@ -114,28 +125,19 @@ const MyCart = () => {
   const handleSaveOption = async () => {
     const newOption = currentOption;
     const subdayValue = newOption === "60일" ? 60 : newOption === "90일" ? 90 : 30;
-
-    console.log(`📌 [요청] 옵션 변경 요청 - 상품 ID: ${currentItemId}, 변경 옵션: ${newOption}, subday: ${subdayValue}`);
-
     try {
-      const response = await req('PUT', `v1/cart/items/${currentItemId}`, {
+      await req('PUT', `v1/cart/items/${currentItemId}`, {
         cino: currentItemId,
         subday: subdayValue
       });
-
-      console.log(`✅ [성공] 응답 데이터:`, response.data);
-
       setCartItems(prevItems =>
         prevItems.map(item =>
           item.cino === currentItemId ? { ...item, option: newOption, subday: subdayValue } : item
         )
       );
-
       setShowModal(false);
       setErrorMessage(""); // 성공 시 에러 메시지 초기화
     } catch (error) {
-      console.error("❌ [실패] 옵션 업데이트 오류", error.response);
-
       let message = "옵션 변경 중 오류가 발생했습니다.";
       if (error.response) {
         if (error.response.data) {
@@ -146,30 +148,22 @@ const MyCart = () => {
           }
         }
       }
-
-      // 중복된 상품인 경우 사용자 친화적인 메시지 표시
+      // 중복된 상품인 경우 알림
       if (message.includes("이미 동일한 상품이 장바구니에 존재합니다")) {
         message = "이미 장바구니에 존재하는 상품입니다.";
       }
-
       setErrorMessage(message);
     }
   };
 
-
-
   const handleQuantityChange = async (cino, quantity) => {
     const updatedQuantity = Math.max(1, parseInt(quantity, 10));
 
-    console.log(`📌 [요청] 수량 변경 요청 - 상품 ID: ${cino}, 변경 수량: ${updatedQuantity}`);
-
     try {
-      const response = await req('PUT', `v1/cart/items/${cino}`, {
+      await req('PUT', `v1/cart/items/${cino}`, {
         cino: cino,  // 장바구니 아이템 ID를 그대로 전송
         quantity: updatedQuantity
       });
-
-      console.log(`✅ [성공] 응답 데이터:`, response.data);
 
       setCartItems(prevItems =>
         prevItems.map(item =>
@@ -177,11 +171,8 @@ const MyCart = () => {
         )
       );
     } catch (error) {
-      console.error("❌ [실패] 수량 업데이트 오류", error.response ? error.response.data : error);
     }
   };
-
-
 
   const handleSelectItem = (cino) => {
     setSelectedItems(prev =>
@@ -199,7 +190,9 @@ const MyCart = () => {
 
   const handleDeleteSelected = async () => {
     if (selectedItems.length === 0) {
-      alert("삭제할 항목을 선택해주세요.");
+      setToastMessage("선택된 항목이 없습니다.");
+      setToastTitle("실패");
+      setShowToast(true);
       return;
     }
 
@@ -213,10 +206,7 @@ const MyCart = () => {
       // 삭제된 항목을 UI에서도 반영
       setCartItems(prevItems => prevItems.filter(item => !selectedItems.includes(item.cino)));
       setSelectedItems([]); // 선택 항목 초기화
-
-      console.log("✅ 선택한 항목이 삭제되었습니다.");
     } catch (error) {
-      console.error("❌ 장바구니 항목 삭제 중 오류 발생", error);
     }
   };
 
@@ -294,7 +284,7 @@ const MyCart = () => {
         )}
 
         {/* 옵션 변경 모달 */}
-        <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal show={showModal} onHide={() => setShowModal(false)} size="sm">
           <Modal.Header closeButton>
             <Modal.Title>
               <h5 className="card-title fw-bold text-center header-font">섭취기간 선택</h5>
@@ -338,6 +328,16 @@ const MyCart = () => {
           </Modal.Footer>
         </Modal>
       </Container>
+
+      {showToast && (
+        <ToastMsg
+          title={toastTitle}
+          msg={toastMessage}
+          state={showToast}  // 토스트 표시 상태
+          nav={null}
+        />
+      )}
+
     </div>
   );
 };
