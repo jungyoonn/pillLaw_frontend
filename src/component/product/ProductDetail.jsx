@@ -114,11 +114,9 @@ useEffect(() => {
   return (
     <Container style={{ paddingTop: "115.19px" }}>
       <Container className="container-fluid product-detail text-center">
-        <h1 className="fw-bold mb-4 text-pilllaw">상품 상세정보</h1>
+        <h3 className="fw-bold mb-4 text-pilllaw">상품 상세정보</h3>
         <hr className="text-pilllaw" />
-        {/* <pre>{JSON.stringify(product, null, 2)}</pre> */}
-
-        <Row className="mt-4">
+        <Row className="mt-4 d-flex">
           <Col xs={5}>
             <img
               src={selectedImage}
@@ -143,30 +141,30 @@ useEffect(() => {
           <ProductSummary product={product} />
         </Col>
       </Row>
-        <Row className="mt-5">
+        <Row className="mt-5 d-flex">
           <ul className="nav nav-tabs nav-justified">
-
-            <li className="nav-item">
-              <Button 
-                variant="pilllaw" 
-                className={`nav-link text-white btn-pilllaw ${activeTab === "real-product-details" ? "active" : ""}`} 
-                onClick={() => setActiveTab("real-product-details")}>
-                제품 상세정보
-              </Button>
-            </li>
-            
-            <li className="nav-item">
-              <Button
-                variant="pilllaw"
-                className={`nav-link text-white btn-pilllaw ${activeTab === "real-product-review" ? "active" : ""}`}
-                onClick={() => setActiveTab("real-product-review")}
-              >
-                제품 리뷰({reviews ? reviews.length : "-"})
-              </Button>
-            </li>
-
+            <Col>
+              <li className="nav-item">
+                <Button 
+                  variant="pilllaw" 
+                  className={`nav-link text-white btn-pilllaw ${activeTab === "real-product-details" ? "active" : ""}`} 
+                  onClick={() => setActiveTab("real-product-details")}>
+                  제품 상세정보
+                </Button>
+              </li>
+            </Col>
+            <Col>
+              <li className="nav-item">
+                <Button
+                  variant="pilllaw"
+                  className={`nav-link text-white btn-pilllaw ${activeTab === "real-product-review" ? "active" : ""}`}
+                  onClick={() => setActiveTab("real-product-review")}
+                >
+                  제품 리뷰({reviews ? reviews.length : "-"})
+                </Button>
+              </li>
+            </Col>
           </ul>
-
           {activeTab === "real-product-details" && (
             <div className="tab-content mt-5 fade show active">
               {product.effect && product.effect.split(",").map((tag, index) => (

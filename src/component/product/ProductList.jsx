@@ -3,10 +3,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import "font-awesome/css/font-awesome.min.css";
 import "../../resources/css/style.css";
-import { Col, Container, Form, InputGroup, Nav, Navbar, Row, Spinner } from "react-bootstrap";
+import { Col, Container, Nav, Navbar, Row, Spinner } from "react-bootstrap";
 import ProductCategorySelector from "./ProductCategorySelector";
 import ProductItem from "./ProductItem";
 import useAxios from '../../hooks/UseAxios';
+import SearchBar from "../common/SearchBar";
 
 const ProductList = () => {
   const {data, loading, error, req} = useAxios();
@@ -21,16 +22,28 @@ const ProductList = () => {
     console.log("req ::::: 로 받은 것 들" , data);
   },[req]);
 
+  useEffect(() => {
+    if (!loading) {
+      window.scrollTo(0, 0);  // 페이지 최상단으로 이동
+    }
+  }, [loading]);
+  
+
   if(error){
     return <div><h1>Error Occured!</h1></div>;
   }
-  if(loading){
-    <Container className="text-center d-flex justify-content-center " style={{ paddingTop: "115.19px" }}>
-      <h1 className="fw-bold my-5">전체 상품</h1>
-      <Spinner className="text-center" animation="border" variant="info" />
-      <p className="mt-2 text-secondary">상품을 불러오는 중...</p>
-    </Container>
+  if (loading) {
+    return (
+      <Container className="text-center d-flex justify-content-center align-items-center vh-100">
+        <div>
+          <h1 className="fw-bold my-5">전체 상품</h1>
+          <Spinner animation="border" variant="info" />
+          <p className="mt-2 text-secondary">상품을 불러오는 중...</p>
+        </div>
+      </Container>
+    );
   }
+  
 
   const filteredData = data?.filter((p) => {
     const matchesSearch = searchTerm.trim() === "" || p.product.pname.includes(searchTerm);
@@ -63,7 +76,6 @@ const ProductList = () => {
       <Container className="text-center" style={{ paddingTop: "115.19px" }}>
         <h1 className="fw-bold my-5">전체 상품</h1>
         <Row>
-        {/* 컴포넌트화 예정! */}
           <Navbar bg="light" data-bs-theme="light">
             <Container className="justify-content-center">
               <Nav>
@@ -75,25 +87,13 @@ const ProductList = () => {
         </Row>
 
         {/* 컴포넌트화 예정! */}
-        {searchType === "name" && (
-          <Row>
-            <Col xs="3"></Col>
-              <Col>
-                <InputGroup className="mb-3 border border-pilllaw-primary rounded" >
-                  <Form.Control
-                    aria-label="Default"
-                    aria-describedby="inputGroup-sizing-default"
-                    placeholder="검색어를 입력하세요"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="fs-11"
-                  />
-                </InputGroup>
-              </Col>
-            <Col xs="3"></Col>
-          </Row>
-        )}
-
+        <Row>
+          <Col xs="2"></Col>
+          <Col>
+            <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+          </Col>
+          <Col xs="2"></Col>
+        </Row>
         {searchType === "category" && (
           <div className="category-selector">
             <ProductCategorySelector className="mt-3" onCategoryChange={onCategoryChange} selectedCategories={selectedCategories} />

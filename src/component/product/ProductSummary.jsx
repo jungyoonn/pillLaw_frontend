@@ -106,9 +106,9 @@ const ProductSummary = ({ product }) => {
       <Row>
         {/* 상품 제목 */}
         <Col className="text-start">
-          <h4 className="fw-bold">
+          <h5 className="fw-bold">
             <FontAwesomeIcon icon={faCapsules} size="xl" /> &nbsp;&nbsp;&nbsp; {product.pname}
-          </h4>
+          </h5>
         </Col>
         {/* 좋아요 및 공유 버튼 */}
         <Col className="text-end">
