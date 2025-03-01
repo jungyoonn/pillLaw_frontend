@@ -7,21 +7,22 @@ import Button from './Button';
 import { useAuth } from '../../hooks/AuthContext';
 import UseAxios from '../../hooks/UseAxios';
 
-const ProfileCard = ({nickname}) => {
-  const{logout} = useAuth();
+const ProfileCard = ({ nickname }) => {
+  const { logout } = useAuth();
+  const [totalPoints, setTotalPoints] = useState(0);  // 총 포인트
   const [follow, setFollow] = useState([]);// 팔로워 수
   const [following, setFollowing] = useState([]); // 팔로잉 수
   const [receiverId, setReceiverId] = useState([]); //받은 쪽지 수
   const mno = localStorage.getItem('mno');
   const { req } = UseAxios();
 
-  
+
 
   const handleClick = (e) => {
     e.preventDefault();
     logout();
   };
-  
+
   useEffect(() => {
     if (!mno) return; // 로그인하지 않았으면 요청 안 함
 
@@ -29,18 +30,21 @@ const ProfileCard = ({nickname}) => {
       try {
         const respFollw = await req('get', `follow/count/${mno}`);
         const respLetter = await req('get', `letter/received/${mno}`);
+        const totalResponse = await req('get', `v1/point/${mno}/total`);
+        
         
         console.log(respLetter);
-       
-          setFollow(respFollw.follower); // 응답 값 적용
-          setFollowing(respFollw.following);
-          setReceiverId(respLetter.length); 
+        
+        setFollow(respFollw.follower); // 응답 값 적용
+        setFollowing(respFollw.following);
+        setReceiverId(respLetter.length);
+        setTotalPoints(totalResponse);
 
       } catch (error) {
         console.error("Error fetching follow list:", error);
       }
     };
-    
+
     fetchData(); // async 함수 실행
   }, [mno]);
 
@@ -56,8 +60,8 @@ const ProfileCard = ({nickname}) => {
       </Row>
       <Row className="card-body p-0 mt-2">
         <Col xs lg="7">
-          <div className="px-2 ms-4 mb-0 fs-14"><FontAwesomeIcon icon={faCoins} className="fw-bold header-font me-1" />&nbsp;포인트 1500p</div>
-          <div className="px-2 ms-4 mt-0 fs-14"><FontAwesomeIcon icon={faPaperPlane} className="fw-bold header-font me-1" />&nbsp;쪽지{receiverId}개</div>
+        <div className="px-2 ms-4 mb-0 fs-14"><FontAwesomeIcon icon={faCoins} className="fw-bold header-font me-1" />&nbsp;{totalPoints.toLocaleString()}P</div>
+        <div className="px-2 ms-4 mt-0 fs-14"><FontAwesomeIcon icon={faPaperPlane} className="fw-bold header-font me-1" />&nbsp;쪽지 {receiverId}개</div>
         </Col>
         <Col className="mt-2">
           <Button variant='pilllaw' className="btn btn-pilllaw fs-14" onClick={handleClick} >로그아웃</Button>
@@ -68,7 +72,7 @@ const ProfileCard = ({nickname}) => {
           <p className="fs-14 fw-bold text-center ms-2"><Link to={"/followapp"} className="text-pilllaw" >팔로잉 {following}명</Link></p>
         </Col>
         <Col>
-          <p className="fs-14 fw-bold text-center me-2"><Link to={"/followerslist"} className="text-pilllaw">팔로워 {follow} 명</Link></p>
+          <p className="fs-14 fw-bold text-center me-2"><Link to={"/followerslist"} className="text-pilllaw">팔로워 {follow}명</Link></p>
         </Col>
       </Row>
     </>
