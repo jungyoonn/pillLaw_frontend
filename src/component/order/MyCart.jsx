@@ -14,6 +14,8 @@ const MyCart = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [currentItemId, setCurrentItemId] = useState(null);
   const [currentOption, setCurrentOption] = useState('30일'); // 모달 기본값
+  const [errorMessage, setErrorMessage] = useState(""); // 에러 메시지 상태 추가
+
   const navigate = useNavigate();
 
   const { req } = UseAxios(); // 'req' 함수 가져오기
@@ -117,22 +119,40 @@ const MyCart = () => {
 
     try {
       const response = await req('PUT', `v1/cart/items/${currentItemId}`, {
-        cino: currentItemId,  // 장바구니 아이템 ID (cino)
+        cino: currentItemId,
         subday: subdayValue
       });
 
       console.log(`✅ [성공] 응답 데이터:`, response.data);
 
-      // 상태 업데이트 - 변경된 옵션 즉시 반영
       setCartItems(prevItems =>
         prevItems.map(item =>
           item.cino === currentItemId ? { ...item, option: newOption, subday: subdayValue } : item
         )
       );
 
-      setShowModal(false); // 모달 닫기
+      setShowModal(false);
+      setErrorMessage(""); // 성공 시 에러 메시지 초기화
     } catch (error) {
-      console.error("❌ [실패] 옵션 업데이트 오류", error.response ? error.response.data : error);
+      console.error("❌ [실패] 옵션 업데이트 오류", error.response);
+
+      let message = "옵션 변경 중 오류가 발생했습니다.";
+      if (error.response) {
+        if (error.response.data) {
+          if (typeof error.response.data === "string") {
+            message = error.response.data; // 문자열 응답 처리
+          } else if (error.response.data.message) {
+            message = error.response.data.message;
+          }
+        }
+      }
+
+      // 중복된 상품인 경우 사용자 친화적인 메시지 표시
+      if (message.includes("이미 동일한 상품이 장바구니에 존재합니다")) {
+        message = "이미 장바구니에 존재하는 상품입니다.";
+      }
+
+      setErrorMessage(message);
     }
   };
 
@@ -218,7 +238,7 @@ const MyCart = () => {
             <th><input type="checkbox" onChange={handleSelectAll} checked={selectedItems.length === cartItems.length && cartItems.length > 0} /></th>
             <th width="10%"></th>
             <th width="50%">상품명</th>
-            <th width="10%">구독기간</th>
+            <th width="10%">섭취기간</th>
             <th width="10%">가격</th>
             <th width="10%">수량</th>
             <th width="10%">합계</th>
@@ -264,7 +284,7 @@ const MyCart = () => {
             <div className="d-flex flex-column align-items-end mt-4">
               <p className="text-end mb-2 fw-bold" style={{ color: "black" }}>전체 주문금액 {totalPrice.toLocaleString()}원</p>
               <p className="text-end mb-2 fw-bold" style={{ color: "black" }}>
-                <span className="header-font">(구독 회원은 배송비 무료!) </span>배송비 {shippingFee.toLocaleString()}원</p>
+                <span className="header-font"></span>배송비 {shippingFee.toLocaleString()}원</p>
               <p className="text-end mb-4 fw-bold" style={{ color: "black" }}>총 결제 금액 {finalPrice.toLocaleString()}원</p>
             </div>
 
@@ -276,23 +296,20 @@ const MyCart = () => {
         <Modal show={showModal} onHide={() => setShowModal(false)}>
           <Modal.Header closeButton>
             <Modal.Title>
-              <h5 className="card-title fw-bold text-center header-font">구독기간 선택</h5>
+              <h5 className="card-title fw-bold text-center header-font">섭취기간 선택</h5>
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form.Group controlId="newOption">
-
               <Form.Control as="select" value={currentOption} onChange={(e) => setCurrentOption(e.target.value)}  >
                 <option value="30일">30일</option>
                 <option value="60일">60일</option>
                 <option value="90일">90일</option>
               </Form.Control>
-
-
-
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>
+            {errorMessage && <span style={{ color: "gray", marginLeft: "10px" }}>{errorMessage}</span>}
             <Button variant="secondary" onClick={() => setShowModal(false)}>취소</Button>
             <Button className='btn-pilllaw' onClick={handleSaveOption}>저장</Button>
           </Modal.Footer>

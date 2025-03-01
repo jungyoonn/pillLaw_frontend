@@ -99,6 +99,18 @@ const MyOrder = () => {
         const addressResponse = await req("GET", `v1/address/${mno}`);
         setSavedAddresses(addressResponse); // 주소 상태 업데이트
         console.log("✅ 주소 불러오기 성공:", addressResponse);
+
+        // 기본 배송지 자동 입력
+        const defaultAddress = addressResponse.find(address => address.defaultAddr === true);
+        if (defaultAddress) {
+          setRecipient(defaultAddress.recipient);
+          setAddress({
+            postcode: defaultAddress.postalCode,
+            roadAddress: defaultAddress.roadAddress,
+            detailAddress: defaultAddress.detailAddress,
+          });
+          setPhone(defaultAddress.tel);
+        }
       } catch (error) {
         console.error("❌ 주소 불러오기 실패:", error);
       }
@@ -109,15 +121,10 @@ const MyOrder = () => {
     fetchAddresses();
   }, [mno, req, navigate]); // mno가 변경될 때마다 실행
 
-
-
   const handleCloseAndRedirect = () => {
     setShowLoginModal(false);
     navigate('/');
   };
-
-
-
 
   const handleOrder = async () => {
 
@@ -285,19 +292,44 @@ const MyOrder = () => {
   };
 
   const handlePhoneChange = (e) => {
-    const value = e.target.value.replace(/[^0-9]/g, ""); // 숫자만 입력 가능
-    let formatted = "";
+    let value = e.target.value.replace(/[^0-9]/g, ""); // 숫자만 입력 가능
 
-    if (value.length <= 3) {
-      formatted = value;
-    } else if (value.length <= 7) {
-      formatted = `${value.slice(0, 3)}-${value.slice(3)}`;
-    } else {
-      formatted = `${value.slice(0, 3)}-${value.slice(3, 7)}-${value.slice(7, 11)}`;
+    // 항상 010부터 시작하도록 설정
+    if (!value.startsWith("010")) {
+      value = "010" + value.slice(3);
+    }
+
+    // 최대 길이 제한 (010 포함 11자리까지만)
+    if (value.length > 11) {
+      value = value.slice(0, 11);
+    }
+
+    // 형식 적용: 010-xxxx-xxxx
+    let formatted = "010";
+    if (value.length > 3) {
+      formatted += `-${value.slice(3, 7)}`;
+    }
+    if (value.length > 7) {
+      formatted += `-${value.slice(7, 11)}`;
     }
 
     setPhone(formatted);
   };
+
+  // const handlePhoneChange = (e) => {
+  //   const value = e.target.value.replace(/[^0-9]/g, ""); // 숫자만 입력 가능
+  //   let formatted = "";
+
+  //   if (value.length <= 3) {
+  //     formatted = value;
+  //   } else if (value.length <= 7) {
+  //     formatted = `${value.slice(0, 3)}-${value.slice(3)}`;
+  //   } else {
+  //     formatted = `${value.slice(0, 3)}-${value.slice(3, 7)}-${value.slice(7, 11)}`;
+  //   }
+
+  //   setPhone(formatted);
+  // };
 
   // 1. Kakao 주소 API 스크립트 로드
   useEffect(() => {
@@ -408,7 +440,7 @@ const MyOrder = () => {
   };
 
   // 배송지 입력 체크
-  const isAddressValid = recipient && address.postcode && address.roadAddress && address.detailAddress && phone;
+  const isAddressValid = recipient && address.postcode && address.roadAddress && address.detailAddress && phone.length === 13;
 
   // 결제하기 버튼 활성화 조건
   const isOrderValid = totalPayment > 0 && isAddressValid && isTermsChecked;
@@ -446,9 +478,21 @@ const MyOrder = () => {
               </Form.Group>
 
               <Form.Group className="mb-3">
-                <Form.Label>휴대전화</Form.Label>
-                <Form.Control type="text" placeholder="하이픈(-) 없이 숫자만 입력하세요" value={phone} onChange={(e) => { setPhone(e.target.value); handlePhoneChange(e); }} required />
-
+                <div className="d-flex justify-content-between align-items-center">
+                  <Form.Label className="mb-0">휴대전화</Form.Label>
+                  <small className="text-muted ms-auto">하이픈(-) 없이 숫자만 입력하세요</small>
+                </div>
+                <Form.Control
+                  type="text"
+                  value={phone}
+                  onChange={handlePhoneChange}
+                  required
+                />
+                {phone.length !== 13 && ( // 13자리가 아닐 때만 문구 표시
+                  <Form.Text className="text-muted">
+                    올바른 휴대전화 번호를 입력해 주세요.
+                  </Form.Text>
+                )}
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label htmlFor="deliveryMessage">배송 메세지</Form.Label>
@@ -469,10 +513,10 @@ const MyOrder = () => {
         <h5 className="mt-5"><strong>주문 상품</strong></h5>
         <hr />
         <Table responsive className="text-center align-middle table-custom-bg">
-        <thead style={{ backgroundColor: "#F8F9FA" }}>           
-           <tr>
+          <thead style={{ backgroundColor: "#F8F9FA" }}>
+            <tr>
               <th></th>
-              <th>상품명(구독기간)</th>
+              <th>상품명(섭취기간)</th>
               <th>가격</th>
               <th>수량</th>
               <th>합계</th>
@@ -494,7 +538,7 @@ const MyOrder = () => {
 
         <div className="d-flex justify-content-between mt-3">
           <p className="fw-bold">총 금액(배송비 포함): {totalPrice.toLocaleString()}원</p>
-          <p>{expectedPoints.toLocaleString()}P가 적립될 예정입니다(배송 완료 후 1주일 이내)</p>
+          <p>{expectedPoints.toLocaleString()}P가 적립될 예정입니다(배송 완료 후 1일 이내 적립)</p>
         </div>
         <div>
           <Form.Group className="mb-3">

@@ -23,27 +23,28 @@ const ProductDetail = () => {
   const [product, setProduct] = useState({});
   const [selectedImage, setSelectedImage] = useState("");
 
-  useEffect(() => {
-    if (id) {
-      req("get", `v1/product/${id}`)
-        .then((response) => {
-          console.log("제품 데이터:", response);
-          setProduct(response.product);
-          setSelectedImage(response.product.imageUrl);
-        }).catch((err) => {
-          console.error("제품 데이터 로드 에러:", err);
-        });
+useEffect(() => {
+  if (id) {
+    req("get", `v1/product/${id}`)
+    .then((response) => {
+      console.log("제품 데이터:", response);
+      setProduct(response.product);
+      setSelectedImage(response.product.imageUrl);
+    }).catch((err) => {
+      console.error("제품 데이터 로드 에러:", err);
+    });
 
-      req("get", `v1/product/detail/review/list/${id}`)
-        .then((response) => {
-          console.log("리뷰 : ", response)
-          setReviews(response);
-        }).catch((err)=>{
-          console.error("리뷰 로드 에러 :: ", err);
-          setReviews([]);
-        });
-    }
-  }, [id]);
+    req("get", `v1/product/detail/review/list/${id}`)
+    .then((response) => {
+      console.log("리뷰 목록 갱신 : ", response);
+      setReviews(response);
+    }).catch((err) => {
+      console.error("리뷰 로드 에러 :: ", err);
+      setReviews([]);
+    });
+  }
+}, [id]);
+
   
   if (loading){
     return <div className="text-center"><h2>로딩 중...</h2></div>;
@@ -64,20 +65,50 @@ const ProductDetail = () => {
       .catch((err) => console.error("리뷰 삭제 실패:", err));
   };
   
-  const handleAddReview = (newReview) => {
-    req("post", "v1/product/detail/review/register", newReview)
-    .then((response)=>{
-      console.log("리뷰 등록 성공");
-      setReviews((prevReviews) => [response, ...prevReviews]);
-      return req("get", `v1/product/detail/review/list/${id}`);
-    })
-    .then((response) => {
-      if(response && response.length > 0 ){
-        setReviews(response);
-      }
-    })
-    .catch((err) => console.error("리뷰 등록 실패", err));
-  };
+  // const handleAddReview = async (newReview) => {
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append("pno", newReview.pno);
+  //     formData.append("mno", newReview.mno);
+  //     formData.append("content", newReview.content);
+  //     formData.append("rating", newReview.rating);
+  
+  //     // 파일이 있다면 FormData에 추가
+  //     if (newReview.files && newReview.files.length > 0) {
+  //       newReview.files.forEach((file) => {
+  //         formData.append("files", file);
+  //       });
+  //     }
+  
+  //     // ✅ 리뷰 등록 요청 (multipart/form-data)
+  //     const reviewResponse = await req(
+  //       "post",
+  //       "v1/product/detail/review/register",
+  //       formData,
+  //       { "Content-Type": "multipart/form-data" } 
+  //     );
+  
+  //     console.log("✅ 리뷰 등록 성공:", reviewResponse);
+  
+  //     // ✅ 등록된 리뷰를 즉시 목록에 추가 (불필요한 GET 요청 최소화)
+  //     setReviews((prevReviews) => [reviewResponse, ...prevReviews]);
+  
+  //     // ✅ 최신 리뷰 목록을 다시 불러오기
+  //     const updatedReviews = await req(
+  //       "get",
+  //       `v1/product/detail/review/list/${newReview.pno}`
+  //     );
+  
+  //     if (updatedReviews && updatedReviews.length > 0) {
+  //       setReviews(updatedReviews);
+  //     }
+  
+  //   } catch (err) {
+  //     console.error("❌ 리뷰 등록 실패:", err.response?.data);
+  //     console.error("전체 에러:", err);
+  //   }
+  // };
+  
   
   const calculateRatingDistribution = (reviews) => {
     const distribution = [0, 0, 0, 0, 0]; 
@@ -194,7 +225,15 @@ const ProductDetail = () => {
                     </div>
                   </Col>
 
-                  <ReviewForm show={showReviewModal} handleClose={() => setShowReviewModal(false)} addReview={handleAddReview} productId={product.pno} />
+                  <ReviewForm 
+                    show={showReviewModal} 
+                    handleClose={() => setShowReviewModal(false)} 
+                    productId={product.pno} 
+                    onReviewAdded={(newReview) => setReviews(prev => [newReview, ...prev])}  // ✅ 최신 리뷰 추가
+                  />
+
+
+
 
                   <Col xs={2} className="justify-content-end">
                     <Button variant="pilllaw" className="fw-bold fs-14 btn-pilllaw btn" onClick={() => setShowReviewModal(true)}>
