@@ -34,7 +34,7 @@ import FollowersList from './component/follow/layout/FollowersList';
 import MyPageLayout from './component/member/MyPageLayout';
 import FollowingList from './component/follow/layout/FollowingList';
 import FollwSenderPage from './component/follow/layout/FollowSenderPage';
-import FollowIsBack from './component/follow/layout/FollowIsBack';
+// import FollowIsBack from './component/follow/layout/FollowIsBack';
 import FollowApp from './component/follow/test/FollowApp';
 import LetterReceivedListTest from './component/letter/test/LetterListComponent';
 import LetterHeader from './component/letter/layout/LetterHeader';
@@ -68,7 +68,7 @@ function App() {
             <Route path='/followapp' element={<FollowApp/> }/>
             <Route path='/chatroomList' element={<ChatRoomList/> }/>
             <Route path='/followsenderpage' element={<FollwSenderPage/>}/>
-            <Route path='/followisback' element={<FollowIsBack/>}/>
+            {/* <Route path='/followisback' element={<FollowIsBack/>}/> */}
             <Route path='/chattestlist' element={<ChatTestList/> }/>
             {/* <Route path='/userprofile' element={<UserProfile />}/> */}
 
