@@ -99,6 +99,18 @@ const MyOrder = () => {
         const addressResponse = await req("GET", `v1/address/${mno}`);
         setSavedAddresses(addressResponse); // 주소 상태 업데이트
         console.log("✅ 주소 불러오기 성공:", addressResponse);
+
+        // 기본 배송지 자동 입력
+        const defaultAddress = addressResponse.find(address => address.defaultAddr === true);
+        if (defaultAddress) {
+          setRecipient(defaultAddress.recipient);
+          setAddress({
+            postcode: defaultAddress.postalCode,
+            roadAddress: defaultAddress.roadAddress,
+            detailAddress: defaultAddress.detailAddress,
+          });
+          setPhone(defaultAddress.tel);
+        }
       } catch (error) {
         console.error("❌ 주소 불러오기 실패:", error);
       }
@@ -469,10 +481,10 @@ const MyOrder = () => {
         <h5 className="mt-5"><strong>주문 상품</strong></h5>
         <hr />
         <Table responsive className="text-center align-middle table-custom-bg">
-        <thead style={{ backgroundColor: "#F8F9FA" }}>           
-           <tr>
+          <thead style={{ backgroundColor: "#F8F9FA" }}>
+            <tr>
               <th></th>
-              <th>상품명(구독기간)</th>
+              <th>상품명(섭취기간)</th>
               <th>가격</th>
               <th>수량</th>
               <th>합계</th>
@@ -494,7 +506,7 @@ const MyOrder = () => {
 
         <div className="d-flex justify-content-between mt-3">
           <p className="fw-bold">총 금액(배송비 포함): {totalPrice.toLocaleString()}원</p>
-          <p>{expectedPoints.toLocaleString()}P가 적립될 예정입니다(배송 완료 후 1주일 이내)</p>
+          <p>{expectedPoints.toLocaleString()}P가 적립될 예정입니다(배송 완료 후 1일 이내 적립)</p>
         </div>
         <div>
           <Form.Group className="mb-3">
