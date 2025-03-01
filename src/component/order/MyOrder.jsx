@@ -66,7 +66,7 @@ const MyOrder = () => {
 
               // 상품명이나 상품 정보가 없을 경우 '알수없음' 처리
               const productName = product ? product.pname : "알수없음";
-              const productImage = "https://placehold.co/60";  // 기본 이미지
+              const productImage = product?.imageUrl || "https://placehold.co/60";  // 이미지가 없으면 기본 이미지
 
               return {
                 ...item,
@@ -515,7 +515,7 @@ const MyOrder = () => {
         <Table responsive className="text-center align-middle table-custom-bg">
           <thead style={{ backgroundColor: "#F8F9FA" }}>
             <tr>
-              <th></th>
+              <th width="10%"></th>
               <th>상품명(섭취기간)</th>
               <th>가격</th>
               <th>수량</th>

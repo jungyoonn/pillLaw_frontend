@@ -234,15 +234,16 @@ const MyCart = () => {
           <span className="text-secondary">3. 결제 완료</span>
         </h4>
         <Table className="text-center align-middle mt-5 table-custom-bg" responsive>
-          <thead style={{ backgroundColor: "#F8F9FA" }}>            <tr>
-            <th><input type="checkbox" onChange={handleSelectAll} checked={selectedItems.length === cartItems.length && cartItems.length > 0} /></th>
-            <th width="10%"></th>
-            <th width="50%">상품명</th>
-            <th width="10%">섭취기간</th>
-            <th width="10%">가격</th>
-            <th width="10%">수량</th>
-            <th width="10%">합계</th>
-          </tr>
+          <thead style={{ backgroundColor: "#F8F9FA" }}>
+            <tr>
+              <th><input type="checkbox" onChange={handleSelectAll} checked={selectedItems.length === cartItems.length && cartItems.length > 0} /></th>
+              <th width="10%"></th>
+              <th width="50%">상품명</th>
+              <th width="10%">섭취기간</th>
+              <th width="10%">가격</th>
+              <th width="10%">수량</th>
+              <th width="10%">합계</th>
+            </tr>
           </thead>
           <tbody style={{ backgroundColor: "#F8F9FA" }}>
 
