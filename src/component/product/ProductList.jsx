@@ -17,10 +17,12 @@ const ProductList = () => {
   const [forceUpdate, setForceUpdate] = useState(false);
 
 
-  useEffect(()=>{
+  
+
+  useEffect(() => {
     req('get', 'v1/product/list');
-    console.log("req ::::: 로 받은 것 들" , data);
-  },[req]);
+  }, [req]);
+
 
   useEffect(() => {
     if (!loading) {
@@ -46,29 +48,19 @@ const ProductList = () => {
   
 
   const filteredData = data?.filter((p) => {
-    const matchesSearch = searchTerm.trim() === "" || p.product.pname.includes(searchTerm);
+    const matchesSearch = searchTerm.trim() === "" || p.product.pname?.includes(searchTerm);
     const matchesCategory = selectedCategories.size === 0 || 
-      Array.from(selectedCategories).every(selected => 
-        p.categories.some(category => category.cname === selected)
-      );
+      p.categories.some(category => selectedCategories.has(category.cname));
     return matchesSearch && matchesCategory; 
   }) || [];
 
   const onCategoryChange = (category) => {
-    setSelectedCategories((prev) => {
-      const updatedCategories = new Set(prev);
-      if (updatedCategories.has(category)) {
-        updatedCategories.delete(category);
-      } else {
-        updatedCategories.add(category);
-      }
-      console.log("🔹 선택한 카테고리:", category);
-      console.log("🔹 업데이트된 카테고리:", Array.from(updatedCategories));
-      setForceUpdate(prev => !prev); 
-      return new Set(updatedCategories);
+    setSelectedCategories(prev => {
+      const updated = new Set(prev);
+      updated.has(category) ? updated.delete(category) : updated.add(category);
+      return new Set(updated);
     });
   };
-
 
 
   return (
