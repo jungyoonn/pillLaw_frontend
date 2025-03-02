@@ -17,6 +17,9 @@ const IndexSelector = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("BEST상품"); // ✅ 현재 선택된 카테고리
+  const [topPnos, setTopPnos] = useState([]);
+
+
 
   useEffect(() => {
     console.log("API에서 받은 regDate:", products.map(p => p.product.regDate));
@@ -41,6 +44,23 @@ const IndexSelector = () => {
     fetchProducts();
   }, [req]);
 
+  useEffect(() => {
+    const fetchTopOrderedPnos = async () => {
+      try {
+        const response = await req("get", "v1/product/top-ordered-products");
+        if (response && Array.isArray(response)) {
+          setTopPnos(response);
+        } else {
+        }
+      } catch (err) {
+        console.error("주문 많은 상품 불러오기 실패:", err);
+      }
+    };
+
+    fetchTopOrderedPnos();
+  }, [req]);
+
+
   // 안전한 정렬 (undefined 값 고려)
   const safeSort = (arr, key, desc = true) => {
     return [...arr].sort((a, b) => {
@@ -64,10 +84,14 @@ const IndexSelector = () => {
     filteredProducts = [...products]
       .sort((a, b) => (b.reviews?.length || 0) - (a.reviews?.length || 0)) // ✅ 리뷰 많은 순 수정
       .slice(0, 6);
+  } else if (selectedCategory === "주문많은순") {
+    filteredProducts = products.filter(p =>
+      topPnos.map(String).includes(String(p.product.pno))
+    );
   }
 
   return (
-    <Col xs lg="9" className="mx-2">
+    <Col xs lg="9" className="mx-2 mt-3">
       <div className="mt-3 mb-4 mx-3">
         <div className="mb-3 text-center">
           {/* <FontAwesomeIcon icon={faLessThan} className="fa-2xl fw-bold text-pilllaw px-3" />
@@ -77,24 +101,24 @@ const IndexSelector = () => {
           <img className="img-fluid mx-2" src={tag4} width="50" alt="태그 이미지" />
           <img className="img-fluid mx-2" src={tag6} width="50" alt="태그 이미지" />
           <FontAwesomeIcon icon={faGreaterThan} className="fa-2xl fw-bold text-pilllaw px-3" /> */}
-          <IndexSlider/>
+          <IndexSlider />
         </div>
         <Row>
-          <Col className="text-end mx-2">
+          <Col className="text-end mx-2 mt-3">
             <h1 className="fw-bold col pilllaw-tag" onClick={() => setSelectedCategory("BEST상품")}>
               #BEST상품
             </h1>
-            <h1 className="fw-bold mt-1 pilllaw-tag" onClick={() => setSelectedCategory("얼리버드")}>
+            {/* <h1 className="fw-bold mt-1 pilllaw-tag" onClick={() => setSelectedCategory("얼리버드")}>
               #얼리버드
-            </h1>
-            <h1 className="fw-bold col pilllaw-tag" onClick={() => setSelectedCategory("구독자상품")}>
-              #구독자상품
+            </h1> */}
+            <h1 className="fw-bold col pilllaw-tag" onClick={() => setSelectedCategory("주문많은순")}>
+              #주문 많은
             </h1>
           </Col>
-          <Col className="mx-2 text-start">
-            <h1 className="fw-bold col pilllaw-tag" onClick={() => setSelectedCategory("필로패키지")}>
+          <Col className="mx-2 text-start mt-3">
+            {/* <h1 className="fw-bold col pilllaw-tag" onClick={() => setSelectedCategory("필로패키지")}>
               #필로패키지
-            </h1>
+            </h1> */}
             <h1 className="fw-bold pilllaw-tag" onClick={() => setSelectedCategory("신제품")}>
               #신제품
             </h1>
