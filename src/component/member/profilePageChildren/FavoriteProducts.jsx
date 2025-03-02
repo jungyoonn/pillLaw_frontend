@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import UseAxios from "../../../hooks/UseAxios";
-import { Link } from "react-router-dom";
+import IndexItem from "../../product/IndexItem";
 
 const FavoriteProducts = ({ memberId }) => {  
   const { req, data, loading, error } = UseAxios();
@@ -30,33 +30,22 @@ const FavoriteProducts = ({ memberId }) => {
 
   return (
     <div>
-      <h2 style={{ textAlign: "center" }}>내가 좋아요 한 상품</h2>
+       <h4 className="text-center text-pilllaw">나의 좋아요 상품</h4>
       <p className="fs-11 text-center"> 좋아요 한 상품이 {favoriteProducts.length} 개 있습니다.</p>
 
       {favoriteProducts.length === 0 ? (
         <div style={{ textAlign: "center", marginTop: "20px", color: "#6c757d" }}>
-          <p>❤️ 좋아요한 상품이 없습니다.</p>
-          <p>관심 있는 상품을 찾아 좋아요를 눌러보세요!</p>
+          <p className="fs-12">엇, 아직 ❤️ 좋아요한 상품이 없습니다.</p>
+          <p>관심 있는 상품을 찾아 ❤️ 좋아요를 눌러보세요!</p>
         </div>
       ) : (
-        <ul style={{ listStyle: "none", padding: 0 }}>
+        <div className="d-flex flex-wrap justify-content-center gap-3">  
           {favoriteProducts.map((product) => (
-            <li key={product.pno} style={{ marginBottom: "15px" }}>
-              <Link to={`/product/${product.pno}`} style={{ textDecoration: "none", color: "black" }}>
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <img 
-                    src={product.imageUrl} 
-                    alt={product.pname} 
-                    width={50} 
-                    height={50} 
-                    style={{ borderRadius: "5px", marginRight: "10px" }} 
-                  />
-                  <span>{product.pname}</span>
-                </div>
-              </Link>
-            </li>
+            <div key={product.pno} className="favorite-product-wrapper">  
+              <IndexItem product={product} />
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );

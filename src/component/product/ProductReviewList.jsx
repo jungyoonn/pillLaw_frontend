@@ -62,7 +62,6 @@ const ProductReviewList = ({ reviews, onDelete }) => {
     }
 
     try {
-      // ✅ 현재 좋아요 상태 확인
       const isLiked = likedReviews[reviewId];
 
       // ✅ UI를 즉시 업데이트 (낙관적 업데이트)
@@ -81,12 +80,10 @@ const ProductReviewList = ({ reviews, onDelete }) => {
         ? "v1/product/review/like/remove"
         : "v1/product/review/like/add";
 
-      const response = await req("post", endpoint, {
+      await req("post", endpoint, {
         mno: mno, // ✅ 회원 ID 포함
         prno: reviewId, // ✅ 리뷰 ID 포함
       });
-
-      console.log("👍 좋아요 요청 완료:", response.data);
     } catch (error) {
       console.error("❌ 좋아요 요청 실패:", error);
 
@@ -105,71 +102,60 @@ const ProductReviewList = ({ reviews, onDelete }) => {
 
   return (
     <div>
-      {reviews.map((review) => (
-        <div key={review.prno} className="row border border-1 pt-4 pb-3 mx-3 fs-12 mt-2">
-          <Col xs={2} className="d-flex align-items-center">
-            {review.imageUrls && review.imageUrls.length > 0 ? (
-              <img
-                className="img-fluid w-75 pilllaw-product-image"
-                src={review.imageUrls[0]}
-                alt="리뷰 이미지"
-                onError={(e) => (e.target.src = "/default-image.jpg")}
-              />
-            ) : (
-              <img className="img-fluid w-75 pilllaw-product-image" src="/default-image.jpg" alt="기본 이미지" />
-            )}
-          </Col>
-          <Col xs={6}>
-            <Row className="text-start">
-              <span dangerouslySetInnerHTML={{ __html: review.content }} />
-            </Row>
-          </Col>
-          <Col xs={1} className="text-start">
-            <Link className="text-decoration-none text-pilllaw" to={`/userpage/${review.mno}`}>
-              {review.nickName}
-            </Link>
-          </Col>
-          <Col xs={1} className="text-center">
-            <span>{review.regDate ? formatDate(review.regDate) : "날짜 없음"}</span>
-          </Col>
-          <Col xs={2} className="text-center">
-            <span className="fw-bold">별점: </span>
-            {Array.from({ length: review.rating }).map((_, index) => (
-              <FontAwesomeIcon key={index} icon={faStar} className="text-warning" />
-            ))}
-            ({review.rating}점)
-          </Col>
-          <Row className="row text-end mt-2">
-            <Col xs="8"></Col>
-            <Col xs="2">
-              <Link
-                className="btn btn-link text-decoration-none fw-bold fs-12"
-                onClick={() => handleLikeToggle(review.prno)}
-                style={{
-                  border: "none",
-                  background: "none",
-                  cursor: "pointer",
-                  color: likedReviews[review.prno] ? "red" : "black",
-                }}
-              >
-                도움이 돼요
-                <FontAwesomeIcon icon={faHeart} className={likedReviews[review.prno] ? "text-danger" : "text-secondary"} />{" "}
-                : {reviewLikes[review.prno]}
-              </Link>
-            </Col>
-            <Col className="py-1 mt-1">
-              {mno === review.mno && (
-                <Col xs="2" className="text-center">
-                  <Button variant="danger" className="fw-bold fs-12" onClick={() => onDelete(review.prno)}>
+      <h3 className="mt-3 text-center">상품 리뷰</h3>
+      <p className="fs-11 text-center">총 {reviews.length}개의 리뷰가 있습니다.</p>
+
+      {reviews.length === 0 ? (
+        <div className="text-center mt-3 text-muted">
+          <p className="fs-12">아직 작성된 리뷰가 없습니다.</p>
+          <p>구매 후 첫 리뷰를 남겨보세요!</p>
+        </div>
+      ) : (
+        <div className="d-flex flex-wrap justify-content-center gap-3">
+          {reviews.map((review) => (
+            <div key={review.prno} className="review-card">
+              {/* ✅ 리뷰 이미지 */}
+              <div className="review-image-container">
+                {review.imageUrls && review.imageUrls.length > 0 ? (
+                  <img src={review.imageUrls[0]} alt="리뷰 이미지" className="review-image" />
+                ) : (
+                  <div className="default-review-image"></div>
+                )}
+              </div>
+
+              {/* ✅ 리뷰 내용 */}
+              <div className="review-content">
+                <p className="fw-bold">{review.nickName}</p>
+                <div className="review-text" dangerouslySetInnerHTML={{ __html: review.content }}></div>
+                <small className="text-muted">{formatDate(review.regDate)}</small>
+              </div>
+
+              {/* ✅ 별점 */}
+              <div className="review-rating">
+                {Array.from({ length: review.rating }).map((_, index) => (
+                  <FontAwesomeIcon key={index} icon={faStar} className="text-warning" />
+                ))}
+                ({review.rating}점)
+              </div>
+
+              {/* ✅ 좋아요 및 삭제 버튼 */}
+              <div className="review-actions">
+                <button className="like-button" onClick={() => handleLikeToggle(review.prno)}>
+                  <FontAwesomeIcon icon={faHeart} className={likedReviews[review.prno] ? "text-danger" : "text-secondary"} />
+                  <span> 도움이 돼요 ({reviewLikes[review.prno]})</span>
+                </button>
+                {mno === review.mno && (
+                  <Button variant="danger" size="sm" onClick={() => onDelete(review.prno)}>
                     <FontAwesomeIcon icon={faTrash} /> 삭제
                   </Button>
-                </Col>
-              )}
-            </Col>
-          </Row>
+                )}
+              </div>
+            </div>
+          ))}
         </div>
-      ))}
+      )}
     </div>
   );
 };
+
 export default ProductReviewList;

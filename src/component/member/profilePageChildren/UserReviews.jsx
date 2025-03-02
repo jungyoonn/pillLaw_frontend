@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import UseAxios from "../../../hooks/UseAxios";
+import { Card, ListGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 const UserReviews = ({ mno }) => {
@@ -15,6 +16,7 @@ const UserReviews = ({ mno }) => {
   const fetchMyReviews = async (mno) => {
     try {
       const response = await req("GET", `v1/product/detail/review/mine/${mno}`);
+      console.log(response);
       if (response) {
         setReviews(response);
       }
@@ -28,47 +30,38 @@ const UserReviews = ({ mno }) => {
   if (!reviews.length) return <p>작성한 리뷰가 없습니다.</p>;
 
   return (
-    <div>
-      <h2>내가 작성한 리뷰</h2>
-      <ul style={{ listStyle: "none", padding: 0 }}>
+    <div className="p-2">
+      <h4 className="text-center text-pilllaw">내가 작성한 리뷰</h4>
+      <p className="fs-11 text-center">작성한 리뷰가 {reviews.length} 개 있습니다.</p>
+      <Card className="mt-3">
+      <Card.Header className="fw-bold text-center text-pilllaw">상품 리뷰</Card.Header>
+      <ListGroup variant="flush">
         {reviews.map((review) => (
-          <li
-            key={review.prno}
-            style={{
-              marginBottom: "15px",
-              padding: "10px",
-              borderBottom: "1px solid #ddd",
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <Link
-              to={`/product/detail/${review.pno}`}
-              style={{ textDecoration: "none", color: "black", flex: 1 }}
-            >
-              <p style={{ fontWeight: "bold", marginBottom: "5px" }}>
-                {review.nickName}
-              </p>
-              <div dangerouslySetInnerHTML={{ __html: review.content }}></div>
-              <small>{new Date(review.regDate).toLocaleDateString()}</small>
-            </Link>
+          <ListGroup.Item key={review.prno} className="d-flex align-items-center">
+            <div className="flex-grow-1">
+              <Link to={`/product/detail/${review.pno}`} className="text-decoration-none text-black">
+                <p className="fw-bold mb-1">{review.nickName}</p>
+                <div dangerouslySetInnerHTML={{ __html: review.content }}></div>
+                <small className="text-muted">{new Date(review.regDate).toLocaleDateString()}</small>
+              </Link>
+            </div>
 
-            {/* ✅ 리뷰 이미지 추가 */}
             {review.fileDtos?.length > 0 && (
-              <div style={{ marginLeft: "10px" }}>
+              <div className="ms-3 d-flex">
                 {review.fileDtos.map((file, idx) => (
                   <img
                     key={idx}
                     src={file.url}
                     alt="리뷰 이미지"
-                    style={{ width: "50px", height: "50px", borderRadius: "5px", objectFit: "cover", marginLeft: "5px" }}
+                    className="review-image"
                   />
                 ))}
               </div>
             )}
-          </li>
+          </ListGroup.Item>
         ))}
-      </ul>
+      </ListGroup>
+    </Card>
     </div>
   );
 };
