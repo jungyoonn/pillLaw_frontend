@@ -47,6 +47,8 @@ const FavoriteProducts = ({ memberId }) => {
           ))}
         </div>
       )}
+      <div className="my-5 py-5"></div>
+      <div className="my-5 py-5"></div>
     </div>
   );
 };

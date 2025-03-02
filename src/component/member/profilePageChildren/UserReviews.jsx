@@ -27,7 +27,6 @@ const UserReviews = ({ mno }) => {
 
   if (loading) return <p>로딩 중...</p>;
   if (error) return <p>오류 발생: {error.message}</p>;
-  if (!reviews.length) return <p>작성한 리뷰가 없습니다.</p>;
 
   return (
     <div className="p-2">
@@ -39,7 +38,8 @@ const UserReviews = ({ mno }) => {
           <Card className="mt-3">
             <Card.Header className="fw-bold text-center text-pilllaw">상품 리뷰</Card.Header>
             <ListGroup variant="flush">
-              {reviews.map((review) => (
+              {!reviews.length ? <p className="fw-bold fs-14 mt-2 text-center">작성한 리뷰가 없습니다.</p> : 
+                reviews.map((review) => (
                 <ListGroup.Item key={review.prno} className="d-flex align-items-center bg-pilllaw-form">
                   <div className="flex-grow-1">
                     <Link to={`/product/detail/${review.pno}`} className="text-decoration-none text-black">
@@ -68,6 +68,8 @@ const UserReviews = ({ mno }) => {
         </Col>
         <Col xs="1" />
       </Row>
+      <div className="my-5 py-5"></div>
+      <div className="my-5 py-5"></div>
     </div>
   );
 };
