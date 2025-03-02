@@ -19,6 +19,7 @@ import { faLessThan, faGreaterThan, faCrown, faStar, faCircle } from "@fortaweso
 import ProfileCard from './ProfileCard';
 import LoginCard from './LoginCard';
 import UseAxios from '../../hooks/UseAxios';
+import IndexSlider from "../common/IndexSlider";
 
 const Index = () => {
   const [login, setLogin] = useState(false);

@@ -9,6 +9,7 @@ import tag2 from "../../resources/image/main_tag2.png";
 import tag4 from "../../resources/image/main_tag4.png";
 import tag6 from "../../resources/image/main_tag6.png";
 import tag7 from "../../resources/image/main_tag7.png";
+import IndexSlider from "../common/IndexSlider";
 
 const IndexSelector = () => {
   const { req } = useAxios();
@@ -69,13 +70,14 @@ const IndexSelector = () => {
     <Col xs lg="9" className="mx-2">
       <div className="mt-3 mb-4 mx-3">
         <div className="mb-3 text-center">
-          <FontAwesomeIcon icon={faLessThan} className="fa-2xl fw-bold text-pilllaw px-3" />
+          {/* <FontAwesomeIcon icon={faLessThan} className="fa-2xl fw-bold text-pilllaw px-3" />
           <img className="img-fluid mx-2" src={tag1} width="50" alt="태그 이미지" />
           <img className="img-fluid mx-2" src={tag2} width="50" alt="태그 이미지" />
           <img className="img-fluid mx-2" src={tag7} width="50" alt="태그 이미지" />
           <img className="img-fluid mx-2" src={tag4} width="50" alt="태그 이미지" />
           <img className="img-fluid mx-2" src={tag6} width="50" alt="태그 이미지" />
-          <FontAwesomeIcon icon={faGreaterThan} className="fa-2xl fw-bold text-pilllaw px-3" />
+          <FontAwesomeIcon icon={faGreaterThan} className="fa-2xl fw-bold text-pilllaw px-3" /> */}
+          <IndexSlider/>
         </div>
         <Row>
           <Col className="text-end mx-2">
