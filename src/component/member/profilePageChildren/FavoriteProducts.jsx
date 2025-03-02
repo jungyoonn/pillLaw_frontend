@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import UseAxios from "../../../hooks/UseAxios";
 import { Link } from "react-router-dom";
 
-const FavoriteProducts = ({ memberId }) => {  // ✅ props로 mno 받기
+const FavoriteProducts = ({ memberId }) => {  
   const { req, data, loading, error } = UseAxios();
   const [favoriteProducts, setFavoriteProducts] = useState([]);
 
   useEffect(() => {
     if (memberId) {
-      console.log("📢 좋아요한 상품 가져오기: mno =", memberId);  // ✅ 로그 추가
+      console.log("📢 좋아요한 상품 가져오기: mno =", memberId);  
       fetchFavoriteProducts(memberId);
     }
   }, [memberId]);
@@ -16,12 +16,12 @@ const FavoriteProducts = ({ memberId }) => {  // ✅ props로 mno 받기
   const fetchFavoriteProducts = async (memberId) => {
     try {
       const response = await req("GET", `v1/product/${memberId}/liked`);
-      console.log("📢 좋아요한 상품 API 응답:", response);  // ✅ 응답 확인
+      console.log("📢 좋아요한 상품 API 응답:", response);  
       if (response) {
         setFavoriteProducts(response);
       }
     } catch (error) {
-      console.error("❌ API 호출 중 오류 발생:", error);
+      console.error(" 호출 중 오류 발생:", error);
     }
   };
 

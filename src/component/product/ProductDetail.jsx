@@ -115,7 +115,7 @@ useEffect(() => {
   return (
     <Container style={{ paddingTop: "115.19px" }}>
       <Container className="container-fluid product-detail text-center">
-        <h3 className="fw-bold mb-4 text-pilllaw">상품 상세정보</h3>
+        <h3 className="fw-bold mb-4 mt-3 text-pilllaw">상품 상세정보</h3>
         <hr className="text-pilllaw" />
         <Row className="mt-4 d-flex">
           <Col xs={5}>

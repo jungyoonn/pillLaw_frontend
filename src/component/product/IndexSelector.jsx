@@ -22,11 +22,12 @@ const IndexSelector = () => {
 
 
   useEffect(() => {
-    console.log("API에서 받은 regDate:", products.map(p => p.product.regDate));
+    // console.log("API에서 받은 regDate:", products.map(p => p.product.regDate));
     const fetchProducts = async () => {
       try {
         const response = await req("get", "v1/product/list");
         if (response && Array.isArray(response)) {
+          console.log(response);
           setProducts(response);
         } else {
           console.warn("상품 데이터가 없습니다.");
@@ -62,19 +63,20 @@ const IndexSelector = () => {
 
 
   // 안전한 정렬 (undefined 값 고려)
-  const safeSort = (arr, key, desc = true) => {
+  const safeSort = (arr, key, desc = true, subKey = null) => {
     return [...arr].sort((a, b) => {
-      const valA = key in a.product ? parseFloat(a.product[key]) || 0 : 0;
-      const valB = key in b.product ? parseFloat(b.product[key]) || 0 : 0;
-      return desc ? (valB - valA) : (valA - valB);
+      const valA = subKey ? (a.product[key]?.[subKey] || 0) : (a.product[key] || 0);
+      const valB = subKey ? (b.product[key]?.[subKey] || 0) : (b.product[key] || 0);
+      return desc ? valB - valA : valA - valB;
     }).slice(0, 6);
   };
+
 
   // 카테고리별 데이터 필터링
   let filteredProducts = [];
 
   if (selectedCategory === "BEST상품") {
-    filteredProducts = safeSort(products, "rating"); // ✅ 평점 높은 순
+    filteredProducts = safeSort(products, "rating"); 
   } else if (selectedCategory === "신제품") {
     filteredProducts = [...products]
       .filter((p) => p.product.regDate)
@@ -82,13 +84,16 @@ const IndexSelector = () => {
       .slice(0, 6);
   } else if (selectedCategory === "리뷰많은순") {
     filteredProducts = [...products]
-      .sort((a, b) => (b.reviews?.length || 0) - (a.reviews?.length || 0)) // ✅ 리뷰 많은 순 수정
+      .sort((a, b) => (b.reviews?.length || 0) - (a.reviews?.length || 0))
       .slice(0, 6);
   } else if (selectedCategory === "주문많은순") {
     filteredProducts = products.filter(p =>
       topPnos.map(String).includes(String(p.product.pno))
     );
+  } else if (selectedCategory === "할인율 높은순") {  
+    filteredProducts = safeSort(products, "productPrice", true, "rate");
   }
+  
 
   return (
     <Col xs lg="9" className="mx-2 mt-3">
@@ -113,6 +118,9 @@ const IndexSelector = () => {
             </h1> */}
             <h1 className="fw-bold col pilllaw-tag" onClick={() => setSelectedCategory("주문많은순")}>
               #주문 많은
+            </h1>
+            <h1 className="col fw-bold pilllaw-tag" onClick={() => setSelectedCategory("할인율 높은순")}>
+              #특가 할인
             </h1>
           </Col>
           <Col className="mx-2 text-start mt-3">

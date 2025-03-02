@@ -20,6 +20,7 @@ import ProfileCard from './ProfileCard';
 import LoginCard from './LoginCard';
 import UseAxios from '../../hooks/UseAxios';
 import IndexSlider from "../common/IndexSlider";
+import IndexPromoSlider from './IndexPromoSlider';
 
 const Index = () => {
   const [login, setLogin] = useState(false);
@@ -76,15 +77,8 @@ const Index = () => {
               </div>
             </div>
 
-            <div className="mt-4">
-              <Link to={"/"}><img className="img-fluid" src={slider} alt="슬라이더 사진" /></Link>
-              <div className="text-center">
-                <Link to={"/"} className="text-secondary"><FontAwesomeIcon icon={faCircle} className="fa-2xs mx-1" /></Link>
-                <Link to={"/"} className="text-black"><FontAwesomeIcon icon={faCircle} className="fa-2xs mx-1" /></Link>
-                <Link to={"/"} className="text-secondary"><FontAwesomeIcon icon={faCircle} className="fa-2xs mx-1" /></Link>
-                <Link to={"/"} className="text-secondary"><FontAwesomeIcon icon={faCircle} className="fa-2xs mx-1" /></Link>
-                <Link to={"/"} className="text-secondary"><FontAwesomeIcon icon={faCircle} className="fa-2xs mx-1" /></Link>
-              </div>
+            <div className="mt-5">
+              <IndexPromoSlider className="mt-5"/>
             </div>
           </Col>
         </Row>
