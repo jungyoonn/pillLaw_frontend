@@ -9,6 +9,7 @@ import tag4 from '../../resources/image/main_tag4.png';
 import tag6 from '../../resources/image/main_tag6.png';
 import tag7 from '../../resources/image/main_tag7.png';
 import slider from '../../resources/image/main_slider.jpg';
+import IndexSelector from '../product/IndexSelector';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -60,84 +61,7 @@ const Index = () => {
       <Container style={{paddingTop: '115.19px'}}>
         <img className="img-fluid p-0 pb-2" src={mainImage} alt='메인 이미지' />
         <Row>
-          <Col xs lg="9" className="mx-2">
-            <div className="mt-3 mb-4 mx-3">
-              <div className="mb-3 text-center">
-                <FontAwesomeIcon  icon={faLessThan}  className="fa-2xl fw-bold text-pilllaw px-3"  />
-                <Link to={"/"} className="m-3"><img className="img-fluid mx-2" src={tag1} width="50" alt='태그 이미지' /></Link>
-                <Link to={"/"} className="m-3"><img className="img-fluid mx-2" src={tag2} width="50" alt='태그 이미지' /></Link>
-                <Link to={"/"} className="m-3"><img className="img-fluid mx-2" src={tag7} width="50" alt='태그 이미지' /></Link>
-                <Link to={"/"} className="m-3"><img className="img-fluid mx-2" src={tag4} width="50" alt='태그 이미지' /></Link>
-                <Link to={"/"} className="m-3"><img className="img-fluid mx-2" src={tag6} width="50" alt='태그 이미지' /></Link>
-                <FontAwesomeIcon  icon={faGreaterThan}  className="fa-2xl fw-bold text-pilllaw px-3"  />
-              </div>
-              <Row>
-                <Col className="text-end">
-                  <h1 className="fw-bold col pilllaw-tag"><Link to={"/"} className="text-black text-decoration-none pilllaw-tag">#BEST상품</Link></h1>
-                  <h1 className="fw-bold mt-1 pilllaw-tag"><Link to={"/"} className="text-black text-decoration-none pilllaw-tag">#얼리버드</Link></h1>
-                  <h1 className="fw-bold col pilllaw-tag"><Link to={"/"} className="text-black text-decoration-none pilllaw-tag">#구독자상품</Link></h1>
-                </Col>
-                <Col>
-                  <h1 className="fw-bold col pilllaw-tag"><Link to={"/"} className="text-black text-decoration-none pilllaw-tag">#필로패키지</Link></h1>
-                  <h1 className="fw-bold pilllaw-tag"><Link to={"/"} className="text-black text-decoration-none pilllaw-tag">#신제품</Link></h1>
-                  <h1 className="col fw-bold pilllaw-tag"><Link to={"/"} className="text-black text-decoration-none pilllaw-tag">#높은평점</Link></h1>
-                </Col>
-              </Row>
-            </div>
-            <h5 className="mx-3 fw-bold"><FontAwesomeIcon icon={faCrown} style={{ color: "#FFD43B" }} /> BEST</h5>
-            <div className="container clearfix">
-              <Row className="text-center">
-                <Col className="col-6 col-sm-4 col-lg-3 col-xl-2 mt-2 mb-4 best-item">
-                  <Link to={"/"} className="text-decoration-none text-black">
-                    <img className="img-fluid mx-2" src={product1} alt='상품 사진' />
-                    <p className="m-0 mt-1 fs-14 fw-bold">프레쉬 유산균</p>
-                  </Link>
-                  <p className="m-0 fs-14 mt-2"><Link to={"/"} className="text-decoration-none text-black"><span className="header-font fw-bold">30,500</span>원</Link></p>
-                  <p className="m-0 fs-12 fw-bold"><Link to={"/"} className="text-decoration-none text-black"><FontAwesomeIcon icon={faStar} style={{ color: "#FFD43B" }} /> 4.1 <span className="fs-11" style={{color: "#AAA"}}>리뷰(19)</span></Link></p>
-                </Col>
-                <Col className="col-6 col-sm-4 col-lg-3 col-xl-2 mt-2 mb-4 best-item">
-                  <Link to={"/"} className="text-decoration-none text-black">
-                    <img className="img-fluid mx-2" src={product2} alt='상품 사진' />
-                    <p className="m-0 mt-1 fs-14 fw-bold">프레쉬 유산균</p>
-                  </Link>
-                  <p className="m-0 fs-14 mt-2"><Link to={"/"} className="text-decoration-none text-black"><span className="header-font fw-bold">30,500</span>원</Link></p>
-                  <p className="m-0 fs-12 fw-bold"><Link to={"/"} className="text-decoration-none text-black"><FontAwesomeIcon icon={faStar} style={{ color: "#FFD43B" }} /> 4.1 <span className="fs-11" style={{color: "#AAA"}}>리뷰(19)</span></Link></p>
-                </Col>
-                <Col className="col-6 col-sm-4 col-lg-3 col-xl-2 mt-2 mb-4 best-item">
-                  <Link to={"/"} className="text-decoration-none text-black">
-                    <img className="img-fluid mx-2" src={product1} alt='상품 사진' />
-                    <p className="m-0 mt-1 fs-14 fw-bold">프레쉬 유산균</p>
-                  </Link>
-                  <p className="m-0 fs-14 mt-2"><Link to={"/"} className="text-decoration-none text-black"><span className="header-font fw-bold">30,500</span>원</Link></p>
-                  <p className="m-0 fs-12 fw-bold"><Link to={"/"} className="text-decoration-none text-black"><FontAwesomeIcon icon={faStar} style={{ color: "#FFD43B" }} /> 4.1 <span className="fs-11" style={{color: "#AAA"}}>리뷰(19)</span></Link></p>
-                </Col>
-                <Col className="col-6 col-sm-4 col-lg-3 col-xl-2 mt-2 mb-4 best-item">
-                  <Link to={"/"} className="text-decoration-none text-black">
-                    <img className="img-fluid mx-2" src={product2} alt='상품 사진' />
-                    <p className="m-0 mt-1 fs-14 fw-bold">프레쉬 유산균</p>
-                  </Link>
-                  <p className="m-0 fs-14 mt-2"><Link to={"/"} className="text-decoration-none text-black"><span className="header-font fw-bold">30,500</span>원</Link></p>
-                  <p className="m-0 fs-12 fw-bold"><Link to={"/"} className="text-decoration-none text-black"><FontAwesomeIcon icon={faStar} style={{ color: "#FFD43B" }} /> 4.1 <span className="fs-11" style={{color: "#AAA"}}>리뷰(19)</span></Link></p>
-                </Col>
-                <Col className="col-6 col-sm-4 col-lg-3 col-xl-2 mt-2 mb-4 best-item">
-                  <Link to={"/"} className="text-decoration-none text-black">
-                    <img className="img-fluid mx-2" src={product1} alt='상품 사진' />
-                    <p className="m-0 mt-1 fs-14 fw-bold">프레쉬 유산균</p>
-                  </Link>
-                  <p className="m-0 fs-14 mt-2"><Link to={"/"} className="text-decoration-none text-black"><span className="header-font fw-bold">30,500</span>원</Link></p>
-                  <p className="m-0 fs-12 fw-bold"><Link to={"/"} className="text-decoration-none text-black"><FontAwesomeIcon icon={faStar} style={{ color: "#FFD43B" }} /> 4.1 <span className="fs-11" style={{color: "#AAA"}}>리뷰(19)</span></Link></p>
-                </Col>
-                <Col className="col-6 col-sm-4 col-lg-3 col-xl-2 mt-2 mb-4 best-item">
-                  <Link to={"/"} className="text-decoration-none text-black">
-                    <img className="img-fluid mx-2" src={product2} alt='상품 사진' />
-                    <p className="m-0 mt-1 fs-14 fw-bold">프레쉬 유산균</p>
-                  </Link>
-                  <p className="m-0 fs-14 mt-2"><Link to={"/"} className="text-decoration-none text-black"><span className="header-font fw-bold">30,500</span>원</Link></p>
-                  <p className="m-0 fs-12 fw-bold"><Link to={"/"} className="text-decoration-none text-black"><FontAwesomeIcon icon={faStar} style={{ color: "#FFD43B" }} /> 4.1 <span className="fs-11" style={{color: "#AAA"}}>리뷰(19)</span></Link></p>
-                </Col>
-              </Row>
-            </div>
-          </Col>
+          <IndexSelector/>
           <Col className="me-2 p-0">
             <div className="card pilllaw-profile p-2">
               <div className="clearfix">
