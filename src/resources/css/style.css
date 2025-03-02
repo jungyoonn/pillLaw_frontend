@@ -227,7 +227,10 @@ body {
 /* ===== 태그 호버 ===== */
 .pilllaw-tag:hover {
   color: var(--primary-color) !important;
-  font-size: 43px;
+  transform: scale(1.1);
+  transition: transform 0.3s ease, color 0.3s ease;
+  white-space: nowrap;
+  /* display: inline-block; */
 }
 
 .pilllaw-secondary-tag:hover {

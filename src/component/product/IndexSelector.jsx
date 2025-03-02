@@ -78,7 +78,7 @@ const IndexSelector = () => {
           <FontAwesomeIcon icon={faGreaterThan} className="fa-2xl fw-bold text-pilllaw px-3" />
         </div>
         <Row>
-          <Col className="text-end">
+          <Col className="text-end mx-1">
             <h1 className="fw-bold col pilllaw-tag" onClick={() => setSelectedCategory("BEST상품")}>
               #BEST상품
             </h1>
@@ -89,7 +89,7 @@ const IndexSelector = () => {
               #구독자상품
             </h1>
           </Col>
-          <Col>
+          <Col className="mx-1 text-start">
             <h1 className="fw-bold col pilllaw-tag" onClick={() => setSelectedCategory("필로패키지")}>
               #필로패키지
             </h1>
