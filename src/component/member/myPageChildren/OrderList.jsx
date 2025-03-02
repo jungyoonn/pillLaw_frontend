@@ -10,6 +10,9 @@ const OrderList = ({ memberId }) => {
     const [showModal, setShowModal] = useState(false); // 모달 상태 관리
     const [selectedOrder, setSelectedOrder] = useState(null); // 선택된 주문
     const [deliveryInfo, setDeliveryInfo] = useState(null);  // 배송 정보 상태
+    const [refundMessage, setRefundMessage] = useState(null); // 결제 취소 메시지 상태 추가
+    const [showConfirmRefundModal, setShowConfirmRefundModal] = useState(false); // 결제 취소 확인 모달 상태 추가
+    const [refundSuccess, setRefundSuccess] = useState(false);
     const { req } = UseAxios();
 
 
@@ -22,7 +25,7 @@ const OrderList = ({ memberId }) => {
                 const sortedOrders = response.sort((a, b) => new Date(b.regdate) - new Date(a.regdate));
                 setOrders(sortedOrders); // 정렬된 주문 데이터 저장
 
-                // 주문 데이터가 변경되면 visibleCount를 초기화 (10개로 설정)
+                // 주문 데이터가 변경되면 visibleCount를 초기화 
                 setVisibleCount(5);
                 console.log("주문 데이터:", sortedOrders);  // 데이터 확인용 로그
             } catch (error) {
@@ -36,7 +39,7 @@ const OrderList = ({ memberId }) => {
     }, [memberId, req]);
 
     const loadMoreOrders = () => {
-        setVisibleCount(visibleCount + 5);  // 더보기 버튼 클릭 시 10개씩 추가
+        setVisibleCount(visibleCount + 5);  // 더보기 버튼 클릭 시 5개씩 추가
     };
 
     const fetchOrderItems = async (ono) => {
@@ -95,6 +98,7 @@ const OrderList = ({ memberId }) => {
         setSelectedOrder(order);
         await fetchOrderItems(order.ono);  // 주문 아이템 불러오기
         await fetchDeliveryInfo(order.ono);  // 배송 정보 불러오기
+        setRefundMessage(null);
         setShowModal(true);
     };
 
@@ -103,6 +107,32 @@ const OrderList = ({ memberId }) => {
         setShowModal(false);
         setOrderItems([]);  // 모달 닫을 때 상태 초기화
         setDeliveryInfo(null);
+        setRefundMessage(null);
+    };
+
+    const handleRefund = () => {
+        setShowConfirmRefundModal(true);  // 결제 취소 요청 확인 모달 열기
+    };
+
+    const confirmRefund = async () => {
+        if (!selectedOrder) {
+            setRefundMessage("주문 정보가 없습니다.");
+            return;
+        }
+
+        try {
+            const response = await req('POST', 'pay/cancel', { ono: selectedOrder.ono });
+            setRefundMessage("결제가 성공적으로 취소되었습니다.");
+            setRefundSuccess(true);
+            setShowConfirmRefundModal(false); //  처리 후 모달 닫기
+        } catch (error) {
+            setRefundMessage("결제 취소 처리 중 오류가 발생했습니다.");
+            setShowConfirmRefundModal(false); // 실패 시에도 모달 닫기
+        }
+    };
+
+    const cancelRefund = () => {
+        setShowConfirmRefundModal(false); // 
     };
 
     return (
@@ -196,7 +226,7 @@ const OrderList = ({ memberId }) => {
                                         </Col>
                                     </Row>
                                     <Row className="mb-1">
-                                        <Col xs={3} className="fw-bold">배송상태</Col>
+                                        <Col xs={3} className="fw-bold">진행상태</Col>
                                         <Col xs={9}>
                                             {deliveryInfo.deliveryStatus === 'READY' && '결제 완료(배송 준비중)'}
                                             {deliveryInfo.deliveryStatus === 'CANCELLED' && '결제 취소'}
@@ -204,14 +234,29 @@ const OrderList = ({ memberId }) => {
                                             {deliveryInfo.deliveryStatus === 'FINISHED' && '배송완료'}
                                         </Col>
                                     </Row>
-                                    <Row className="mb-1">
-                                        <Col xs={3} className="fw-bold">운송장번호</Col>
-                                        <Col xs={9}>{deliveryInfo.trackingNumber || '배송이 시작되면 알려드립니다.'}</Col>
-                                    </Row>
+                                    {deliveryInfo && deliveryInfo.deliveryStatus !== 'CANCELLED' && (
+                                        <Row className="mb-1">
+                                            <Col xs={3} className="fw-bold">운송장번호</Col>
+                                            <Col xs={9}>{deliveryInfo.trackingNumber || '배송이 시작되면 알려드립니다.'}</Col>
+                                        </Row>
+                                    )}
                                 </>
                             )}
+                       
+                            {/* 결제 취소 요청 버튼 */}
+                            {deliveryInfo?.deliveryStatus === 'READY' && !refundSuccess && (
+                                <div className="text-center mt-3">
+                                    <Button variant="secondary" onClick={handleRefund}>결제 취소</Button>
+                                </div>
+                            )}
+
+                            {/* 결제 취소 처리 메시지 표시 */}
+                            {refundMessage && (
+                                <p className="text-center mt-2 fw-bold text-success">{refundMessage}</p>
+                            )}
+
                             {/* 주문 아이템이 없을 때 처리 */}
-                         
+
                             {orderItems.length === 0 ? (
                                 <>
                                     <p className="text-center fw-bold">주문상품 및 배송정보를 찾을 수 없습니다.<br></br> 고객센터에 문의 바랍니다.</p>
@@ -243,6 +288,21 @@ const OrderList = ({ memberId }) => {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button className='btn-pilllaw' onClick={handleCloseModal}>확인</Button>
+                </Modal.Footer>
+            </Modal>
+
+
+            {/* 결제 취소 확인 모달 */}
+            <Modal show={showConfirmRefundModal} onHide={cancelRefund} centered size="sm">
+                <Modal.Header closeButton>
+                    <Modal.Title><h5 className="card-title fw-bold text-center header-font">결제취소 확인</h5></Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p className='mt-3 text-center'>해당 결제를 취소하시겠습니까?</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={cancelRefund}>취소</Button>
+                    <Button className='btn-pilllaw' onClick={confirmRefund}>확인</Button>
                 </Modal.Footer>
             </Modal>
 
