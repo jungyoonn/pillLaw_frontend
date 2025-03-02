@@ -135,9 +135,11 @@ const IndexSelector = () => {
           <FontAwesomeIcon icon={faCrown} style={{ color: "#FFD43B" }} /> {selectedCategory}
         </h5>
         <div className="container clearfix">
-          <Row className="text-center">
+          <Row className="text-center d-flex justify-content-center align-items-center" style={{ minHeight: "200px" }}>
             {loading ? (
-              <Spinner animation="border" variant="info" />
+              <Col xs={12} className="d-flex justify-content-center">
+                <Spinner animation="border" variant="info" />
+              </Col>
             ) : filteredProducts.length > 0 ? (
               filteredProducts.map((p) => (
                 <Col className="col-6 col-sm-4 col-lg-3 col-xl-2 mt-2 mb-4 best-item" key={p.product.pno}>
@@ -145,7 +147,7 @@ const IndexSelector = () => {
                 </Col>
               ))
             ) : (
-              <p className="text-muted">등록된 상품이 없습니다.</p>
+              <Col xs={12} className="text-muted">상품이 없습니다.</Col>
             )}
           </Row>
         </div>

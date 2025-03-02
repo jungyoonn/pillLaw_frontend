@@ -13,79 +13,95 @@ const ProductReviewList = ({ reviews, onDelete }) => {
   const [likedReviews, setLikedReviews] = useState({});
   const { req } = UseAxios();
 
-  // ✅ 좋아요 상태 초기화
+  // ✅ 좋아요 상태 및 개수 초기화
   useEffect(() => {
     if (reviews && reviews.length > 0) {
-      const initialLikes = reviews.reduce((acc, review) => {
-        acc[review.prno] = review.count; // 좋아요 개수 설정
-        return acc;
-      }, {});
+      const fetchLikesData = async () => {
+        try {
+          const likePromises = reviews.map((review) =>
+            req("get", `v1/product/review/like/count/${review.prno}`)
+          );
 
-      setReviewLikes(initialLikes);
+          const likedPromises = reviews.map((review) =>
+            req("get", `v1/product/review/like/check/${mno}/${review.prno}`)
+          );
 
-      // ✅ 사용자가 좋아요를 눌렀는지 여부 확인 (비동기 처리)
-      const fetchLikedStatus = async () => {
-        const updatedLikedReviews = {};
-        for (const review of reviews) {
-          try {
-            const response = await req("get", `v1/product/review/like/check/${mno}/${review.prno}`);
-            updatedLikedReviews[review.prno] = response.data; // true or false
-          } catch (error) {
-            console.error("좋아요 상태 가져오기 실패:", error);
-          }
+          // ✅ 병렬 요청 실행
+          const likeCounts = await Promise.all(likePromises);
+          const likedStatuses = await Promise.all(likedPromises);
+
+          // ✅ 상태 업데이트
+          const updatedLikes = reviews.reduce((acc, review, index) => {
+            acc[review.prno] = likeCounts[index]?.data || 0;
+            return acc;
+          }, {});
+
+          const updatedLikedReviews = reviews.reduce((acc, review, index) => {
+            acc[review.prno] = likedStatuses[index]?.data || false;
+            return acc;
+          }, {});
+
+          setReviewLikes(updatedLikes);
+          setLikedReviews(updatedLikedReviews);
+        } catch (error) {
+          console.error("좋아요 상태 가져오기 실패:", error);
         }
-        setLikedReviews(updatedLikedReviews);
       };
 
-      fetchLikedStatus();
+      fetchLikesData();
     }
   }, [reviews, mno, req]);
 
   // ✅ 좋아요 토글
   const handleLikeToggle = async (reviewId) => {
+    console.log("👍 좋아요 요청 전송 - mno:", mno, "prno:", reviewId);
+
+    if (!mno) {
+      console.error("❌ 회원 ID가 없습니다! 로그인 상태를 확인하세요.");
+      return;
+    }
+
     try {
+      // ✅ 현재 좋아요 상태 확인
       const isLiked = likedReviews[reviewId];
 
+      // ✅ UI를 즉시 업데이트 (낙관적 업데이트)
+      setLikedReviews((prev) => ({
+        ...prev,
+        [reviewId]: !isLiked,
+      }));
+
+      setReviewLikes((prev) => ({
+        ...prev,
+        [reviewId]: isLiked ? prev[reviewId] - 1 : prev[reviewId] + 1,
+      }));
+
+      // ✅ 서버에 요청 보내기
       const endpoint = isLiked
-        ? `v1/product/review/like/remove`
-        : `v1/product/review/like/add`;
+        ? "v1/product/review/like/remove"
+        : "v1/product/review/like/add";
 
-      const requestData = { mno, prno: reviewId };
-      await req("post", endpoint, requestData);
+      const response = await req("post", endpoint, {
+        mno: mno, // ✅ 회원 ID 포함
+        prno: reviewId, // ✅ 리뷰 ID 포함
+      });
 
-      setReviewLikes((prevLikes) => ({
-        ...prevLikes,
-        [reviewId]: isLiked ? prevLikes[reviewId] - 1 : prevLikes[reviewId] + 1,
+      console.log("👍 좋아요 요청 완료:", response.data);
+    } catch (error) {
+      console.error("❌ 좋아요 요청 실패:", error);
+
+      // ✅ 요청 실패 시 원래 상태로 복구
+      setLikedReviews((prev) => ({
+        ...prev,
+        [reviewId]: !prev[reviewId],
       }));
 
-      setLikedReviews((prevLiked) => ({
-        ...prevLiked,
-        [reviewId]: !prevLiked[reviewId],
+      setReviewLikes((prev) => ({
+        ...prev,
+        [reviewId]: prev[reviewId] + (likedReviews[reviewId] ? 1 : -1),
       }));
-    } catch (err) {
-      console.error("좋아요 요청 실패:", err);
     }
   };
-
-  useEffect(() => {
-    if (reviews && reviews.length > 0) {
-      const fetchLikesCount = async () => {
-        const updatedLikes = {};
-        for (const review of reviews) {
-          try {
-            const response = await req("get", `v1/product/review/like/count/${review.prno}`);
-            updatedLikes[review.prno] = response.data; // 좋아요 개수
-          } catch (error) {
-            console.error("좋아요 개수 가져오기 실패:", error);
-            updatedLikes[review.prno] = 0;
-          }
-        }
-        setReviewLikes(updatedLikes);
-      };
-  
-      fetchLikesCount();
-    }
-  }, [reviews, req]);
 
   return (
     <div>
@@ -97,7 +113,7 @@ const ProductReviewList = ({ reviews, onDelete }) => {
                 className="img-fluid w-75 pilllaw-product-image"
                 src={review.imageUrls[0]}
                 alt="리뷰 이미지"
-                onError={(e) => (e.target.src = "/default-image.jpg")} // 기본 이미지 설정
+                onError={(e) => (e.target.src = "/default-image.jpg")}
               />
             ) : (
               <img className="img-fluid w-75 pilllaw-product-image" src="/default-image.jpg" alt="기본 이미지" />
