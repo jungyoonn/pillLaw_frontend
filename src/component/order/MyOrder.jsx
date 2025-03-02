@@ -18,7 +18,6 @@ const MyOrder = () => {
   const [phone, setPhone] = useState("");
   const navigate = useNavigate();
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const userMembershipStatus = "ACTIVE";
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalPoints, setTotalPoints] = useState(0); // 포인트 상태 추가
   const [expectedPoints, setExpectedPoints] = useState(0);
@@ -340,9 +339,9 @@ const MyOrder = () => {
     });
     setTotalPrice(total);
 
-    let pointsRate = userMembershipStatus === "ACTIVE" ? 0.04 : 0.02;
+    let pointsRate = 0.02;
     setExpectedPoints(Math.floor(totalPayment * pointsRate));
-  }, [cartItems, userMembershipStatus, totalPayment]);
+  }, [cartItems, totalPayment]);
 
   // 포인트 input
   const handlePointsChange = (event) => {

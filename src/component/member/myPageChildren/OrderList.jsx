@@ -121,7 +121,7 @@ const OrderList = ({ memberId }) => {
         }
 
         try {
-            const response = await req('POST', 'pay/cancel', { ono: selectedOrder.ono });
+            await req('POST', 'pay/cancel', { ono: selectedOrder.ono });
             setRefundMessage("결제가 성공적으로 취소되었습니다.");
             setRefundSuccess(true);
             setShowConfirmRefundModal(false); //  처리 후 모달 닫기
