@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Carousel, ListGroup, Badge, Accordion } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import UseAxios from "../../../hooks/UseAxios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { 
   faHeart, 
@@ -54,6 +55,34 @@ const styles = {
 };
 
 const AboutUs = () => {
+
+  const { req } = UseAxios();
+  // const [popularReviews, setPopularReviews] = useState([]);
+  
+  useEffect(() => {
+    const fetchPopularReviews = async () => {
+      try {
+        const response = await req("GET", "v1/product/detail/review/popular");
+        console.log("리뷰 2개 응답",response);
+        // setPopularReviews(response);
+      } catch (error) {
+        console.error("리뷰뷰 가져오기 실패:", error);
+      }
+    };
+
+    const fetchTopRatedProducts = async () => {
+      try {
+        const response = await req("GET", "v1/product/top-rated");
+        console.log("제품 3개 응답 : ", response);
+        // setPopularSupplements(response);
+      } catch (error) {
+        console.error("제품 가져오기 실패:", error);
+      }
+    };
+    fetchTopRatedProducts();
+    fetchPopularReviews();
+  }, [req]);
+
   // 예시 데이터
   const features = [
     {
