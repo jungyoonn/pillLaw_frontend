@@ -108,7 +108,7 @@ const IndexSelector = () => {
           <FontAwesomeIcon icon={faGreaterThan} className="fa-2xl fw-bold text-pilllaw px-3" /> */}
           <IndexSlider />
         </div>
-        <Row>
+        <Row className="p-3">
           <Col className="text-end mx-2 mt-3">
             <h1 className="fw-bold col pilllaw-tag" onClick={() => setSelectedCategory("BEST상품")}>
               #BEST상품
@@ -123,7 +123,7 @@ const IndexSelector = () => {
               #특가 할인
             </h1>
           </Col>
-          <Col className="mx-2 text-start mt-3">
+          <Col className="mx-2 text-start mt-3 ">
             {/* <h1 className="fw-bold col pilllaw-tag" onClick={() => setSelectedCategory("필로패키지")}>
               #필로패키지
             </h1> */}

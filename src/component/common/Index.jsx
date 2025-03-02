@@ -25,7 +25,7 @@ import IndexPromoSlider from './IndexPromoSlider';
 const Index = () => {
   const [login, setLogin] = useState(false);
   const [nickname, setNickname] = useState('');
-  const [selectedCategories, setSelectedCategories] = useState(new Set());
+  // const [selectedCategories, setSelectedCategories] = useState(new Set());
   const {req} = UseAxios("http://localhost:8080/api");
 
   useEffect(() => {

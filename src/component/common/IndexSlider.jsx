@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "@emotion/styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLessThan, faGreaterThan } from "@fortawesome/free-solid-svg-icons";
@@ -17,17 +17,14 @@ import tag8 from "../../resources/image/main_tag8.png";
 // ✅ 카테고리 데이터
 const categories = [
   { name: "인지능력", icon: tag1 },
-  { name: "눈 건강", icon: tag2 },
-  { name: "체지방", icon: tag3 },
-  { name: "피로&면역", icon: tag4 },
+  { name: "눈", icon: tag2 },
+  { name: "콜레스테롤", icon: tag3 },
+  { name: "피로", icon: tag4 },
   { name: "남성", icon: tag5 },
   { name: "혈당", icon: tag6 },
   { name: "장", icon: tag7 },
   { name: "관절, 뼈", icon: tag8 },
 ];
-
-
-
 
 // ✅ 가로형 슬라이더 스타일
 const CarouselWrapper = styled.div`
@@ -89,15 +86,15 @@ const NavButton = styled.button`
   }
 `;
 
-
-
-
 // ✅ 무한 루프 적용 슬라이더 컴포넌트
 const IndexSlider = () => {
   const [startIndex, setStartIndex] = useState(0);
   const [selectedCategories, setSelectedCategories] = useState(new Set());
+  const [isPaused, setIsPaused] = useState(false);
   const navigate = useNavigate();
+  const autoPlayRef = useRef(null);
   const itemsPerView = 5;
+  const autoPlayInterval = 3000; // 3초마다 자동 회전
 
   // 🔹 다음 버튼 (마지막에 도달하면 처음으로 돌아감)
   const nextImages = () => {
@@ -113,8 +110,42 @@ const IndexSlider = () => {
     navigate(`/product/list?selectedCategory=${encodeURIComponent(categoryName)}`);
   };
 
+  // 자동 회전 시작/정지 토글
+  const toggleAutoPlay = () => {
+    setIsPaused(!isPaused);
+  };
+
+  // 마우스 오버 시 자동 회전 일시 정지
+  const handleMouseEnter = () => {
+    setIsPaused(true);
+  };
+
+  // 마우스 떠날 시 자동 회전 재개
+  const handleMouseLeave = () => {
+    setIsPaused(false);
+  };
+
+  // 자동 회전 설정
+  useEffect(() => {
+    if (!isPaused) {
+      autoPlayRef.current = setInterval(() => {
+        nextImages();
+      }, autoPlayInterval);
+    }
+
+    // 컴포넌트 unmount 또는 isPaused 변경 시 interval 정리
+    return () => {
+      if (autoPlayRef.current) {
+        clearInterval(autoPlayRef.current);
+      }
+    };
+  }, [isPaused]);
+
   return (
-    <CarouselWrapper>
+    <CarouselWrapper 
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <NavButton onClick={prevImages} left>
         <FontAwesomeIcon icon={faLessThan} />
       </NavButton>
@@ -123,7 +154,11 @@ const IndexSlider = () => {
         <ImageSlider startIndex={startIndex} itemsPerView={itemsPerView}>
           {categories.concat(categories).map((category, index) => (
             <ImageItem key={index} className="fs-11">
-              <CategoryIcon src={category.icon} alt={category.name}  onClick={() => handleCategorySelect(category.name)} />
+              <CategoryIcon 
+                src={category.icon} 
+                alt={category.name} 
+                onClick={() => handleCategorySelect(category.name)} 
+              />
               <span>{category.name}</span>
             </ImageItem>
           ))}
