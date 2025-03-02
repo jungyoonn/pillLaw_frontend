@@ -42,7 +42,7 @@ const FollowList = () => {
       <ListGroup variant="flush">
         {follows.map((follow) => (
           <>
-            <Link key={follow.followId} to="#" className="list-group-bg list-group-item fs-14 fw-bold">
+            <Link key={follow.followId} to={`/userpage/${follow.sender.mno}`} className="list-group-bg list-group-item fs-14 fw-bold">
               <img src={profile} className="mx-2" alt='프로필 사진' width={25} />
               {follow.sender.nickname} {/* 맞팔된 상대방 mno 표시 */}
             </Link>

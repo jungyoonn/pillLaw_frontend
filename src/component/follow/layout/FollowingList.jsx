@@ -41,7 +41,7 @@ const FollowingList = () => {
             {follow.map((follow) => (
             <Link
               key={follow.followId}  // sender.mno를 키로 설정
-              to={follow.href}  // sender.mno 사용
+              to={`/userpage/${follow.receiver.mno}`}  // sender.mno 사용
               className="list-group-bg list-group-item fs-14 fw-bold"
             >
               <img src={profile} className="mx-2" alt='프로필 사진' width={25} />
