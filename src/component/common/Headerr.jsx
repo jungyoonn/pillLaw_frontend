@@ -28,7 +28,7 @@ const icons = [
 
 const navItems = [
   { name: "전체 상품", path: "/product/list" },
-  { name: "필로", path: "/pillaw" },
+  { name: "필로", path: "/aboutus" },
   { name: "장바구니", path: "/cart" },
   { name: "마이페이지", path: "/mypage" },
   { name: "공지사항", path: "/notice" }
