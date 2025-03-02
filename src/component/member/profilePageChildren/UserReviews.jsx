@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import UseAxios from "../../../hooks/UseAxios";
-import { Card, ListGroup } from "react-bootstrap";
+import { Card, ListGroup, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 const UserReviews = ({ mno }) => {
@@ -31,37 +31,43 @@ const UserReviews = ({ mno }) => {
 
   return (
     <div className="p-2">
-      <h4 className="text-center text-pilllaw">내가 작성한 리뷰</h4>
-      <p className="fs-11 text-center">작성한 리뷰가 {reviews.length} 개 있습니다.</p>
-      <Card className="mt-3">
-      <Card.Header className="fw-bold text-center text-pilllaw">상품 리뷰</Card.Header>
-      <ListGroup variant="flush">
-        {reviews.map((review) => (
-          <ListGroup.Item key={review.prno} className="d-flex align-items-center">
-            <div className="flex-grow-1">
-              <Link to={`/product/detail/${review.pno}`} className="text-decoration-none text-black">
-                <p className="fw-bold mb-1">{review.nickName}</p>
-                <div dangerouslySetInnerHTML={{ __html: review.content }}></div>
-                <small className="text-muted">{new Date(review.regDate).toLocaleDateString()}</small>
-              </Link>
-            </div>
+      <h4 className="text-center header-font fw-bold">내가 작성한 리뷰</h4>
+      <p className="fs-12 text-center">작성한 리뷰가 {reviews.length} 개 있습니다.</p>
+      <Row>
+        <Col xs="1" />
+        <Col>
+          <Card className="mt-3">
+            <Card.Header className="fw-bold text-center text-pilllaw">상품 리뷰</Card.Header>
+            <ListGroup variant="flush">
+              {reviews.map((review) => (
+                <ListGroup.Item key={review.prno} className="d-flex align-items-center bg-pilllaw-form">
+                  <div className="flex-grow-1">
+                    <Link to={`/product/detail/${review.pno}`} className="text-decoration-none text-black">
+                      <p className="fw-bold mb-1 fs-14">{review.nickName}</p>
+                      <div dangerouslySetInnerHTML={{ __html: review.content }} className="fs-14"></div>
+                      <small className="text-muted">{new Date(review.regDate).toLocaleDateString()}</small>
+                    </Link>
+                  </div>
 
-            {review.fileDtos?.length > 0 && (
-              <div className="ms-3 d-flex">
-                {review.fileDtos.map((file, idx) => (
-                  <img
-                    key={idx}
-                    src={file.url}
-                    alt="리뷰 이미지"
-                    className="review-image"
-                  />
-                ))}
-              </div>
-            )}
-          </ListGroup.Item>
-        ))}
-      </ListGroup>
-    </Card>
+                  {review.fileDtos?.length > 0 && (
+                    <div className="ms-3 d-flex">
+                      {review.fileDtos.map((file, idx) => (
+                        <img
+                          key={idx}
+                          src={file.url}
+                          alt="리뷰 이미지"
+                          className="review-image"
+                        />
+                      ))}
+                    </div>
+                  )}
+                </ListGroup.Item>
+              ))}
+            </ListGroup>
+          </Card>
+        </Col>
+        <Col xs="1" />
+      </Row>
     </div>
   );
 };
