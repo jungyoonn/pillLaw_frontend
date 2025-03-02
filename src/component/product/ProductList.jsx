@@ -15,22 +15,20 @@ const ProductList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchType, setSearchType] = useState("name");
   const [selectedCategories, setSelectedCategories] = useState(new Set());
-  const [forceUpdate, setForceUpdate] = useState(false);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const selectedCategoryFromURL = queryParams.get("selectedCategory");
 
   useEffect(() => {
     if (selectedCategoryFromURL) {
+      // Set 객체로 초기화
       setSelectedCategories(new Set([selectedCategoryFromURL]));
     }
   }, [selectedCategoryFromURL]);
   
-
   useEffect(() => {
     req('get', 'v1/product/list');
   }, [req]);
-
 
   useEffect(() => {
     if (!loading) {
@@ -38,10 +36,10 @@ const ProductList = () => {
     }
   }, [loading]);
   
-
   if(error){
     return <div><h1>Error Occured!</h1></div>;
   }
+  
   if (loading) {
     return (
       <Container className="text-center d-flex justify-content-center align-items-center vh-100">
@@ -54,22 +52,28 @@ const ProductList = () => {
     );
   }
   
-
   const filteredData = data?.filter((p) => {
     const matchesSearch = searchTerm.trim() === "" || p.product.pname?.includes(searchTerm);
+    
+    // 올바른 Set 메서드 사용 확인
     const matchesCategory = selectedCategories.size === 0 || 
       p.categories.some(category => selectedCategories.has(category.cname));
+    
     return matchesSearch && matchesCategory;
   }) || [];
 
-  const onCategoryChange = (category) => {
+  // 카테고리 변경 핸들러 함수
+  const handleCategoryChange = (category) => {
     setSelectedCategories(prev => {
       const updated = new Set(prev);
-      updated.has(category) ? updated.delete(category) : updated.add(category);
-      return new Set(updated);
+      if (updated.has(category)) {
+        updated.delete(category);
+      } else {
+        updated.add(category);
+      }
+      return updated;
     });
   };
-
 
   return (
     <div className="wrap">
@@ -86,7 +90,6 @@ const ProductList = () => {
           </Navbar>
         </Row>
 
-        {/* 컴포넌트화 예정! */}
         <Row>
           <Col xs="2"></Col>
           <Col>
@@ -94,15 +97,16 @@ const ProductList = () => {
           </Col>
           <Col xs="2"></Col>
         </Row>
+        
         {searchType === "category" && (
           <div className="category-selector">
-            {/* <ProductCategorySelector className="mt-3" onCategoryChange={onCategoryChange} selectedCategories={selectedCategories} /> */}
             <ProductCategorySelector 
               selectedCategories={selectedCategories} 
-              onCategoryChange={setSelectedCategories} 
+              onCategoryChange={handleCategoryChange} 
             />
           </div>
         )}
+        
         <Row className="text-center container-fluid mt-4 ">
           <p className="fs-12 text-secondary">현재 검색 결과에 일치하는 상품이 {filteredData.length} 개 있습니다.</p>
           {loading ? (
