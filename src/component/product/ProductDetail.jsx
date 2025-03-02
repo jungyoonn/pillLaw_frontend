@@ -98,6 +98,7 @@ useEffect(() => {
       .catch((err) => console.error("리뷰 삭제 실패:", err));
   };
   
+
   
   const calculateRatingDistribution = (reviews) => {
     const distribution = [0, 0, 0, 0, 0]; 
@@ -170,7 +171,11 @@ useEffect(() => {
               {product.effect && product.effect.split(",").map((tag, index) => (
                 <span key={index} className="badge bg-success fs-14 mx-1">{tag.trim()}</span>
               ))}
-
+                <div className="my-3">
+                  <p>보관방법 : {product.keep}</p>
+                  <p>주의사항 : {product.precautions}</p>
+                  <p>유통기한 : {product.bestBefore}</p>
+                </div>
               <div className="d-flex flex-column align-items-center mt-3">
                 {detailUrls.length > 0 ? (
                   detailUrls.map((url, index) => (
@@ -186,6 +191,7 @@ useEffect(() => {
                 ) : (
                   <p className="text-muted">상세 이미지가 없습니다.</p>
                 )}
+
               </div>
             </div>
           )}

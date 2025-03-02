@@ -11,7 +11,7 @@ import {
   faCalendarCheck
 } from "@fortawesome/free-solid-svg-icons";
 import { Col, Row, Button, Form } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from '../../hooks/AuthContext';
 import UseAxios from '../../hooks/UseAxios'; // axios 훅
 import ToastMsg from "../common/ToastMsg";
@@ -26,7 +26,11 @@ const ProductSummary = ({ product }) => {
   const navigate = useNavigate();
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const [isLiked, setIsLiked] = useState(false);
+  const [toastConfig, setToastConfig] = useState({ title: "", msg: "", state: false });
   const [toastTitle, setToastTitle] = useState("");
+  const location = useLocation();
+  const currentUrl = window.location.origin + location.pathname;
 
   const fetchCartCno = useCallback(async () => {
     try {
@@ -42,6 +46,21 @@ const ProductSummary = ({ product }) => {
     }
   }, [mno, fetchCartCno]); // mno나 fetchCartCno가 변경될 때마다 실행되도록 설정
 
+  const checkLikedStatus = useCallback(async () => {
+    if (!mno || !product?.pno) return;
+
+    try {
+      const response = await req("get", `v1/product/${product.pno}/isLiked?mno=${mno}`);
+      setIsLiked(response); // 서버에서 받은 상태 적용
+    } catch (error) {
+      console.error("좋아요 상태 확인 실패:", error.response?.data || error.message);
+    }
+  }, [mno, product?.pno, req]);
+
+  useEffect(() => {
+    checkLikedStatus();
+  }, [checkLikedStatus]);
+
   useEffect(() => {
     if (showToast) {
       const timer = setTimeout(() => {
@@ -52,6 +71,27 @@ const ProductSummary = ({ product }) => {
     }
   }, [showToast]);
 
+  const handleLike = async () => {
+    if (!mno) {
+      setToastConfig({ title: "실패", msg: "로그인이 필요합니다.", state: true });
+      return;
+    }
+
+    try {
+      const endpoint = isLiked ? "unlike" : "like";
+      await req("post", `v1/product/${product.pno}/${endpoint}?mno=${mno}`);
+
+      setIsLiked(prev => !prev);
+      setToastConfig({
+        title: isLiked ? "좋아요 취소" : "좋아요!",
+        msg: isLiked ? "상품 좋아요가 취소되었습니다." : "상품을 찜 목록에 추가했습니다.",
+        state: true,
+      });
+    } catch (error) {
+      console.error("좋아요 변경 실패:", error.response?.data || error.message);
+      setToastConfig({ title: "실패", msg: "좋아요 요청을 처리하지 못했습니다.", state: true });
+    }
+  };
 
   const goToCart = () => {
     if (!mno) {
@@ -101,8 +141,22 @@ const ProductSummary = ({ product }) => {
     return <div>상품 정보를 불러올 수 없습니다.</div>;
   }
 
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(currentUrl);
+      alert("상품 링크가 클립보드에 복사되었습니다! 📋");
+    } catch (err) {
+      console.error("클립보드 복사 실패:", err);
+      alert("클립보드 복사에 실패했습니다. 😢");
+    }
+  };
+
+
+
+
+
   return (
-    <>
+    <div className="ms-2">
       <Row>
         {/* 상품 제목 */}
         <Col className="text-start">
@@ -112,13 +166,13 @@ const ProductSummary = ({ product }) => {
         </Col>
         {/* 좋아요 및 공유 버튼 */}
         <Col className="text-end">
-          <span className="fw-bold">
+          <span className="fw-bold product-actions">
             <Link to="#" className="text-decoration-none text-pilllaw">
-              <FontAwesomeIcon icon={faHeart} size="xl" className="fs-16" />
+              <FontAwesomeIcon icon={faHeart} size="xl" className="fs-16 likeBtn" onClick={handleLike} style={{ color: isLiked ? "red" : "gray" }}/>
             </Link>
             &nbsp;&nbsp;&nbsp;&nbsp;
             <Link to="#" className="text-decoration-none text-pilllaw">
-              <FontAwesomeIcon icon={faShareNodes} size="xl" className="fs-16 " />
+              <FontAwesomeIcon icon={faShareNodes} size="xl" className="fs-16 shareBtn" onClick={copyToClipboard} />
             </Link>
           </span>
         </Col>
@@ -164,7 +218,7 @@ const ProductSummary = ({ product }) => {
         </Col>
       </Row>
 
-    
+
       <Row className="mt-5">
         <Col xs={2}></Col>
         <Col className="d-flex justify-content-start gap-2">  {/* justify-content-end로 우측 정렬하고 gap-2로 간격 추가 */}
@@ -186,7 +240,7 @@ const ProductSummary = ({ product }) => {
           nav={null}  // 토스트 버튼 클릭 시 이동할 경로
         />
       )}
-    </>
+    </div>
   );
 };
 

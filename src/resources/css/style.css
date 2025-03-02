@@ -440,3 +440,25 @@ body {
   color: #6c757d;
   opacity: 0.5;
 }
+
+.product-actions {
+  display: flex;
+  gap: 15px;
+  cursor: pointer;
+}
+
+.likeBtn {
+  color: red;
+  font-size: 24px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.shareBtn {
+  color: #007bff;
+  font-size: 24px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.shareBtn:hover {
+  transform: scale(1.2);
+}

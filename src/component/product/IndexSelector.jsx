@@ -78,7 +78,7 @@ const IndexSelector = () => {
           <FontAwesomeIcon icon={faGreaterThan} className="fa-2xl fw-bold text-pilllaw px-3" />
         </div>
         <Row>
-          <Col className="text-end mx-1">
+          <Col className="text-end mx-2">
             <h1 className="fw-bold col pilllaw-tag" onClick={() => setSelectedCategory("BEST상품")}>
               #BEST상품
             </h1>
@@ -89,7 +89,7 @@ const IndexSelector = () => {
               #구독자상품
             </h1>
           </Col>
-          <Col className="mx-1 text-start">
+          <Col className="mx-2 text-start">
             <h1 className="fw-bold col pilllaw-tag" onClick={() => setSelectedCategory("필로패키지")}>
               #필로패키지
             </h1>
@@ -104,23 +104,25 @@ const IndexSelector = () => {
       </div>
 
       {/* 선택된 카테고리 제목 표시 */}
-      <h5 className="mx-3 fw-bold">
-        <FontAwesomeIcon icon={faCrown} style={{ color: "#FFD43B" }} /> {selectedCategory}
-      </h5>
-      <div className="container clearfix">
-        <Row className="text-center">
-          {loading ? (
-            <Spinner animation="border" variant="info" />
-          ) : filteredProducts.length > 0 ? (
-            filteredProducts.map((p) => (
-              <Col className="col-6 col-sm-4 col-lg-3 col-xl-2 mt-2 mb-4 best-item" key={p.product.pno}>
-                <IndexItem product={p.product} />
-              </Col>
-            ))
-          ) : (
-            <p className="text-muted">등록된 상품이 없습니다.</p>
-          )}
-        </Row>
+      <div className="mt-4">
+        <h5 className="mx-3 fw-bold">
+          <FontAwesomeIcon icon={faCrown} style={{ color: "#FFD43B" }} /> {selectedCategory}
+        </h5>
+        <div className="container clearfix">
+          <Row className="text-center">
+            {loading ? (
+              <Spinner animation="border" variant="info" />
+            ) : filteredProducts.length > 0 ? (
+              filteredProducts.map((p) => (
+                <Col className="col-6 col-sm-4 col-lg-3 col-xl-2 mt-2 mb-4 best-item" key={p.product.pno}>
+                  <IndexItem product={p.product} />
+                </Col>
+              ))
+            ) : (
+              <p className="text-muted">등록된 상품이 없습니다.</p>
+            )}
+          </Row>
+        </div>
       </div>
     </Col>
   );
