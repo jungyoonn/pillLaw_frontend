@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLessThan, faGreaterThan } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 // ✅ 아이콘 이미지 (실제 경로로 변경 필요)
 import tag1 from "../../resources/image/main_tag1.png";
@@ -21,9 +22,12 @@ const categories = [
   { name: "피로&면역", icon: tag4 },
   { name: "남성", icon: tag5 },
   { name: "혈당", icon: tag6 },
-  { name: "혈행&혈압", icon: tag7 },
+  { name: "장", icon: tag7 },
   { name: "관절, 뼈", icon: tag8 },
 ];
+
+
+
 
 // ✅ 가로형 슬라이더 스타일
 const CarouselWrapper = styled.div`
@@ -85,9 +89,14 @@ const NavButton = styled.button`
   }
 `;
 
+
+
+
 // ✅ 무한 루프 적용 슬라이더 컴포넌트
 const IndexSlider = () => {
   const [startIndex, setStartIndex] = useState(0);
+  const [selectedCategories, setSelectedCategories] = useState(new Set());
+  const navigate = useNavigate();
   const itemsPerView = 5;
 
   // 🔹 다음 버튼 (마지막에 도달하면 처음으로 돌아감)
@@ -100,6 +109,10 @@ const IndexSlider = () => {
     setStartIndex((prev) => (prev - 1 + categories.length) % categories.length);
   };
 
+  const handleCategorySelect = (categoryName) => {
+    navigate(`/product/list?selectedCategory=${encodeURIComponent(categoryName)}`);
+  };
+
   return (
     <CarouselWrapper>
       <NavButton onClick={prevImages} left>
@@ -110,7 +123,7 @@ const IndexSlider = () => {
         <ImageSlider startIndex={startIndex} itemsPerView={itemsPerView}>
           {categories.concat(categories).map((category, index) => (
             <ImageItem key={index} className="fs-11">
-              <CategoryIcon src={category.icon} alt={category.name}  />
+              <CategoryIcon src={category.icon} alt={category.name}  onClick={() => handleCategorySelect(category.name)} />
               <span>{category.name}</span>
             </ImageItem>
           ))}

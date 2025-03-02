@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import "font-awesome/css/font-awesome.min.css";
@@ -15,8 +16,15 @@ const ProductList = () => {
   const [searchType, setSearchType] = useState("name");
   const [selectedCategories, setSelectedCategories] = useState(new Set());
   const [forceUpdate, setForceUpdate] = useState(false);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const selectedCategoryFromURL = queryParams.get("selectedCategory");
 
-
+  useEffect(() => {
+    if (selectedCategoryFromURL) {
+      setSelectedCategories(new Set([selectedCategoryFromURL]));
+    }
+  }, [selectedCategoryFromURL]);
   
 
   useEffect(() => {
@@ -51,7 +59,7 @@ const ProductList = () => {
     const matchesSearch = searchTerm.trim() === "" || p.product.pname?.includes(searchTerm);
     const matchesCategory = selectedCategories.size === 0 || 
       p.categories.some(category => selectedCategories.has(category.cname));
-    return matchesSearch && matchesCategory; 
+    return matchesSearch && matchesCategory;
   }) || [];
 
   const onCategoryChange = (category) => {
@@ -88,7 +96,11 @@ const ProductList = () => {
         </Row>
         {searchType === "category" && (
           <div className="category-selector">
-            <ProductCategorySelector className="mt-3" onCategoryChange={onCategoryChange} selectedCategories={selectedCategories} />
+            {/* <ProductCategorySelector className="mt-3" onCategoryChange={onCategoryChange} selectedCategories={selectedCategories} /> */}
+            <ProductCategorySelector 
+              selectedCategories={selectedCategories} 
+              onCategoryChange={setSelectedCategories} 
+            />
           </div>
         )}
         <Row className="text-center container-fluid mt-4 ">

@@ -57,11 +57,20 @@ const ProductCategorySelector = ({ selectedCategories, onCategoryChange}) => {
           </div>
         </Form>
       </Row>
-      {categoryType ? 
-      <ProductCategoryBioActive data={bio} selectedCategories={selectedCategories} onCategoryChange={onCategoryChange} />  
-      : 
-      <ProductCategoryNutrient data={nutri} selectedCategories={selectedCategories} onCategoryChange={onCategoryChange} />
-      }
+
+      {categoryType ? (
+        <ProductCategoryBioActive 
+          data={bio} 
+          selectedCategories={selectedCategories} 
+          onCategoryChange={onCategoryChange} 
+        />
+      ) : (
+        <ProductCategoryNutrient 
+          data={nutri} 
+          selectedCategories={selectedCategories} 
+          onCategoryChange={onCategoryChange} 
+        />
+      )}
     </>
   );
 };
