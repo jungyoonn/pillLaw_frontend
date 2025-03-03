@@ -15,7 +15,7 @@ const SignEmail = () => {
   const [emailError, setEmailError] = useState('');
   const [emailSent, setEmailSent] = useState(false);
   const [message, setMessage] = useState('인증메일 보내기');
-  const {loading, req} = UseAxios('http://localhost:8080/api/member/');
+  const {loading, req} = UseAxios('https://pilllaw.eeerrorcode.com/api/member/');
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);

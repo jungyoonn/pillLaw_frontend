@@ -14,7 +14,7 @@ const VerifyEmail = () => {
   const [saving, setSaving] = useState(false);
   const [verified, setVerified] = useState(false);
   const [email, setEmail] = useState("");
-  const {loading, req} = UseAxios('http://localhost:8080/api/member/');
+  const {loading, req} = UseAxios('https://pilllaw.eeerrorcode.com/api/member/');
   const navigate = useNavigate();
 
   useEffect(() => {

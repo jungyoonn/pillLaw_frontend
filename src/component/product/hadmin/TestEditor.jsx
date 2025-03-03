@@ -23,7 +23,7 @@ const MyEditor = () => {
       const formData = new FormData();
       formData.append('file', blobInfo.blob(), blobInfo.filename());
   
-      fetch('http://localhost:8080/api/upload-image', {
+      fetch('https://pilllaw.eeerrorcode.com/api/upload-image', {
         method: 'POST',
         body: formData,
         mode: 'cors',
