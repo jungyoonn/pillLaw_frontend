@@ -16,8 +16,25 @@ const Signup = () => {
   const BACKEND_URL= "https://pilllaw.eeerrorcode.com";
   const FRONTEND_URL = "https://pilllaw.eeerrorcode.com";
 
+  // const handleSocialLogin = (provider) => {
+  //   const redirectUri = encodeURIComponent(`${FRONTEND_URL}/pilllaw/oauth2/redirect`);
+  //   console.log(redirectUri);
+  //   if (provider === 'google') {
+  //     return encodeURIComponent(`${FRONTEND_URL}/login/oauth2/code/google`);
+  //   }
+  //   window.location.href = `${BACKEND_URL}/oauth2/authorization/${provider}?redirect_uri=${redirectUri}`;
+  // };
+
+  // 구글의 경우에만 다른 리다이렉트 URI 사용
+  const getRedirectUri = (provider) => {
+    if (provider === 'google') {
+      return encodeURIComponent(`${FRONTEND_URL}/login/oauth2/code/google`);
+    }
+    return encodeURIComponent(`${FRONTEND_URL}/pilllaw/oauth2/redirect`);
+  };
+
   const handleSocialLogin = (provider) => {
-    const redirectUri = encodeURIComponent(`${FRONTEND_URL}/pilllaw/oauth2/redirect`);
+    const redirectUri = getRedirectUri(provider);
     console.log(redirectUri);
     window.location.href = `${BACKEND_URL}/oauth2/authorization/${provider}?redirect_uri=${redirectUri}`;
   };

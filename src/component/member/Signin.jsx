@@ -87,7 +87,7 @@ const Signin = () => {
   }
 
   const handleSocialLogin = (provider) => {
-    const redirectUri = encodeURIComponent(`${FRONTEND_URL}/pilllaw/oauth2/redirect`);
+    const redirectUri = encodeURIComponent(`${FRONTEND_URL}/oauth2/redirect`);
     console.log(redirectUri);
     window.location.href = `${BACKEND_URL}/oauth2/authorization/${provider}?redirect_uri=${redirectUri}`;
   };
