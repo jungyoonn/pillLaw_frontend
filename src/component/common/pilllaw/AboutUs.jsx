@@ -64,8 +64,8 @@ const AboutUs = () => {
   useEffect(() => {
     const fetchPopularReviews = async () => {
       try {
-        const response = await req("GET", "v1/product/top-rated");
-        // console.log("리뷰 3개 응답",response);
+        const response = await req("GET", "v1/product/detail/review/popular");
+        console.log("리뷰 3개 응답",response);
         setPopularReviews(response);
       } catch (error) {
         console.error("리뷰뷰 가져오기 실패:", error);
@@ -292,15 +292,18 @@ const AboutUs = () => {
             {popularSupplements.map(product => (
               <Col md={4} className="mb-4" key={product.id}>
                 <Card className="h-100" style={styles.cardShadow}>
-                  <Card.Img variant="top" src={product.image} alt={product.name} />
+                  {/* <Card.Img 
+                    variant="top" 
+                    src={`https://eeerrorcode.buckets3.ap-northeast-2.amazonaws.com/uploads/2025/product/${product.pno}/img/`}
+                    alt={product.name} /> */}
                   {/* https://eeerrorcode.buckets3.ap-northeast-2.amazonaws.com/uploads/2025/product/{pno}/img/ */}
 
                   <Card.Body>
-                    <Card.Title>{product.name}</Card.Title>
+                    <Card.Title className='fs-14 text-center'>{product.pname}</Card.Title>
                     <div className="d-flex justify-content-between align-items-center mb-2">
                       {/* <span className="fw-bold" style={styles.primaryText}>{product.price.toLocaleString()}원</span> */}
                       <span className="text-warning">
-                        <FontAwesomeIcon icon={faStar} /> {product.rating}
+                        <FontAwesomeIcon icon={faStar} /> {product.avgRating}
                       </span>
                     </div>
                     <Card.Text>{product.description}</Card.Text>
@@ -308,7 +311,7 @@ const AboutUs = () => {
                       variant="outline-primary" 
                       className="w-100" 
                       as={Link} 
-                      to={`/product/detail/${product.id}`}
+                      to={`/product/detail/${product.pno}`}
                       style={styles.outlinePrimaryBtn}
                     >
                       상세 보기
@@ -378,12 +381,13 @@ const AboutUs = () => {
                     <div className="d-flex mb-3">
                       <img 
                         src={review.imageUrls[0]} 
-                        alt={review.productName} 
+                        // src={`https://eeerrorcode.buckets3.ap-northeast-2.amazonaws.com/uploads/review/${review.pno}/${review.prno}/`}
+                        alt={review.pname} 
                         className="me-3"
                         style={{ width: '60px', height: '60px', objectFit: 'cover' }}
                       />
                       <div>
-                        <h5 className="mb-1">{review.productName}</h5>
+                        <h5 className="mb-1">{review.pname}</h5>
                         <div className="text-warning mb-2">
                           {[...Array(5)].map((_, i) => (
                             <FontAwesomeIcon key={i} icon={faStar} style={{ color: i < review.rating ? '#ffc107' : '#e4e5e9' }} />
@@ -397,8 +401,8 @@ const AboutUs = () => {
                               className="rounded-circle me-2"
                               style={{ width: "30px", height: "30px" }}
                             />
-                            <span className="text-muted small">
-                              {review.nickName} · {review.date}
+                            <span className="text-muted small fs-11">
+                              {review.nickName} · {review.regDate}
                             </span>
                           </div>
                         </Link>

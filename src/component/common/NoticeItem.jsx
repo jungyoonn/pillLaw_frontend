@@ -19,7 +19,7 @@ function NoticeItem({notice}) {
           >
             제목 : {notice.title}
           </Accordion.Header>
-          <Accordion.Body className='bg-pilllaw text-white'>
+          <Accordion.Body className='text-dark'>
             <Row className='fs-11'>
               <Col>
                 <span className='text-center fw-bold '>조회수 - {notice.count}</span>
@@ -28,13 +28,13 @@ function NoticeItem({notice}) {
               <Col>
                 <span className='text-center fw-bold '>작성자 - {notice.writer}</span>
               </Col>
-            <hr className='text-white mt-3'/>
+            <hr className='mt-3'/>
             </Row>
             <Row className='p-3 mb-5'>
               <div className='mt-5 text-start' dangerouslySetInnerHTML={{ __html: notice.content }} />
             </Row>
             <Row className='mt-5 fs-11'>
-              <hr className='text-white mb-3'/>
+              <hr className='mb-3'/>
               <Col>
                 <span className='text-center fw-bold '>작성일 - {notice.regDate}</span>
               </Col>

@@ -10,12 +10,43 @@ import SearchBar from "../common/SearchBar";
 function Notice() {
   const [searchTerm, setSearchTerm] = useState("");
   const { data, req, loading, err } = UseAxios();
-  const [showWriter, setShowWriter] = useState(false); // 모달 상태 관리
+  const [showWriter, setShowWriter] = useState(false);
+  const [roles, setRoles] = useState([]);
+  const [notice, setNotice] = useState([]);
+
+  const mno = localStorage.getItem("mno");
 
   useEffect(() => {
-    // console.log("📌 공지사항 리스트 요청 시작");
-    req("get", "v1/notice/list"); 
-  }, [req]);  
+    // console.log(mno);
+
+    const fetchNotices = async () => {
+      try {
+        const response = await req("get", "v1/notice/list");
+        // console.log("공지사항 응답:", response);
+        setNotice(response);
+      } catch (error) {
+        console.error("공지사항 불러오기 실패:", error);
+      }
+    };
+
+    const fetchMemberRoles = async () => {
+      try {
+        if (mno) {
+          const response = await req("get", `member/mypage/myinfo/${mno}`);
+          // console.log("멤버 응답:", response);
+          if (response?.memberDto?.roles) {
+            setRoles(response.memberDto.roles);
+          }
+        }
+      } catch (error) {
+        console.error("멤버 불러오기 실패:", error);
+      }
+    };
+
+    fetchNotices();
+    fetchMemberRoles();
+  }, [mno]);  
+
 
   if (err) {
     return <div><h1>Error Occurred!</h1></div>;
@@ -42,27 +73,29 @@ function Notice() {
 
         {/* 공지 리스트 */}
         <Row className="text-center container-fluid mt-4">
-          {data?.content?.length > 0 ? (
-            data.content
-              .filter((notice) => notice.title.includes(searchTerm))
-              .map((notice) => (
-                <NoticeItem key={notice.nno} notice={notice} />
+          {notice?.content?.length > 0 ? (
+            notice.content
+              .filter((n) => n.title.includes(searchTerm))
+              .map((n) => (
+                <NoticeItem key={n.nno} notice={n} />
               ))
           ) : (
             <p>공지사항이 없습니다.</p>
           )}
         </Row>
 
-        {/* 공지사항 작성 버튼 */}
-        <Row className='mt-5'>
-          <Col className="text-end">
-            <Button className="btn-pilllaw" onClick={() => setShowWriter(true)}>
-              작성하기
-            </Button>
-          </Col>
-        </Row>
+        {roles?.some(role => role.includes("ADMIN")) ? ( 
+            <Row className='mt-5'>
+              <Col className="text-end">
+                <Button className="btn-pilllaw" onClick={() => setShowWriter(true)}>
+                  작성하기
+                </Button>
+              </Col>
+            </Row>
+          ) : null}
         <NoticeWriter show={showWriter} handleClose={() => setShowWriter(false)} />
       </Container>
+
     </div>
   );
 }
