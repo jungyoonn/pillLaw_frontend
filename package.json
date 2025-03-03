@@ -1,6 +1,6 @@
 {
   "name": "pilllaw_front",
-  "homepage": "http://localhost:3000/pilllaw",
+  "homepage": "/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
