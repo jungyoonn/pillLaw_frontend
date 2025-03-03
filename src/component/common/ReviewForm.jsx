@@ -17,7 +17,7 @@ const ReviewForm = ({ show, handleClose, productId, onReviewAdded }) => {
   const {loading, req } = useAxios();
 
   useEffect(() => {
-    console.log("📌 ReviewForm에 전달된 productId:", productId);
+    // console.log("ReviewForm에 전달된 productId:", productId);
   }, [productId]);
 
   const handleFileChange = (e) => {
@@ -49,11 +49,9 @@ const ReviewForm = ({ show, handleClose, productId, onReviewAdded }) => {
     images.forEach((file) => formData.append("files", file));
   
     try {
-      console.log("📌 리뷰 등록 요청 전송:", formData);
       const response = await req("post", "v1/product/detail/review/register", formData, 
         { "Content-Type": "multipart/form-data" }, true);
   
-      console.log("✅ 리뷰 등록 응답:", response);
   
       if (response && response.review) {
         alert("리뷰가 성공적으로 등록되었습니다!");
@@ -61,37 +59,33 @@ const ReviewForm = ({ show, handleClose, productId, onReviewAdded }) => {
         setImages([]);
   
         if (onReviewAdded) {
-          console.log("✅ onReviewAdded 실행!", response.review);
           onReviewAdded(response.review);
         }
   
         handleClose();
       } else if (response && response.reviewId) {
-        // ✅ reviewId만 올 경우, 강제 새로고침
-        console.warn("⚠️ review 객체 없음, 리뷰 목록 새로 불러오기");
         req("get", `v1/product/detail/review/list/${productId}`)
           .then((updatedReviews) => {
-            console.log("✅ 강제 새로고침 완료:", updatedReviews);
             if (onReviewAdded) {
               updatedReviews.forEach((rev) => onReviewAdded(rev));
             }
           })
-          .catch((err) => console.error("❌ 리뷰 새로고침 실패:", err));
+          .catch((err) => console.error("리뷰 새로고침 실패:", err));
   
         alert("리뷰가 성공적으로 등록되었습니다!");
         handleClose();
       } else {
-        console.error("❌ 리뷰 등록 실패: response.review가 없음", response);
+        console.error("리뷰 등록 실패: response.review가 없음", response);
         alert("리뷰 등록 실패");
       }
     } catch (error) {
       alert("리뷰 등록 오류 발생");
-      console.error("❌ 리뷰 등록 실패:", error.response?.data || error.message);
+      console.error("리뷰 등록 실패:", error.response?.data || error.message);
     }
   };
   
 
-  const handleImageUpload = async (blobInfo, success, failure) => {  // ✅ 추가된 함수
+  const handleImageUpload = async (blobInfo, success, failure) => {  
     try {
       const file = blobInfo.blob();
       const formData = new FormData();
@@ -111,18 +105,6 @@ const ReviewForm = ({ show, handleClose, productId, onReviewAdded }) => {
     }
   };
 
-  // const uploadReviewImages = async (files, reviewId) => {
-  //   try{
-  //     const formData = new FormData();
-  //     files.forEach((file) => formData.append("files", file));
-  //     formData.append("productReviewId", reviewId.toString());
-
-  //     const response = await req("post", "v1/file/upload", formData, {}, true);
-  //     console.log("업로드 :: 성공 :: ", response);
-  //   }catch(error){
-  //     console.log("업로드 :: 실패 ::", error);
-  //   }
-  // };
 
   return (
     <Modal show={show} onHide={handleClose} centered>

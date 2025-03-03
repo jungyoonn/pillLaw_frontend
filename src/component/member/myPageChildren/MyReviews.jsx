@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from "react";
 import UseAxios from "../../../hooks/UseAxios";
 import { Card, ListGroup, Row, Col } from "react-bootstrap";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-const UserReviews = ({ }) => {
-  const { id } = useParams();
+const MyReviews = ({ mno }) => {
   const { req, data, loading, error } = UseAxios();
   const [reviews, setReviews] = useState([]);
-  const mno = id;
-  const fetchUserReviews = async (mno) => {
+
+  useEffect(() => {
+    if (mno) {
+      fetchMyReviews(mno);
+    }
+  }, [mno]);
+
+  const fetchMyReviews = async (mno) => {
     try {
       const response = await req("GET", `v1/product/detail/review/mine/${mno}`);
-      console.log(response);
+      // console.log(response);
       if (response) {
         setReviews(response);
       }
@@ -20,24 +25,17 @@ const UserReviews = ({ }) => {
     }
   };
 
-  useEffect(() => {
-    if (mno) {
-      fetchUserReviews(mno);
-    }
-  }, [mno]);
-  
-
   if (loading) return <p>로딩 중...</p>;
   if (error) return <p>오류 발생: {error.message}</p>;
 
   return (
     <div className="p-2">
-      <h4 className="text-center header-font fw-bold">작성한 리뷰</h4>
-      <p className="fs-12 text-center"> 작성한 리뷰가 {reviews.length} 개 있습니다.</p>
+      <h4 className="text-center header-font fw-bold">내가 작성한 리뷰</h4>
+      <p className="fs-12 text-center">작성한 리뷰가 {reviews.length} 개 있습니다.</p>
       <Row>
         <Col xs="1" />
         <Col>
-          <Card className="mt-5">
+          <Card className="mt-3">
             <Card.Header className="fw-bold text-center text-pilllaw">상품 리뷰</Card.Header>
             <ListGroup variant="flush">
               {!reviews.length ? <p className="fw-bold fs-14 mt-2 text-center">작성한 리뷰가 없습니다.</p> : 
@@ -76,4 +74,4 @@ const UserReviews = ({ }) => {
   );
 };
 
-export default UserReviews;
+export default MyReviews;

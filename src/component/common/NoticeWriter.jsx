@@ -12,7 +12,7 @@ function NoticeWriter({ show, handleClose, onNoticeAdded }) {
   const [content, setContent] = useState(""); // 공지사항 내용
 
   useEffect(() => {
-    console.log("📌 공지사항 작성 시작 - 작성자:", mno);
+    // console.log("공지사항 작성 시작 - 작성자:", mno);
   }, [mno]);
 
   // 공지사항 등록 핸들러
@@ -44,7 +44,7 @@ function NoticeWriter({ show, handleClose, onNoticeAdded }) {
         "Content-Type": "application/json",
       });
 
-      console.log("응답:", response);
+      // console.log("응답:", response);
 
       if (response) {
         alert("공지사항이 성공적으로 등록되었습니다!");
@@ -57,12 +57,12 @@ function NoticeWriter({ show, handleClose, onNoticeAdded }) {
 
         handleClose();
       } else {
-        console.error("❌ 공지사항 등록 실패: 응답 없음", response);
+        console.error(" 공지사항 등록 대 실패: 응답 없음", response);
         alert("공지사항 등록 실패");
       }
     } catch (error) {
       alert("공지사항 등록 중 오류 발생");
-      console.error("❌ 공지사항 등록 실패:", error.response?.data || error.message);
+      console.error("공지사항 등록 대 실패:", error.response?.data || error.message);
     }
   };
 

@@ -13,6 +13,8 @@ import FollowApp from '../follow/test/FollowApp';
 import LetterListComponent from '../follow/layout/LetterListComponent';
 import FavoriteProducts from './profilePageChildren/FavoriteProducts';
 import UserReviews from './profilePageChildren/UserReviews';
+import MyReviews from './myPageChildren/MyReviews';
+import MyFavoriteProducts from './myPageChildren/MyFavoriteProducts';
 
 const MyPageLayout = () => {
   const navigate = useNavigate();
@@ -41,19 +43,19 @@ const MyPageLayout = () => {
       case "myinfo":
         return <MyInfo activeKey={activeKey} setActiveKey={setActiveKey} />;
       case "edit-info":
-        return <ModifyInfo activeKey={activeKey} />
+        return <ModifyInfo activeKey={activeKey} />;
       case 'followapp':
-        return <FollowApp activeKey={activeKey} />
+        return <FollowApp activeKey={activeKey} />;
       case 'orders':
         return <OrderList memberId={memberId} />;  
       case 'points':
         return <PointList memberId={memberId} />;  
       case 'letterlistcomponent':
         return <LetterListComponent activeKey={activeKey}/>;  
-      case "favorite-products":  
-        return <FavoriteProducts memberId={memberId} />;
-      case "user-reviews":  // ✅ 내가 쓴 리뷰 추가
-        return <UserReviews mno={memberId} />;
+      case "my-favorite-products":  
+        return <MyFavoriteProducts memberId={memberId} />;
+      case "my-reviews":
+        return <MyReviews mno={memberId} />;
       default:
         return <div>선택된 메뉴가 없습니다.</div>;
     }
@@ -97,8 +99,8 @@ const MyPageLayout = () => {
             <Nav.Link eventKey="orders">주문내역 조회</Nav.Link>  {/* 주문내역 추가 */}
             <Nav.Link eventKey="points">포인트 사용 이력</Nav.Link>
             {/* <Nav.Link eventKey="link-2">구독 내역</Nav.Link> */}
-            <Nav.Link eventKey="favorite-products">나의 좋아요 상품</Nav.Link>
-            <Nav.Link eventKey="user-reviews">내 후기 모아보기</Nav.Link>
+            <Nav.Link eventKey="my-favorite-products">나의 좋아요 상품</Nav.Link>
+            <Nav.Link eventKey="my-reviews">내 후기 모아보기</Nav.Link>
             <br />
             <Nav.Link eventKey="letterlistcomponent">쪽지함</Nav.Link>
             <Nav.Link eventKey="followapp">팔로우 / 팔로워</Nav.Link>

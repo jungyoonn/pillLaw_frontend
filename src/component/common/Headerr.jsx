@@ -41,8 +41,8 @@ const Headerr = () => {
   
   useEffect(() => {
     const storedEmail = localStorage.getItem('email');
-    console.log(localStorage.getItem('token'));
-    console.log(localStorage.getItem('email'));
+    // console.log(localStorage.getItem('token'));
+    // console.log(localStorage.getItem('email'));
     
     setLogin(!!storedEmail);
 

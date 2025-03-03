@@ -40,7 +40,6 @@ const ImageItem = styled.img`
   }
 `;
 
-/* ✅ 버튼이 사라지지 않고, 비활성화 시 투명도만 변경 */
 const NavButton = styled.button`
   background-color: rgba(0, 0, 0, 0.3);
   color: white;

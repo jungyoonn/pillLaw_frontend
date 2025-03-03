@@ -6,7 +6,7 @@ function NoticeItem({notice}) {
   const {req, loading} = UseAxios();
 
   useEffect(() => {
-    console.log("전달된 notice:", notice);
+    // console.log("전달된 notice:", notice);
   }, [notice]);
 
   return (

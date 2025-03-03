@@ -96,7 +96,7 @@ const IndexPromoSlider = () => {
           const shuffled = shuffleArray(response).slice(0, 5);
           setProducts(shuffled);
           setImageLoaded(new Array(shuffled.length).fill(false));
-          console.log("✅ 불러온 상품 목록:", shuffled.map(p => p.product.pname));
+          // console.log("불러온 상품 목록:", shuffled.map(p => p.product.pname));
         }
       } catch (error) {
         console.error("슬라이더 상품 불러오기 실패:", error);
@@ -168,7 +168,6 @@ const IndexPromoSlider = () => {
         })}
       </SliderContainer>
 
-      {/* 인디케이터를 슬라이더 밖으로 이동 */}
       <IndicatorContainer>
         {products.map((_, index) => (
           <Indicator 

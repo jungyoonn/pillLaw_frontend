@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faStar, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { Row, Col, Button } from "react-bootstrap";
+import { Card, Row, Col, Button } from "react-bootstrap";
 import UseAxios from "../../hooks/UseAxios";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/AuthContext";
@@ -13,7 +13,6 @@ const ProductReviewList = ({ reviews, onDelete }) => {
   const [likedReviews, setLikedReviews] = useState({});
   const { req } = UseAxios();
 
-  // ✅ 좋아요 상태 및 개수 초기화
   useEffect(() => {
     if (reviews && reviews.length > 0) {
       const fetchLikesData = async () => {
@@ -26,11 +25,9 @@ const ProductReviewList = ({ reviews, onDelete }) => {
             req("get", `v1/product/review/like/check/${mno}/${review.prno}`)
           );
 
-          // ✅ 병렬 요청 실행
           const likeCounts = await Promise.all(likePromises);
           const likedStatuses = await Promise.all(likedPromises);
 
-          // ✅ 상태 업데이트
           const updatedLikes = reviews.reduce((acc, review, index) => {
             acc[review.prno] = likeCounts[index]?.data || 0;
             return acc;
@@ -52,19 +49,17 @@ const ProductReviewList = ({ reviews, onDelete }) => {
     }
   }, [reviews, mno, req]);
 
-  // ✅ 좋아요 토글
   const handleLikeToggle = async (reviewId) => {
     console.log("👍 좋아요 요청 전송 - mno:", mno, "prno:", reviewId);
 
     if (!mno) {
-      console.error("❌ 회원 ID가 없습니다! 로그인 상태를 확인하세요.");
+      console.error("회원 ID가 없습니다! 로그인 상태를 확인하세요.");
       return;
     }
 
     try {
       const isLiked = likedReviews[reviewId];
 
-      // ✅ UI를 즉시 업데이트 (낙관적 업데이트)
       setLikedReviews((prev) => ({
         ...prev,
         [reviewId]: !isLiked,
@@ -75,19 +70,17 @@ const ProductReviewList = ({ reviews, onDelete }) => {
         [reviewId]: isLiked ? prev[reviewId] - 1 : prev[reviewId] + 1,
       }));
 
-      // ✅ 서버에 요청 보내기
       const endpoint = isLiked
         ? "v1/product/review/like/remove"
         : "v1/product/review/like/add";
 
       await req("post", endpoint, {
-        mno: mno, // ✅ 회원 ID 포함
-        prno: reviewId, // ✅ 리뷰 ID 포함
+        mno: mno, 
+        prno: reviewId, 
       });
     } catch (error) {
-      console.error("❌ 좋아요 요청 실패:", error);
+      console.error("좋아요 요청 실패:", error);
 
-      // ✅ 요청 실패 시 원래 상태로 복구
       setLikedReviews((prev) => ({
         ...prev,
         [reviewId]: !prev[reviewId],
@@ -111,48 +104,69 @@ const ProductReviewList = ({ reviews, onDelete }) => {
           <p>구매 후 첫 리뷰를 남겨보세요!</p>
         </div>
       ) : (
-        <div className="d-flex flex-wrap justify-content-center gap-3">
+        <Row className="justify-content-center">
           {reviews.map((review) => (
-            <div key={review.prno} className="review-card">
-              {/* ✅ 리뷰 이미지 */}
-              <div className="review-image-container">
+            <Col md={6} lg={4} key={review.prno} className="mb-4">
+              <Card className="h-100 shadow-sm">
                 {review.imageUrls && review.imageUrls.length > 0 ? (
-                  <img src={review.imageUrls[0]} alt="리뷰 이미지" className="review-image" />
+                  <Card.Img
+                    variant="top"
+                    src={review.imageUrls[0]}
+                    alt="리뷰 이미지"
+                    className="review-image"
+                    style={{ width:"100%", height: "200px", objectFit: "cover" }}
+                  />
                 ) : (
-                  <div className="default-review-image"></div>
+                  <div className="default-review-image" style={{ height: "200px", backgroundColor: "#f0f0f0" }}></div>
                 )}
-              </div>
 
-              {/* ✅ 리뷰 내용 */}
-              <div className="review-content">
-                <p className="fw-bold">{review.nickName}</p>
-                <div className="review-text" dangerouslySetInnerHTML={{ __html: review.content }}></div>
-                <small className="text-muted">{formatDate(review.regDate)}</small>
-              </div>
+                <Card.Body>
+                  <Card.Title className="d-flex justify-content-between align-items-center">
+                  <Link to={`/userpage/${review.mno}?tab=user-reviews`} className="text-decoration-none text-pilllaw">
+                    <span>{review.nickName}</span>
+                  </Link>
+                    <small className="text-muted">{formatDate(review.regDate)}</small>
+                  </Card.Title>
 
-              {/* ✅ 별점 */}
-              <div className="review-rating">
-                {Array.from({ length: review.rating }).map((_, index) => (
-                  <FontAwesomeIcon key={index} icon={faStar} className="text-warning" />
-                ))}
-                ({review.rating}점)
-              </div>
+                  <Card.Text>
+                    <div className="review-text fs-12" dangerouslySetInnerHTML={{ __html: review.content }}></div>
+                  </Card.Text>
 
-              {/* ✅ 좋아요 및 삭제 버튼 */}
-              <div className="review-actions">
-                <button className="like-button" onClick={() => handleLikeToggle(review.prno)}>
-                  <FontAwesomeIcon icon={faHeart} className={likedReviews[review.prno] ? "text-danger" : "text-secondary"} />
-                  <span> 도움이 돼요 ({reviewLikes[review.prno]})</span>
-                </button>
-                {mno === review.mno && (
-                  <Button variant="danger" size="sm" onClick={() => onDelete(review.prno)}>
-                    <FontAwesomeIcon icon={faTrash} /> 삭제
-                  </Button>
-                )}
-              </div>
-            </div>
+                  <div className="mb-3">
+                    {Array.from({ length: review.rating }).map((_, index) => (
+                      <FontAwesomeIcon key={index} icon={faStar} className="text-warning" />
+                    ))}
+                    <span className="ms-1 fw-bold">({review.rating}점)</span>
+                  </div>
+
+                  <div className="d-flex justify-content-between">
+                    <Button
+                      variant="outline-secondary"
+                      size="sm"
+                      onClick={() => handleLikeToggle(review.prno)}
+                    >
+                      <FontAwesomeIcon
+                        icon={faHeart}
+                        className={likedReviews[review.prno] ? "text-danger" : "text-secondary"}
+                      />{" "}
+                      도움이 돼요 ({reviewLikes[review.prno]})
+                    </Button>
+
+                    {mno === review.mno && (
+                      <Button
+                        variant="danger"
+                        size="sm"
+                        onClick={() => onDelete(review.prno)}
+                      >
+                        <FontAwesomeIcon icon={faTrash} /> 삭제
+                      </Button>
+                    )}
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
           ))}
-        </div>
+        </Row>
       )}
     </div>
   );

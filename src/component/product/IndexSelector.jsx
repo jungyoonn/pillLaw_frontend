@@ -16,7 +16,7 @@ const IndexSelector = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState("BEST상품"); // ✅ 현재 선택된 카테고리
+  const [selectedCategory, setSelectedCategory] = useState("BEST상품");
   const [topPnos, setTopPnos] = useState([]);
 
 
@@ -27,7 +27,7 @@ const IndexSelector = () => {
       try {
         const response = await req("get", "v1/product/list");
         if (response && Array.isArray(response)) {
-          console.log(response);
+          // console.log(response);
           setProducts(response);
         } else {
           console.warn("상품 데이터가 없습니다.");

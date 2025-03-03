@@ -61,8 +61,10 @@ const ProfilePageLayout = () => {
         return <UserInfo activeKey={activeKey} setActiveKey={handleTabChange} />;
       case "likes" :
         return <FavoriteProducts activeKey={activeKey} setActiveKey={handleTabChange} />;
-      case "reviews" :
+      case "user-reviews" :
         return <UserReviews activeKey={activeKey} setActiveKey={handleTabChange} />;
+      case "user-favorite-products" :
+        return <FavoriteProducts activeKey={activeKey} setActiveKey={handleTabChange} />;
       default:
         return <div>선택된 메뉴가 없습니다.</div>;
     }
@@ -100,8 +102,8 @@ const ProfilePageLayout = () => {
             variant="tabs">
             <Nav.Link eventKey="info">회원 정보</Nav.Link>
             <br />
-            <Nav.Link eventKey="likes">즐겨찾기 상품</Nav.Link>
-            <Nav.Link eventKey="reviews">후기 모아보기</Nav.Link>
+            <Nav.Link eventKey="user-favorite-products">즐겨찾기 상품</Nav.Link>
+            <Nav.Link eventKey="user-reviews">후기 모아보기</Nav.Link>
           </Nav>
         </Col>
         <Col>

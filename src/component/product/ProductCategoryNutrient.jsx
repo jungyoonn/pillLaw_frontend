@@ -14,7 +14,7 @@ const ProductCategoryNutrient = ({ data, selectedCategories, onCategoryChange })
             type="checkbox"
             checked={!!selectedCategories.has(category.cname)} 
             onChange={() => {
-              console.log(`✅ 체크박스 클릭됨: ${category.cname}, 현재 상태: ${selectedCategories.has(category.cname)}`);
+              // console.log(`체크박스 클릭됨: ${category.cname}, 현재 상태: ${selectedCategories.has(category.cname)}`);
               onCategoryChange(category.cname);
             }}
           />

@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 
 const ReviewChart = ({ ratingDistribution = [0, 0, 0, 0, 0], activeTab }) => {
   Chart.register(CategoryScale, LinearScale);
-  console.log("Received ratingDistribution in ReviewChart:", ratingDistribution);
+  // console.log("Received ratingDistribution in ReviewChart:", ratingDistribution);
 
   const chartRef = useRef(null);
   const chartInstance = useRef(null);

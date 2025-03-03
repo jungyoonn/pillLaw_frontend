@@ -28,11 +28,11 @@ useEffect(() => {
   if (id) {
     req("get", `v1/product/${id}`)
       .then((response) => {
-        console.log("제품 데이터:", response);
+        // console.log("제품 데이터:", response);
         setProduct(response.product);
         setSelectedImage(response.product.imageUrl);
         
-        // ✅ 상세 이미지 URL을 별도 상태로 저장
+        //  상세 이미지 URL을 별도 상태로 저장
         if (response.detailUrls) {
           setDetailUrls(response.detailUrls);
         }
@@ -44,7 +44,7 @@ useEffect(() => {
     req("get", `v1/product/detail/review/list/${id}`)
       .then((response) => {
         setReviews([]);
-        console.log("리뷰 목록 갱신 : ", response);
+        // console.log("리뷰 목록 갱신 : ", response);
         setReviews(response);
       })
       .catch((err) => {
@@ -58,7 +58,7 @@ useEffect(() => {
   if (id) {
     req("get", `v1/product/${id}`)
     .then((response) => {
-      console.log("제품 데이터:", response);
+      // console.log("제품 데이터:", response);
       setProduct(response.product);
       setSelectedImage(response.product.imageUrl);
     }).catch((err) => {
@@ -67,7 +67,7 @@ useEffect(() => {
 
     req("get", `v1/product/detail/review/list/${id}`)
     .then((response) => {
-      console.log("리뷰 목록 갱신 : ", response);
+      // console.log("리뷰 목록 갱신 : ", response);
       setReviews(response);
     }).catch((err) => {
       console.error("리뷰 로드 에러 :: ", err);
@@ -89,7 +89,7 @@ useEffect(() => {
   
     req("delete", `v1/review/${prno}`)
       .then(() => {
-        console.log(`리뷰 삭제 성공: ${prno}`);
+        // console.log(`리뷰 삭제 성공: ${prno}`);
         return req("get", `v1/product/detail/review/list/${id}`); 
       })
       .then((response) => {
@@ -240,7 +240,7 @@ useEffect(() => {
                     show={showReviewModal} 
                     handleClose={() => setShowReviewModal(false)} 
                     productId={product.pno} 
-                    onReviewAdded={(newReview) => setReviews(prev => [newReview, ...prev])}  // ✅ 최신 리뷰 추가
+                    onReviewAdded={(newReview) => setReviews(prev => [newReview, ...prev])}
                   />
 
                   <Col xs={2} className="justify-content-end">

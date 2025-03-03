@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLessThan, faGreaterThan } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
-// ✅ 아이콘 이미지 (실제 경로로 변경 필요)
 import tag1 from "../../resources/image/main_tag1.png";
 import tag2 from "../../resources/image/main_tag2.png";
 import tag3 from "../../resources/image/main_tag3.png";
@@ -14,7 +13,6 @@ import tag6 from "../../resources/image/main_tag6.png";
 import tag7 from "../../resources/image/main_tag7.png";
 import tag8 from "../../resources/image/main_tag8.png";
 
-// ✅ 카테고리 데이터
 const categories = [
   { name: "인지능력", icon: tag1 },
   { name: "눈", icon: tag2 },
@@ -26,7 +24,6 @@ const categories = [
   { name: "관절, 뼈", icon: tag8 },
 ];
 
-// ✅ 가로형 슬라이더 스타일
 const CarouselWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -86,7 +83,6 @@ const NavButton = styled.button`
   }
 `;
 
-// ✅ 무한 루프 적용 슬라이더 컴포넌트
 const IndexSlider = () => {
   const [startIndex, setStartIndex] = useState(0);
   const [selectedCategories, setSelectedCategories] = useState(new Set());
@@ -96,12 +92,10 @@ const IndexSlider = () => {
   const itemsPerView = 5;
   const autoPlayInterval = 3000; // 3초마다 자동 회전
 
-  // 🔹 다음 버튼 (마지막에 도달하면 처음으로 돌아감)
   const nextImages = () => {
     setStartIndex((prev) => (prev + 1) % categories.length);
   };
 
-  // 🔹 이전 버튼 (처음이면 마지막으로 이동)
   const prevImages = () => {
     setStartIndex((prev) => (prev - 1 + categories.length) % categories.length);
   };

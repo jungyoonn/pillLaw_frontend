@@ -33,8 +33,8 @@ const Index = () => {
     const storedEmail = localStorage.getItem('email');
     setLogin(!!storedMno);
 
-    console.log(storedMno);
-    console.log(storedEmail);
+    // console.log(storedMno);
+    // console.log(storedEmail);
 
     const loadUser = async () => {
       try {

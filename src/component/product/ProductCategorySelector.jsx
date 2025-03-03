@@ -58,7 +58,7 @@ const ProductCategorySelector = ({ selectedCategories, onCategoryChange }) => {
         </Form>
       </Row>
 
-      {/* ✅ 선택된 카테고리 출력 */}
+      {/* 선택된 카테고리 출력 */}
       <Row className="my-3">
         <Col>
           <strong>선택된 카테고리:</strong>{" "}

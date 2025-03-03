@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Card, Button, Carousel, ListGroup, Badge, Accordion } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import UseAxios from "../../../hooks/UseAxios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import profile from '../../../resources/image/user-image.png';
 import { 
   faHeart, 
   faComments, 
@@ -56,15 +57,16 @@ const styles = {
 
 const AboutUs = () => {
 
-  const { req } = UseAxios();
-  // const [popularReviews, setPopularReviews] = useState([]);
+  const { req, loading } = UseAxios();
+  const [popularReviews, setPopularReviews] = useState([]);
+  const [popularSupplements, setPopularSupplements] = useState([]);
   
   useEffect(() => {
     const fetchPopularReviews = async () => {
       try {
-        const response = await req("GET", "v1/product/detail/review/popular");
-        console.log("리뷰 2개 응답",response);
-        // setPopularReviews(response);
+        const response = await req("GET", "v1/product/top-rated");
+        // console.log("리뷰 3개 응답",response);
+        setPopularReviews(response);
       } catch (error) {
         console.error("리뷰뷰 가져오기 실패:", error);
       }
@@ -74,7 +76,7 @@ const AboutUs = () => {
       try {
         const response = await req("GET", "v1/product/top-rated");
         console.log("제품 3개 응답 : ", response);
-        // setPopularSupplements(response);
+        setPopularSupplements(response);
       } catch (error) {
         console.error("제품 가져오기 실패:", error);
       }
@@ -108,60 +110,60 @@ const AboutUs = () => {
   ];
 
   // 인기 영양제 데이터 (예시)
-  const popularSupplements = [
-    {
-      id: 1,
-      name: "멀티 비타민",
-      description: "하루 활력을 위한 필수 비타민과 미네랄이 모두 담긴 종합 영양제",
-      price: 32000,
-      rating: 4.8,
-      image: "/api/placeholder/300/300"
-    },
-    {
-      id: 2,
-      name: "오메가3",
-      description: "눈과 두뇌 건강을 위한 고품질 오메가3 지방산",
-      price: 28000,
-      rating: 4.7,
-      image: "/api/placeholder/300/300"
-    },
-    {
-      id: 3,
-      name: "프로바이오틱스",
-      description: "장 건강을 개선하는 100억 유산균",
-      price: 35000,
-      rating: 4.9,
-      image: "/api/placeholder/300/300"
-    }
-  ];
+  // const popularSupplements = [
+  //   {
+  //     id: 1,
+  //     name: "멀티 비타민",
+  //     description: "하루 활력을 위한 필수 비타민과 미네랄이 모두 담긴 종합 영양제",
+  //     price: 32000,
+  //     rating: 4.8,
+  //     image: "/api/placeholder/300/300"
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "오메가3",
+  //     description: "눈과 두뇌 건강을 위한 고품질 오메가3 지방산",
+  //     price: 28000,
+  //     rating: 4.7,
+  //     image: "/api/placeholder/300/300"
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "프로바이오틱스",
+  //     description: "장 건강을 개선하는 100억 유산균",
+  //     price: 35000,
+  //     rating: 4.9,
+  //     image: "/api/placeholder/300/300"
+  //   }
+  // ];
 
   // 인기 리뷰 데이터 (예시)
-  const popularReviews = [
-    {
-      id: 1,
-      productName: "멀티비타민 올인원",
-      productImage: "/api/placeholder/100/100",
-      authorName: "건강지킴이",
-      authorImage: "/api/placeholder/50/50",
-      rating: 5,
-      content: "3개월 동안 꾸준히 복용했더니 확실히 피로감이 줄고 활력이 생겼어요.",
-      likes: 128,
-      comments: 32,
-      date: "2025-02-15"
-    },
-    {
-      id: 2,
-      productName: "오메가3 프리미엄",
-      productImage: "/api/placeholder/100/100",
-      authorName: "영양덕후",
-      authorImage: "/api/placeholder/50/50",
-      rating: 4,
-      content: "확실히 눈의 피로도가 줄어든 것 같아요. 재구매 의사 있습니다.",
-      likes: 95,
-      comments: 18,
-      date: "2025-02-28"
-    }
-  ];
+  // const popularReviews = [
+  //   {
+  //     id: 1,
+  //     productName: "멀티비타민 올인원",
+  //     productImage: "/api/placeholder/100/100",
+  //     authorName: "건강지킴이",
+  //     authorImage: "/api/placeholder/50/50",
+  //     rating: 5,
+  //     content: "3개월 동안 꾸준히 복용했더니 확실히 피로감이 줄고 활력이 생겼어요.",
+  //     likes: 128,
+  //     comments: 32,
+  //     date: "2025-02-15"
+  //   },
+  //   {
+  //     id: 2,
+  //     productName: "오메가3 프리미엄",
+  //     productImage: "/api/placeholder/100/100",
+  //     authorName: "영양덕후",
+  //     authorImage: "/api/placeholder/50/50",
+  //     rating: 4,
+  //     content: "확실히 눈의 피로도가 줄어든 것 같아요. 재구매 의사 있습니다.",
+  //     likes: 95,
+  //     comments: 18,
+  //     date: "2025-02-28"
+  //   }
+  // ];
 
   // FAQ 항목
   const faqs = [
@@ -291,10 +293,12 @@ const AboutUs = () => {
               <Col md={4} className="mb-4" key={product.id}>
                 <Card className="h-100" style={styles.cardShadow}>
                   <Card.Img variant="top" src={product.image} alt={product.name} />
+                  {/* https://eeerrorcode.buckets3.ap-northeast-2.amazonaws.com/uploads/2025/product/{pno}/img/ */}
+
                   <Card.Body>
                     <Card.Title>{product.name}</Card.Title>
                     <div className="d-flex justify-content-between align-items-center mb-2">
-                      <span className="fw-bold" style={styles.primaryText}>{product.price.toLocaleString()}원</span>
+                      {/* <span className="fw-bold" style={styles.primaryText}>{product.price.toLocaleString()}원</span> */}
                       <span className="text-warning">
                         <FontAwesomeIcon icon={faStar} /> {product.rating}
                       </span>
@@ -373,7 +377,7 @@ const AboutUs = () => {
                   <Card.Body>
                     <div className="d-flex mb-3">
                       <img 
-                        src={review.productImage} 
+                        src={review.imageUrls[0]} 
                         alt={review.productName} 
                         className="me-3"
                         style={{ width: '60px', height: '60px', objectFit: 'cover' }}
@@ -385,18 +389,23 @@ const AboutUs = () => {
                             <FontAwesomeIcon key={i} icon={faStar} style={{ color: i < review.rating ? '#ffc107' : '#e4e5e9' }} />
                           ))}
                         </div>
-                        <div className="d-flex align-items-center">
-                          <img 
-                            src={review.authorImage} 
-                            alt={review.authorName} 
-                            className="rounded-circle me-2"
-                            style={{ width: '30px', height: '30px' }}
-                          />
-                          <span className="text-muted small">{review.authorName} · {review.date}</span>
-                        </div>
+                        <Link to={`/product/detail/${review.pno}`} className="text-decoration-none">
+                          <div className="d-flex align-items-center cursor-pointer">
+                            <img 
+                              src={profile} 
+                              alt="프로필 사진" 
+                              className="rounded-circle me-2"
+                              style={{ width: "30px", height: "30px" }}
+                            />
+                            <span className="text-muted small">
+                              {review.nickName} · {review.date}
+                            </span>
+                          </div>
+                        </Link>
                       </div>
                     </div>
-                    <p className="mb-3">{review.content}</p>
+                    {/* <p className="mb-3">{review.content}</p> */}
+                    <div dangerouslySetInnerHTML={{ __html: review.content }}></div>
                   </Card.Body>
                 </Card>
               </Col>

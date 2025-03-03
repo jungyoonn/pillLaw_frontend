@@ -13,7 +13,7 @@ function Notice() {
   const [showWriter, setShowWriter] = useState(false); // 모달 상태 관리
 
   useEffect(() => {
-    console.log("📌 공지사항 리스트 요청 시작");
+    // console.log("📌 공지사항 리스트 요청 시작");
     req("get", "v1/notice/list"); 
   }, [req]);  
 

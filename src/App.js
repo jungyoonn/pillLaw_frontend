@@ -39,6 +39,7 @@ import LetterListComponent from './component/letter/test/LetterListComponent';
 import LetterSelectViewPage from './component/letter/layout/LetterSelectViewPage';
 import Notice from './component/common/Notice';
 import AboutUs from './component/common/pilllaw/AboutUs';
+import UserReviews from './component/member/profilePageChildren/UserReviews';
 
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
             <Route path="/" element={<Index />} />
             <Route path='/product/list' element={<ProductList />} />
             <Route path='/product/detail/:id' element={<ProductDetail />} />
+            {/* <Route path='/user-reviews/:id' element={<UserReviews />} /> */}
             {/* <Route path="/posts" element={<Posts />} />
             <Route path="/posts/:id" element={<PostDetail />} /> */}
             {/* <Route path='FollowListt' element={<FollowListt />} /> */}

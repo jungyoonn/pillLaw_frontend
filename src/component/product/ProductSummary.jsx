@@ -124,7 +124,7 @@ const ProductSummary = ({ product }) => {
         quantity: 1,
       };
       const response = await req("post", `v1/cart/${cno}/items`, cartItemDto);
-      console.log("장바구니 추가 성공:", response);
+      // console.log("장바구니 추가 성공:", response);
       setToastMessage("상품이 장바구니에 추가되었습니다.");
       setToastTitle("성공");
       setShowToast(true);

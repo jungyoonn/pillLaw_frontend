@@ -21,7 +21,6 @@ const ProductList = () => {
 
   useEffect(() => {
     if (selectedCategoryFromURL) {
-      // Set 객체로 초기화
       setSelectedCategories(new Set([selectedCategoryFromURL]));
     }
   }, [selectedCategoryFromURL]);
