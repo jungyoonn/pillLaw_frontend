@@ -13,8 +13,8 @@ import Button from '../common/Button';
 import MemberHeader from './MemberHeader';
 
 const Signup = () => {
-  const BACKEND_URL= "//localhost:8080";
-  const FRONTEND_URL = "http://localhost:3000";
+  const BACKEND_URL= "https://pilllaw.eeerrorcode.com";
+  const FRONTEND_URL = "https://pilllaw.eeerrorcode.com";
 
   const handleSocialLogin = (provider) => {
     const redirectUri = encodeURIComponent(`${FRONTEND_URL}/pilllaw/oauth2/redirect`);
