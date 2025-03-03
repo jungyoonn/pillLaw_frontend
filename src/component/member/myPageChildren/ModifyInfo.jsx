@@ -64,7 +64,7 @@ const ModifyInfo = ({ activeKey }) => {
   const nicknameRegex = /^([가-힣]{2,5}|[a-zA-Z]{4,10})$/;
   const telRegex = /^010[0-9]{8}$/;
 
-  const {req} = UseAxios("http://localhost:8080/api");
+  const {req} = UseAxios("https://pilllaw.eeerrorcode.com/api");
   const navigate = useNavigate();
 
   useEffect(() => {

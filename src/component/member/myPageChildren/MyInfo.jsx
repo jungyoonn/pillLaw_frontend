@@ -14,7 +14,7 @@ const MyInfo = ({ activeKey, setActiveKey }) => {
   const [member, setMember] = useState({});
   const [address, setAddress] = useState(null);
   const [isEmailVerified, setIsEmailVerified] = useState(false);
-  const { req } = UseAxios("http://localhost:8080/api");
+  const { req } = UseAxios("https://pilllaw.eeerrorcode.com/api");
   const navigate = useNavigate();
   const [totalPoints, setTotalPoints] = useState(0);  // 총 포인트
 

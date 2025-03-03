@@ -26,7 +26,7 @@ const Index = () => {
   const [login, setLogin] = useState(false);
   const [nickname, setNickname] = useState('');
   // const [selectedCategories, setSelectedCategories] = useState(new Set());
-  const {req} = UseAxios("http://localhost:8080/api");
+  const {req} = UseAxios("https://pilllaw.eeerrorcode.com/api/");
 
   useEffect(() => {
     const storedMno = localStorage.getItem('mno');
@@ -40,11 +40,11 @@ const Index = () => {
       try {
         // mno가 있을 때만 API 호출
         if (storedMno) {
-          const resp = await req('get', `?mno=${storedMno}&email=${storedEmail}`);
+          const resp = await req('get', `${storedMno}`);
           console.log(resp)
 
           // 소셜 체크 추가
-          if (resp &&  resp.nickname !== '') {
+          if (resp && resp.nickname !== '') {
             setNickname(resp.nickname || resp.socialProvider + "_USER");
             return;
           }

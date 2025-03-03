@@ -14,7 +14,7 @@ const SignupForm = () => {
   const [termsData, setTermsData] = useState(null);
   const [failure, setFailure] = useState(false);
   const [success, setSuccess] = useState(false);
-  const {req} = UseAxios("http://localhost:8080/api");
+  const {req} = UseAxios("https://pilllaw.eeerrorcode.com/api");
   const navigate = useNavigate();
 
   const handleUserSubmit = useCallback(async (userFormData) => {
