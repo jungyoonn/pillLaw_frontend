@@ -380,7 +380,7 @@ const AboutUs = () => {
                   <Card.Body>
                     <div className="d-flex mb-3">
                       <img 
-                        src={review.imageUrls[0]} 
+                        src={review.imageUrls[0]}
                         // src={`https://eeerrorcode.buckets3.ap-northeast-2.amazonaws.com/uploads/review/${review.pno}/${review.prno}/`}
                         alt={review.pname} 
                         className="me-3"
