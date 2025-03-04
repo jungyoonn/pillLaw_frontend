@@ -383,7 +383,8 @@ const AboutUs = () => {
                     <div className="d-flex mb-3">
                       <img 
                         // src={review.imageUrls[0]}
-                        src={`http://eeerrorcode.buckets3.ap-northeast-2.amazonaws.com/uploads/review/${review.pno}/${review.prno}/${review.fileDtos[0].uuid}`}
+                        // src={`http://eeerrorcode.buckets3.ap-northeast-2.amazonaws.com/uploads/review/${review.pno}/${review.prno}/${review.fileDtos[0].uuid}`}
+                        src={`https://s3.ap-northeast-2.amazonaws.com/eeerrorcode.bucket/${review.fileDtos[0].path}`}
                         alt={review.pname} 
                         className="me-3"
                         style={{ width: '60px', height: '60px', objectFit: 'cover' }}
