@@ -41,7 +41,9 @@ const LetterListComponent = () => {
           console.log(resp);
           
           if (Array.isArray(resp)) {
-            setReceivedLetters(resp);
+            // 최신순 정렬 - ID 기준 내림차순 (최신 메시지일수록 ID가 크다고 가정)
+            const sortedLetters = [...resp].sort((a, b) => b.letterId - a.letterId);
+            setReceivedLetters(sortedLetters);
           } else {
             console.error("받은 쪽지 API 응답이 배열이 아닙니다:", resp);
             setReceivedLetters([]);
@@ -49,7 +51,9 @@ const LetterListComponent = () => {
         } else if (tabType === "send") {
           const resp = await req('get', `letter/send/${mno}`);
           if (Array.isArray(resp)) {
-            setSendLetters(resp);
+            // 최신순 정렬 - ID 기준 내림차순
+            const sortedLetters = [...resp].sort((a, b) => b.letterId - a.letterId);
+            setSendLetters(sortedLetters);
           } else {
             console.error("보낸 쪽지 API 응답이 배열이 아닙니다:", resp);
             setSendLetters([]);
@@ -213,7 +217,7 @@ const LetterListComponent = () => {
                         {letter.content}
                       </p>
                       <small className="text-muted">
-                        보낸 시간: {formatDate(letter.sendAt)}
+                        보낸 시간: {formatDate(letter.sentAt)}
                       </small>
                       <br />
                       <small className="text-muted">
@@ -222,7 +226,7 @@ const LetterListComponent = () => {
                     </div>
                     <div className="d-flex flex-column align-items-end">
                       <Link 
-                        to={`/letterselectview/${letter.letterId}`} 
+                        to={`/letter/view/${letter.letterId}`} 
                         className="btn btn-sm btn-outline-primary mb-2"
                       >
                         보기
