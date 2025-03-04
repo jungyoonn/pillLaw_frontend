@@ -110,16 +110,16 @@ const IndexSelector = () => {
         </div>
         <Row className="p-3">
           <Col className="text-end mx-2 mt-3">
-            <h1 className="fw-bold col pilllaw-tag" onClick={() => setSelectedCategory("BEST상품")}>
+            <h1 className="fw-bold mx-3 col pilllaw-tag" onClick={() => setSelectedCategory("BEST상품")}>
               #BEST상품
             </h1>
             {/* <h1 className="fw-bold mt-1 pilllaw-tag" onClick={() => setSelectedCategory("얼리버드")}>
               #얼리버드
             </h1> */}
-            <h1 className="fw-bold col pilllaw-tag" onClick={() => setSelectedCategory("주문많은순")}>
+            <h1 className="fw-bold mx-3 col pilllaw-tag" onClick={() => setSelectedCategory("주문많은순")}>
               #주문 많은
             </h1>
-            <h1 className="col fw-bold pilllaw-tag" onClick={() => setSelectedCategory("할인율 높은순")}>
+            <h1 className="col mx-3 fw-bold pilllaw-tag" onClick={() => setSelectedCategory("할인율 높은순")}>
               #특가 할인
             </h1>
           </Col>
@@ -127,10 +127,10 @@ const IndexSelector = () => {
             {/* <h1 className="fw-bold col pilllaw-tag" onClick={() => setSelectedCategory("필로패키지")}>
               #필로패키지
             </h1> */}
-            <h1 className="fw-bold pilllaw-tag" onClick={() => setSelectedCategory("신제품")}>
+            <h1 className="fw-bold mx-1 pilllaw-tag" onClick={() => setSelectedCategory("신제품")}>
               #신제품
             </h1>
-            <h1 className="col fw-bold pilllaw-tag" onClick={() => setSelectedCategory("리뷰많은순")}>
+            <h1 className="col mx-1 fw-bold pilllaw-tag" onClick={() => setSelectedCategory("리뷰많은순")}>
               #리뷰 많은
             </h1>
           </Col>
