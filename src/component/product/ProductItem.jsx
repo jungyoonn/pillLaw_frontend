@@ -38,7 +38,7 @@ const ProductItem = ({ product, reviews }) => {
     </Link>
       <p className="m-0 fs-14 mt-2">
         <span className="header-font fw-bold text-decoration-line-through">{product.priceInfo.price.toLocaleString()}</span>원
-        <span className="header-font fw-bold">{product.priceInfo.salePrice.toLocaleString}</span>원
+        <span className="header-font fw-bold">{product.priceInfo.salePrice.toLocaleString()}</span>원
       </p>
       <p className="m-0 fs-12 fw-bold">
         <FontAwesomeIcon icon={faStar} style={{ color: "#FFD43B" }} /> 
