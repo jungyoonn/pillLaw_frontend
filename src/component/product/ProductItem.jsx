@@ -37,7 +37,7 @@ const ProductItem = ({ product, reviews }) => {
       <p className="m-0 mt-1 fs-14 fw-bold">{product.pname}</p>
       <Row className="m-0 mt-1 text-start">
         {product.priceInfo.rate !== 0 ? (
-          <p>
+          <p className="mb-0">
             {product.priceInfo.rate !== 0 && (
               <span className="text-info fw-bold"> {product.priceInfo.rate} % </span>
             )}
@@ -49,24 +49,24 @@ const ProductItem = ({ product, reviews }) => {
           </div>
         }
       </Row>
-      <Row className="mt-1">
-        <Col className="text-start">
+      <Row className="mt-1 mb-0">
+        <Col className="text-start p-0">
           <span className="header-font fw-bold">{product.priceInfo.salePrice.toLocaleString()}</span>원
         </Col>
-        <Col className="text-start">
+        <Col className="text-start p-0">
           <span className="header-font text-decoration-line-through text-secondary">
             {product.priceInfo.price.toLocaleString()}
           </span>원
         </Col>
       </Row>
-      <p className="m-0 fs-12 fw-bold">
+      <Row className="m-0 p-0 fs-12 fw-bold text-start">
         <FontAwesomeIcon icon={faStar} style={{ color: "#FFD43B" }} /> 
         {averageRating}
         &nbsp;&nbsp;&nbsp;&nbsp;
         <span className="fs-12 text-secondary">
           리뷰 ({reviews.length})
         </span>
-      </p>
+      </Row>
     </Link>
     </Col>
   );
