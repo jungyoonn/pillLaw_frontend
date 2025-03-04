@@ -185,7 +185,7 @@ useEffect(() => {
                       src={url}
                       alt={`상세 이미지 ${index + 1}`}
                       style={{ maxWidth: "100%", height: "auto" }}
-                      onError={(e) => (e.target.src = "https://via.placeholder.com/500")}
+                      // onError={(e) => (e.target.src = "https://via.placeholder.com/500")}
                     />
                   ))
                 ) : (
