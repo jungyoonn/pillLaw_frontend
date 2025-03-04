@@ -1,4 +1,3 @@
-// LetterListComponent.jsx 수정
 import React, { useEffect, useState } from "react";
 import { Container, ListGroup, Nav, Badge, Button } from "react-bootstrap";
 import UseAxios from "../../../hooks/UseAxios";
