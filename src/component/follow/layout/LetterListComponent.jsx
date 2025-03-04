@@ -226,7 +226,7 @@ const LetterListComponent = () => {
                     </div>
                     <div className="d-flex flex-column align-items-end">
                       <Link 
-                        to={`/letter/view/${letter.letterId}`} 
+                        to={`/letterselectview/${letter.letterId}`}  
                         className="btn btn-sm btn-outline-primary mb-2"
                       >
                         보기
