@@ -40,13 +40,14 @@ const ProductItem = ({ product, reviews }) => {
         <span className="header-font fw-bold text-decoration-line-through text-secondary">{product.priceInfo.price.toLocaleString()}</span>원
       </p>
       <p>
-        <span className="header-font fw-bold"> {product.priceInfo.rate} % </span>
+        <span className="text-info fw-bold"> {product.priceInfo.rate} % </span>
+        &nbsp;&nbsp;&nbsp;&nbsp;
         <span className="header-font fw-bold">{product.priceInfo.salePrice.toLocaleString()}</span>원
       </p>
       <p className="m-0 fs-12 fw-bold">
         <FontAwesomeIcon icon={faStar} style={{ color: "#FFD43B" }} /> 
         {averageRating}
-        &nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;
         <span className="fs-12 text-secondary">
           리뷰 ({reviews.length})
         </span>
