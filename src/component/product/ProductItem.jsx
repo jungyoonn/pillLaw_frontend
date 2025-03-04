@@ -40,7 +40,7 @@ const ProductItem = ({ product, reviews }) => {
         <span className="header-font fw-bold text-decoration-line-through text-secondary">{product.priceInfo.price.toLocaleString()}</span>원
       </p>
       <p>
-        <span className="header-font fw-bold"> {product.pricdInfo.rate} % </span>
+        <span className="header-font fw-bold"> {product.priceInfo.rate} % </span>
         <span className="header-font fw-bold">{product.priceInfo.salePrice.toLocaleString()}</span>원
       </p>
       <p className="m-0 fs-12 fw-bold">
