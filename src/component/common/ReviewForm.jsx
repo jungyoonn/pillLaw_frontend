@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../../hooks/AuthContext";
 import useAxios from '../../hooks/UseAxios';
-import config from "../config";
+import config from "../../config";
 
 const ReviewForm = ({ show, handleClose, productId, onReviewAdded }) => {
   // console.log("🔹 ReviewForm에 전달된 productId:", productId);
