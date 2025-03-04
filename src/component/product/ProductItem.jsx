@@ -33,14 +33,20 @@ const ProductItem = ({ product, reviews }) => {
     <Col xs={6} sm={4} lg={3} xl={2} className="mt-2 mb-4">
     <Link to={`/product/detail/${product.pno}`} className="text-decoration-none text-black">
       <img className="img-fluid mx-2" style={{height:200}} src={product.imageUrl} alt={product.pname} />
-      <p className="m-0 mt-1 fs-14 fw-bold">{product.pname}</p>
       <p className="m-0 mt-1 fs-11 fw-bold text-secondary">{product.company}</p>
+      <p className="m-0 mt-1 fs-14 fw-bold">{product.pname}</p>
     </Link>
-      <p className="m-0 fs-14 mt-2">
-        <span className="header-font fw-bold text-decoration-line-through text-secondary">{product.priceInfo.price.toLocaleString()}</span>원
-      </p>
+      {product.priceInfo.rate !== 0 ? (
+        <p className="m-0 fs-14 mt-2">
+          <span className="header-font fw-bold text-decoration-line-through text-secondary">
+            {product.priceInfo.price.toLocaleString()}
+          </span>원
+        </p>
+      ) : null}
       <p className="mb-1">
-        <span className="text-info fw-bold"> {product.priceInfo.rate} % </span>
+        {product.priceInfo.rate !== 0 && (
+          <span className="text-info fw-bold"> {product.priceInfo.rate} % </span>
+        )}
         &nbsp;&nbsp;
         <span className="header-font fw-bold">{product.priceInfo.salePrice.toLocaleString()}</span>원
       </p>
