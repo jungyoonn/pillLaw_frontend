@@ -574,7 +574,8 @@ const MyOrder = () => {
 
         <Modal show={showTermsModal} onHide={() => setShowTermsModal(false)}>
           <Modal.Header closeButton>
-            <Modal.Title><strong>전자금융거래 이용약관</strong></Modal.Title>
+            <Modal.Title><h5 className="card-title fw-bold text-center header-font">전자금융거래 이용약관</h5>
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body style={{ maxHeight: '300px', overflowY: 'auto' }}>
             <div className="bg-white w-full h-[400px] p-4 rounded-lg overflow-hidden">
