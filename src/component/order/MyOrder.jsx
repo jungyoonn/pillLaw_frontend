@@ -335,7 +335,7 @@ const MyOrder = () => {
     let total = 0;
     cartItems.forEach(item => {
       let optionMultiplier = item.option === "60일" ? 2 : item.option === "90일" ? 3 : 1;
-      total += item.price * optionMultiplier * item.quantity;
+      total += item.price * optionMultiplier * item.quantity + 3000;
     });
     setTotalPrice(total);
 
