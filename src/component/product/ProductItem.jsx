@@ -36,20 +36,25 @@ const ProductItem = ({ product, reviews }) => {
       <p className="m-0 mt-1 fs-11 fw-bold text-secondary">{product.company}</p>
       <p className="m-0 mt-1 fs-14 fw-bold">{product.pname}</p>
     </Link>
-      {product.priceInfo.rate !== 0 ? (
-        <p className="m-0 mt-2">
-          {product.priceInfo.rate !== 0 && (
-            <span className="text-info fw-bold"> {product.priceInfo.rate} % </span>
-          )}
-        </p>
-      ) : null}
-      <p className="mb-1">
-        <span className="header-font fw-bold">{product.priceInfo.salePrice.toLocaleString()}</span>원
-        &nbsp;&nbsp;
-        <span className="header-font text-decoration-line-through text-secondary">
-          {product.priceInfo.price.toLocaleString()}
-        </span>원
-      </p>
+      <Row className="m-0 mt-2">
+        {product.priceInfo.rate !== 0 ? (
+          <p>
+            {product.priceInfo.rate !== 0 && (
+              <span className="text-info fw-bold"> {product.priceInfo.rate} % </span>
+            )}
+          </p>
+        ) : null}
+      </Row>
+      <Row>
+        <Col className="text-start">
+          <span className="header-font fw-bold">{product.priceInfo.salePrice.toLocaleString()}</span>원
+        </Col>
+        <Col className="text-start">
+          <span className="header-font text-decoration-line-through text-secondary">
+            {product.priceInfo.price.toLocaleString()}
+          </span>원
+        </Col>
+      </Row>
       <p className="m-0 fs-12 fw-bold">
         <FontAwesomeIcon icon={faStar} style={{ color: "#FFD43B" }} /> 
         {averageRating}

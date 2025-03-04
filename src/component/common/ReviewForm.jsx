@@ -17,7 +17,7 @@ const ReviewForm = ({ show, handleClose, productId, onReviewAdded }) => {
   const [uploadedFiles, setUploadedFiles] = useState([]); // S3 업로드된 파일 URL 리스트
   const {loading, req } = useAxios();
   // const editorKey = process.env.REACT_APP_TINYMCE_API_KEY;
-
+  const editor = config.TINYMCE_API_KEY;
   useEffect(() => {
     // console.log("ReviewForm에 전달된 productId:", productId);
   }, [productId]);
@@ -120,7 +120,7 @@ const ReviewForm = ({ show, handleClose, productId, onReviewAdded }) => {
             <Form.Label>리뷰 내용</Form.Label>
             <Editor
               // apiKey={process.env.REACT_APP_TINYMCE_API_KEY}
-              apiKey='uzb7mzqvze4iw0jm2jl00qyohdciwzmoq47xt1j3pjoxmok9'
+              apiKey= {editor}
               initialValue=""
               init={{
                 resize: false,
