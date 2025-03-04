@@ -34,16 +34,20 @@ const ProductItem = ({ product, reviews }) => {
     <Link to={`/product/detail/${product.pno}`} className="text-decoration-none text-black">
       <img className="img-fluid mx-2" style={{height:200}} src={product.imageUrl} alt={product.pname} />
       <p className="m-0 mt-1 fs-14 fw-bold">{product.pname}</p>
-      <p className="m-0 mt-2 fs-11 fw-bold text-secondary">{product.company}</p>
+      <p className="m-0 mt-1 fs-11 fw-bold text-secondary">{product.company}</p>
     </Link>
       <p className="m-0 fs-14 mt-2">
-        <span className="header-font fw-bold text-decoration-line-through">{product.priceInfo.price.toLocaleString()}</span>원
+        <span className="header-font fw-bold text-decoration-line-through text-secondary">{product.priceInfo.price.toLocaleString()}</span>원
+      </p>
+      <p>
+        <span className="header-font fw-bold"> {product.pricdInfo.rate} % </span>
         <span className="header-font fw-bold">{product.priceInfo.salePrice.toLocaleString()}</span>원
       </p>
       <p className="m-0 fs-12 fw-bold">
         <FontAwesomeIcon icon={faStar} style={{ color: "#FFD43B" }} /> 
         {averageRating}
-        <span className="fs-11 text-secondary">
+        &nbsp;&nbsp;
+        <span className="fs-12 text-secondary">
           리뷰 ({reviews.length})
         </span>
       </p>
