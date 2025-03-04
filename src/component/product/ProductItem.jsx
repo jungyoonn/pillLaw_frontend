@@ -37,31 +37,37 @@ const ProductItem = ({ product, reviews }) => {
       <p className="m-0 mt-1 fs-14 fw-bold text-start mx-2">{product.pname}</p>
       <Row className="m-0 mt-1">
         {product.priceInfo.rate !== 0 ? (
-          <p className="mb-0 p-0 text-start mx-2">
+          <h5 className="mb-0 p-0 text-start mx-2">
             {product.priceInfo.rate !== 0 && (
-              <span className="text-info fw-bold mx-2"> {product.priceInfo.rate} % </span>
+              <span className="text-info fw-bold"> {product.priceInfo.rate} % </span>
             )}
-          </p>
+          </h5>
         ) : 
           null
         }
       </Row>
       <Row className="mt-1 mb-0">
-        <Col className="p-0">
+        <Col className="p-0 mx-3">
         
         {product.priceInfo.rate !== 0 ? (
-          <>
-            <span className="header-font fs-14 fw-bold mx-2">{product.priceInfo.salePrice.toLocaleString()}</span>
-            <span className="mx-2 text-secondary text-decoration-line-through">
-              {product.priceInfo.price.toLocaleString()}
-            </span>원
-          </>
-        ) : null}
+          <div className="text-start ms-1">
+            <span className="header-font fs-14 fw-bold me-2">{product.priceInfo.salePrice.toLocaleString() + "원"}</span>
+            <span className="ms-2 text-secondary fs-14 text-decoration-line-through">
+              {product.priceInfo.price.toLocaleString() + "원"}
+            </span>
+          </div>
+        ) : 
+        (<div className="text-start ms-1">
+          <span className="header-font fs-14 fw-bold">
+            {product.priceInfo.price.toLocaleString() + "원"}
+          </span>
+        </div>
+          )}
         </Col>
       </Row>
       <Row className="m-0 p-0 fs-12 fw-bold text-start">
-        <Col>
-          <FontAwesomeIcon icon={faStar} style={{ color: "#FFD43B" }} /> 
+        <Col className="p-0 mx-2">
+          <FontAwesomeIcon icon={faStar} style={{ color: "#FFD43B" }} className="me-1"/> 
           {averageRating}
           <span className="fs-12 text-secondary mx-2">
             리뷰 ({reviews.length})
