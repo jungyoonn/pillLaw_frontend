@@ -37,7 +37,7 @@ const ProductItem = ({ product, reviews }) => {
       <p className="m-0 mt-1 fs-14 fw-bold text-start mx-2">{product.pname}</p>
       <Row className="m-0 mt-1">
         {product.priceInfo.rate !== 0 ? (
-          <h5 className="mb-0 p-0 text-start mx-2">
+          <h5 className="mb-0 p-0 text-start mx-2 mt-2">
             {product.priceInfo.rate !== 0 && (
               <span className="text-info fw-bold"> {product.priceInfo.rate} % </span>
             )}
