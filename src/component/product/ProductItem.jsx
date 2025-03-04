@@ -43,20 +43,23 @@ const ProductItem = ({ product, reviews }) => {
             )}
           </p>
         ) : 
-          <div>
-            <br/>
-          </div>
+          null
         }
       </Row>
       <Row className="mt-1 mb-0">
-        <Col>
-          <span className="header-font fw-bold mx-2">{product.priceInfo.salePrice.toLocaleString()}</span>원
-          <span className="mx-2">
-            {product.priceInfo.price.toLocaleString()}
-          </span>원
+        <Col className="p-0">
+        
+        {product.priceInfo.rate !== 0 ? (
+          <>
+            <span className="header-font fs-14 fw-bold mx-2">{product.priceInfo.salePrice.toLocaleString()}</span>
+            <span className="mx-2 text-secondary text-decoration-line-through">
+              {product.priceInfo.price.toLocaleString()}
+            </span>원
+          </>
+        ) : null}
         </Col>
       </Row>
-      <Row  className="m-0 p-0 fs-12 fw-bold text-start">
+      <Row className="m-0 p-0 fs-12 fw-bold text-start">
         <Col>
           <FontAwesomeIcon icon={faStar} style={{ color: "#FFD43B" }} /> 
           {averageRating}
