@@ -35,9 +35,9 @@ const ProductItem = ({ product, reviews }) => {
       <img className="img-fluid mx-2" style={{height:200}} src={product.imageUrl} alt={product.pname} />
       <p className="m-0 mt-1 fs-11 fw-bold text-secondary">{product.company}</p>
       <p className="m-0 mt-1 fs-14 fw-bold">{product.pname}</p>
-      <Row className="m-0 mt-1 text-start">
+      <Row className="m-0 mt-1 mx-2">
         {product.priceInfo.rate !== 0 ? (
-          <p className="mb-0">
+          <p className="mb-0 p-0 text-start">
             {product.priceInfo.rate !== 0 && (
               <span className="text-info fw-bold"> {product.priceInfo.rate} % </span>
             )}
@@ -45,12 +45,11 @@ const ProductItem = ({ product, reviews }) => {
         ) : 
           <div>
             <br/>
-            <br/>
           </div>
         }
       </Row>
       <Row className="mt-1 mb-0">
-        <Col className="text-start p-0">
+        <Col xs="4" className="text-start p-0">
           <span className="header-font fw-bold">{product.priceInfo.salePrice.toLocaleString()}</span>원
         </Col>
         <Col className="text-start p-0">
@@ -58,14 +57,15 @@ const ProductItem = ({ product, reviews }) => {
             {product.priceInfo.price.toLocaleString()}
           </span>원
         </Col>
+        <Col></Col>
       </Row>
-      <Row className="m-0 p-0 fs-12 fw-bold text-start">
-        <FontAwesomeIcon icon={faStar} style={{ color: "#FFD43B" }} /> 
-        {averageRating}
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <span className="fs-12 text-secondary">
-          리뷰 ({reviews.length})
-        </span>
+      <Row  className="m-0 p-0 fs-12 fw-bold text-start">
+          <FontAwesomeIcon icon={faStar} style={{ color: "#FFD43B" }} /> 
+          {averageRating}
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <span className="fs-12 text-secondary">
+            리뷰 ({reviews.length})
+          </span>
       </Row>
     </Link>
     </Col>

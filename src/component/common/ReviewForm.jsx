@@ -115,7 +115,6 @@ const ReviewForm = ({ show, handleClose, productId, onReviewAdded }) => {
       </Modal.Header>
       <Modal.Body>
         <Form>
-          {/* 리뷰 내용 (TinyMCE 에디터) */}
           <Form.Group controlId="reviewContent" className="mt-3">
             <Form.Label>리뷰 내용</Form.Label>
             <Editor
@@ -128,7 +127,7 @@ const ReviewForm = ({ show, handleClose, productId, onReviewAdded }) => {
                 menubar: true,
                 plugins: [
                   "advlist autolink lists link charmap print preview anchor",
-                  "searchreplace visualblocks code fullscreen",
+                  "searchreplace ",
                   "insertdatetime media table paste code help wordcount",
                 ],
                 toolbar:
