@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../../hooks/AuthContext";
 import useAxios from '../../hooks/UseAxios';
+import config from "../../config";
 
 const ReviewForm = ({ show, handleClose, productId, onReviewAdded }) => {
   // console.log("🔹 ReviewForm에 전달된 productId:", productId);
@@ -117,7 +118,8 @@ const ReviewForm = ({ show, handleClose, productId, onReviewAdded }) => {
           <Form.Group controlId="reviewContent" className="mt-3">
             <Form.Label>리뷰 내용</Form.Label>
             <Editor
-              apiKey={process.env.REACT_APP_TINYMCE_API_KEY}
+              // apiKey={process.env.REACT_APP_TINYMCE_API_KEY}
+              apiKey={config.TINYMCE_API_KEY}
               initialValue=""
               init={{
                 resize: false,

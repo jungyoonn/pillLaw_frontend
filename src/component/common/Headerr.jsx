@@ -21,8 +21,8 @@ import { icon } from '@fortawesome/fontawesome-svg-core';
 
 const icons = [
   { icon: faUser, path: "/mypage" },
-  { icon: faBell, path: ""}, 
-  { icon: faMagnifyingGlass, path: ""},
+  { icon: faCartShopping, path: "/cart"}, 
+  { icon: faMagnifyingGlass, path: "/product/list"},
   { icon: faPaperPlane, path: "/mypage?tab=letterlistcomponent" },
 ];
 
