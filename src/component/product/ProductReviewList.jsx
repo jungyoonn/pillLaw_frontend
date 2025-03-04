@@ -113,8 +113,8 @@ const ProductReviewList = ({ reviews, onDelete }) => {
                     variant="top"
                     src={review.imageUrls[0]}
                     alt="리뷰 이미지"
-                    className="review-image"
-                    style={{ width:"100%", height: "200px", objectFit: "cover" }}
+                    className="review-image m-2"
+                    style={{ width:"100%", height: "200px", objectFit: "contain" }}
                   />
                 ) : (
                   <div className="default-review-image" style={{ height: "200px", backgroundColor: "#f0f0f0" }}></div>
@@ -152,7 +152,7 @@ const ProductReviewList = ({ reviews, onDelete }) => {
                       도움이 돼요 ({reviewLikes[review.prno]})
                     </Button>
 
-                    {mno === review.mno && (
+                    {mno === review.mno ? (
                       <Button
                         variant="danger"
                         size="sm"
@@ -160,7 +160,7 @@ const ProductReviewList = ({ reviews, onDelete }) => {
                       >
                         <FontAwesomeIcon icon={faTrash} /> 삭제
                       </Button>
-                    )}
+                    ) : null}
                   </div>
                 </Card.Body>
               </Card>
