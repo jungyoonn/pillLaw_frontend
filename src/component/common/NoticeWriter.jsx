@@ -88,7 +88,7 @@ function NoticeWriter({ show, handleClose, onNoticeAdded }) {
           <Form.Group controlId="noticeContent" className="mb-3">
             <Form.Label>공지사항 내용</Form.Label>
             <Editor
-              apiKey={process.env.REACT_APP_TINYMCE_API_KEY} // TinyMCE API 키
+              apiKey='uzb7mzqvze4iw0jm2jl00qyohdciwzmoq47xt1j3pjoxmok9' // TinyMCE API 키
               initialValue=""
               init={{
                 resize: false,

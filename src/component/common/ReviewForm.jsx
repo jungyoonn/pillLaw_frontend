@@ -120,7 +120,7 @@ const ReviewForm = ({ show, handleClose, productId, onReviewAdded }) => {
             <Form.Label>리뷰 내용</Form.Label>
             <Editor
               // apiKey={process.env.REACT_APP_TINYMCE_API_KEY}
-              apiKey= {editorKey}
+              apiKey= 'uzb7mzqvze4iw0jm2jl00qyohdciwzmoq47xt1j3pjoxmok9'
               initialValue=""
               init={{
                 resize: false,
