@@ -213,7 +213,7 @@ const LetterListComponent = () => {
                         {letter.content}
                       </p>
                       <small className="text-muted">
-                        보낸 시간: {formatDate(letter.sendAt)}
+                        보낸 시간: {formatDate(letter.sentAt)}
                       </small>
                       <br />
                       <small className="text-muted">
@@ -222,7 +222,7 @@ const LetterListComponent = () => {
                     </div>
                     <div className="d-flex flex-column align-items-end">
                       <Link 
-                        to={`/letterselectview/${letter.letterId}`} 
+                        to={`/letter/view/${letter.letterId}`} 
                         className="btn btn-sm btn-outline-primary mb-2"
                       >
                         보기
