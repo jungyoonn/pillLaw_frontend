@@ -55,6 +55,8 @@ const styles = {
   }
 };
 
+const baseUrl = "http://eeerrorcode.buckets3.ap-northeast-2.amazonaws.com/uploads/review/";
+
 const AboutUs = () => {
 
   const { req, loading } = UseAxios();
@@ -380,8 +382,8 @@ const AboutUs = () => {
                   <Card.Body>
                     <div className="d-flex mb-3">
                       <img 
-                        src={review.imageUrls[0]}
-                        // src={`https://eeerrorcode.buckets3.ap-northeast-2.amazonaws.com/uploads/review/${review.pno}/${review.prno}/`}
+                        // src={review.imageUrls[0]}
+                        src={`http://eeerrorcode.buckets3.ap-northeast-2.amazonaws.com/uploads/review/${review.pno}/${review.prno}/${review.fileDtos[0].uuid}`}
                         alt={review.pname} 
                         className="me-3"
                         style={{ width: '60px', height: '60px', objectFit: 'cover' }}
